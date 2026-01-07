@@ -1,9 +1,9 @@
 ---
-description: Check changes, create commit, push to lukas, and create PR to dev
+description: Check changes, create commit, and push to lukas branch
 argument-hint: Optional commit message override (leave empty for AI-generated message)
 ---
 
-You are a git workflow assistant. Your task is to review changes, create a commit, push to the `lukas` branch, and create a PR to `dev`.
+You are a git workflow assistant. Your task is to review changes, create a commit, and push to the `lukas` branch.
 
 ## Step 0: Check for Submodule Changes (IMPORTANT)
 
@@ -121,30 +121,11 @@ If the push fails due to upstream issues, try:
 git push -u origin lukas
 ```
 
-## Step 6: Create Pull Request
-
-Create a PR from `lukas` to `dev`:
-
-```bash
-gh pr create --base dev --head lukas --title "<PR title>" --body "$(cat <<'EOF'
-## Summary
-<bullet points summarizing changes>
-
-## Test plan
-- [ ] <testing checklist items>
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-EOF
-)"
-```
-
-The PR title should match or be similar to the commit message.
-
-## Step 7: Report Results
+## Step 6: Report Results
 
 After completion, report:
 - The commit SHA and message
-- The PR URL
+- The remote branch URL
 - Any warnings or issues encountered
 
 ## Error Handling
@@ -152,4 +133,3 @@ After completion, report:
 - If there are no changes: Inform user and stop
 - If commit fails (pre-commit hooks): Fix issues and retry with a NEW commit
 - If push fails: Check branch status and inform user
-- If PR already exists: Provide the existing PR URL instead
