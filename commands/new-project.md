@@ -33,6 +33,20 @@ Store selections as:
 - `$BACKEND` = "nestjs" | "django" | null
 - `$FRONTENDS` = array of ["react", "react-native"] (can be empty)
 
+### Dashboard (if React Web selected)
+
+If React Web was selected, ask:
+
+**Do you need an admin/management dashboard?**
+
+| Option | Description |
+|--------|-------------|
+| **Yes** | Create `frontend-dashboard/` with React starter (admin panel, management UI) |
+| **No** | Just the main frontend |
+
+Store as:
+- `$DASHBOARD` = true | false
+
 ## Step 2: Confirm Project Structure
 
 Display the planned structure and ask for confirmation:
@@ -45,10 +59,11 @@ Claude Configuration:
   - Submodules: base, $BACKEND, $FRONTENDS
 
 Boilerplate Code:
-  - backend/     ← nestjs-starter-kit (if NestJS)
-  - backend/     ← django-starter-kit (if Django)
-  - frontend/    ← react-starter-kit (if React Web)
-  - mobile/      ← react-native-starter-kit (if React Native)
+  - backend/            ← nestjs-starter-kit (if NestJS)
+  - backend/            ← django-starter-kit (if Django)
+  - frontend/           ← react-starter-kit (if React Web)
+  - frontend-dashboard/ ← react-starter-kit (if Dashboard)
+  - mobile/             ← react-native-starter-kit (if React Native)
 
 Project Documentation:
   - .claude-project/plans/
@@ -181,6 +196,7 @@ Execute the `/create-mono-repo` workflow internally (without interactive prompts
 | NestJS | `https://github.com/potentialInc/nestjs-starter-kit` | `backend/` |
 | Django | `https://github.com/potentialInc/django-starter-kit` | `backend/` |
 | React Web | `https://github.com/potentialInc/react-starter-kit` | `frontend/` |
+| Dashboard | `https://github.com/potentialInc/react-starter-kit` | `frontend-dashboard/` |
 | React Native | `https://github.com/potentialInc/react-native-starter-kit` | `mobile/` |
 
 ### Clone Each Selected Repo
@@ -228,6 +244,18 @@ services:
     restart: unless-stopped
     ports:
       - '5173:5173'
+    networks:
+      - $PROJECT_NAME-network
+
+  # Dashboard service (if selected)
+  frontend-dashboard:
+    build:
+      context: ./frontend-dashboard
+      dockerfile: Dockerfile
+    container_name: $PROJECT_NAME-dashboard
+    restart: unless-stopped
+    ports:
+      - '5174:5173'
     networks:
       - $PROJECT_NAME-network
 
@@ -355,6 +383,7 @@ $PROJECT_NAME/
 │   └── docs/
 ├── backend/                    # $BACKEND boilerplate
 ├── frontend/                   # React Web (if selected)
+├── frontend-dashboard/         # Dashboard (if selected)
 ├── mobile/                     # React Native (if selected)
 ├── docker-compose.yml
 ├── .gitignore
@@ -385,7 +414,7 @@ If setup fails midway:
 
 ```bash
 # Clean up local
-rm -rf backend frontend mobile .claude .claude-project docker-compose.yml
+rm -rf backend frontend frontend-dashboard mobile .claude .claude-project docker-compose.yml
 
 # Clean up GitHub (if config repo was created)
 gh repo delete potentialInc/$PROJECT_NAME-claude --yes

@@ -73,21 +73,26 @@ For each selection (except "None"), add to repository list:
 }
 ```
 
-## Step 0.3: Additional React Apps (Quick Start)
+## Step 0.3: Dashboard (Quick Start)
 
 If React Web was selected, ask:
 
-**Do you need additional React apps?** (e.g., admin dashboard, landing page)
+**Do you need an admin/management dashboard?**
 
 | Option | Description |
 |--------|-------------|
-| **Yes** | Add another React app with custom folder name |
+| **Yes** | Create `frontend-dashboard/` with React starter |
 | **No** | Continue with setup |
 
 If "Yes":
-- Ask: "What folder name for this app?" (e.g., `frontend-dashboard`, `admin`, `landing`)
-- Add to repository list with the same React repo URL but different folder
-- Repeat this question until user selects "No"
+- Add to repository list:
+  ```
+  {
+    url: "https://github.com/potentialInc/react-starter-kit",
+    branch: "main",
+    folder: "frontend-dashboard"
+  }
+  ```
 
 After Step 0.3, proceed to Step 2 (Display Configuration Summary).
 
@@ -204,7 +209,7 @@ networks:
 - Backend (NestJS): 3000
 - Backend (Django): 8000
 - Frontend: 5173
-- Additional frontends: 5174, 5175, etc.
+- Dashboard (frontend-dashboard): 5174
 - Mobile: (no port needed for dev)
 
 ## Step 7: Initialize Git (if needed)
@@ -305,4 +310,5 @@ rm -f docker-compose.yml
 | NestJS | `https://github.com/potentialInc/nestjs-starter-kit` | `backend/` |
 | Django | `https://github.com/potentialInc/django-starter-kit` | `backend/` |
 | React Web | `https://github.com/potentialInc/react-starter-kit` | `frontend/` |
+| Dashboard | `https://github.com/potentialInc/react-starter-kit` | `frontend-dashboard/` |
 | React Native | `https://github.com/potentialInc/react-native-starter-kit` | `mobile/` |
