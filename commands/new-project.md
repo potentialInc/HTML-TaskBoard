@@ -267,27 +267,27 @@ networks:
 ## Step 7: Create Project Documentation Structure
 
 ```bash
-mkdir -p .claude-project/plans
-mkdir -p .claude-project/memory
-mkdir -p .claude-project/docs
+# Copy templates from claude-base
+cp -r .claude/base/templates/claude-project/* .claude-project/
 
-# Create initial PROJECT_KNOWLEDGE.md
-cat > .claude-project/memory/PROJECT_KNOWLEDGE.md << 'EOF'
-# Project Knowledge: $PROJECT_NAME
+# Rename template files (remove .template suffix)
+for f in .claude-project/docs/*.template.md; do
+  mv "$f" "${f%.template.md}.md"
+done
 
-## Overview
-[Brief description of what this project does]
+# Replace $PROJECT_NAME placeholder in all template files
+find .claude-project -name "*.md" -exec sed -i '' "s/\$PROJECT_NAME/$PROJECT_NAME/g" {} \;
 
-## Tech Stack
-- Backend: $BACKEND
-- Frontend: $FRONTENDS
+# Replace $BACKEND placeholder
+find .claude-project -name "*.md" -exec sed -i '' "s/\$BACKEND/$BACKEND/g" {} \;
 
-## Architecture
-[High-level architecture notes]
+# Replace $FRONTENDS placeholder
+find .claude-project -name "*.md" -exec sed -i '' "s/\$FRONTENDS/$FRONTENDS/g" {} \;
 
-## Key Decisions
-[Important technical decisions and rationale]
-EOF
+# Append gitignore rules from template
+cat .claude-project/gitignore.template >> .gitignore
+rm .claude-project/gitignore.template
+```
 
 # Create initial README
 cat > README.md << 'EOF'
