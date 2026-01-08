@@ -46,9 +46,9 @@ Claude Configuration:
 
 Boilerplate Code:
   - backend/     ← nestjs-starter-kit (if NestJS)
-  - backend/     ← django_boilerplate (if Django)
-  - frontend/    ← react-19-starter-kit (if React Web)
-  - mobile/      ← native-starter (if React Native)
+  - backend/     ← django-starter-kit (if Django)
+  - frontend/    ← react-starter-kit (if React Web)
+  - mobile/      ← react-native-starter-kit (if React Native)
 
 Project Documentation:
   - .claude-project/plans/
@@ -179,9 +179,9 @@ Execute the `/create-mono-repo` workflow internally (without interactive prompts
 | Selection | Repository | Folder |
 |-----------|------------|--------|
 | NestJS | `https://github.com/potentialInc/nestjs-starter-kit` | `backend/` |
-| Django | `https://github.com/potentialInc/django_boilerplate` | `backend/` |
-| React Web | `https://github.com/potentialInc/react-19-starter-kit` | `frontend/` |
-| React Native | `https://github.com/potentialInc/native-starter` | `mobile/` |
+| Django | `https://github.com/potentialInc/django-starter-kit` | `backend/` |
+| React Web | `https://github.com/potentialInc/react-starter-kit` | `frontend/` |
+| React Native | `https://github.com/potentialInc/react-native-starter-kit` | `mobile/` |
 
 ### Clone Each Selected Repo
 

@@ -40,7 +40,7 @@ Use **AskUserQuestion** to ask:
 | Option | Repository | Folder |
 |--------|------------|--------|
 | **NestJS** (Recommended) | `https://github.com/potentialInc/nestjs-starter-kit` | `backend/` |
-| **Django** | `https://github.com/potentialInc/django_boilerplate` | `backend/` |
+| **Django** | `https://github.com/potentialInc/django-starter-kit` | `backend/` |
 | **None** | - | - |
 
 Store selection. If not "None", add to repository list:
@@ -60,8 +60,8 @@ Use **AskUserQuestion** with `multiSelect: true`:
 
 | Option | Repository | Folder |
 |--------|------------|--------|
-| **React Web** | `https://github.com/potentialInc/react-19-starter-kit` | `frontend/` |
-| **React Native** | `https://github.com/potentialInc/native-starter` | `mobile/` |
+| **React Web** | `https://github.com/potentialInc/react-starter-kit` | `frontend/` |
+| **React Native** | `https://github.com/potentialInc/react-native-starter-kit` | `mobile/` |
 | **None** | - | - |
 
 For each selection (except "None"), add to repository list:
@@ -303,6 +303,6 @@ rm -f docker-compose.yml
 | Framework | Repository URL | Default Folder |
 |-----------|----------------|----------------|
 | NestJS | `https://github.com/potentialInc/nestjs-starter-kit` | `backend/` |
-| Django | `https://github.com/potentialInc/django_boilerplate` | `backend/` |
-| React Web | `https://github.com/potentialInc/react-19-starter-kit` | `frontend/` |
-| React Native | `https://github.com/potentialInc/native-starter` | `mobile/` |
+| Django | `https://github.com/potentialInc/django-starter-kit` | `backend/` |
+| React Web | `https://github.com/potentialInc/react-starter-kit` | `frontend/` |
+| React Native | `https://github.com/potentialInc/react-native-starter-kit` | `mobile/` |
