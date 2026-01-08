@@ -1,5 +1,5 @@
 ---
-description: Initialize a new project with .claude submodule architecture
+description: Initialize Claude Code configuration (.claude submodule) for a project
 argument-hint: Optional project name (will prompt if not provided)
 ---
 
