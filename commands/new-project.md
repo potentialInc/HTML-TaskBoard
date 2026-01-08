@@ -369,7 +369,43 @@ EOF
 )"
 ```
 
-## Step 10: Final Report
+## Step 10: Create GitHub Repo and Push
+
+### 10.1 Create Main Project Repo on GitHub
+
+```bash
+gh repo create potentialInc/$PROJECT_NAME --private --description "$PROJECT_NAME - Full stack application"
+```
+
+### 10.2 Add Remote and Push main Branch
+
+```bash
+git remote add origin https://github.com/potentialInc/$PROJECT_NAME.git
+git branch -M main
+git push -u origin main
+```
+
+### 10.3 Create and Push dev Branch
+
+```bash
+git checkout -b dev
+git push -u origin dev
+```
+
+### 10.4 Set dev as Default Branch (Optional)
+
+```bash
+# Set dev as the default branch for development workflow
+gh repo edit potentialInc/$PROJECT_NAME --default-branch dev
+```
+
+### 10.5 Return to main Branch
+
+```bash
+git checkout main
+```
+
+## Step 11: Final Report
 
 ```
 === Project Setup Complete ===
@@ -392,13 +428,17 @@ $PROJECT_NAME/
 └── README.md
 
 GitHub Repos Created:
-- potentialInc/$PROJECT_NAME-claude (Claude config)
+- https://github.com/potentialInc/$PROJECT_NAME (Main project - private)
+- https://github.com/potentialInc/$PROJECT_NAME-claude (Claude config - public)
+
+Branches Created:
+- main (production-ready code)
+- dev (active development)
 
 Next Steps:
-1. Create main project repo: gh repo create potentialInc/$PROJECT_NAME --private
-2. Push: git remote add origin <url> && git push -u origin main
-3. Start services: docker-compose up -d
-4. Begin development!
+1. cd $PROJECT_NAME
+2. docker-compose up -d
+3. Begin development on dev branch!
 ```
 
 ## Error Handling
@@ -418,6 +458,7 @@ If setup fails midway:
 # Clean up local
 rm -rf backend frontend frontend-dashboard mobile .claude .claude-project docker-compose.yml
 
-# Clean up GitHub (if config repo was created)
+# Clean up GitHub (if repos were created)
+gh repo delete potentialInc/$PROJECT_NAME --yes
 gh repo delete potentialInc/$PROJECT_NAME-claude --yes
 ```
