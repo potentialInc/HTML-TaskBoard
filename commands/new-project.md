@@ -19,30 +19,32 @@ Store as `$PROJECT_NAME` (lowercase, hyphenated).
 
 Use **AskUserQuestion** to ask for the complete tech stack:
 
-### Backend Framework
+### Backend Framework (Required)
 - **NestJS** (Recommended) - TypeScript, TypeORM, JWT, Swagger
 - **Django** - Python, DRF, SimpleJWT, drf-spectacular
-- **None** - No backend needed
 
-### Frontend Framework(s) (multiSelect: true)
+Store as:
+- `$BACKEND` = "nestjs" | "django"
+
+### Frontend Framework(s) (Required, multiSelect: true)
 - **React Web** - React 19, TailwindCSS 4, shadcn/ui
 - **React Native** - NativeWind, React Navigation, Detox
-- **None** - No frontend needed
 
-Store selections as:
-- `$BACKEND` = "nestjs" | "django" | null
-- `$FRONTENDS` = array of ["react", "react-native"] (can be empty)
+At least one must be selected. Both can be selected.
 
-### Dashboard (if React Web selected)
+Store as:
+- `$FRONTENDS` = array of ["react", "react-native"] (at least one required)
 
-If React Web was selected, ask:
+### Dashboard (Always ask)
 
 **Do you need an admin/management dashboard?**
 
 | Option | Description |
 |--------|-------------|
 | **Yes** | Create `frontend-dashboard/` with React starter (admin panel, management UI) |
-| **No** | Just the main frontend |
+| **No** | No dashboard needed |
+
+Note: Dashboard uses React Web. Can be selected regardless of frontend choice (e.g., React Native mobile + React dashboard).
 
 Store as:
 - `$DASHBOARD` = true | false
@@ -109,9 +111,9 @@ Based on `$BACKEND`:
 - NestJS: `git submodule add https://github.com/potentialInc/claude-nestjs.git nestjs`
 - Django: `git submodule add https://github.com/potentialInc/claude-django.git django`
 
-Based on `$FRONTENDS`:
-- React: `git submodule add https://github.com/potentialInc/claude-react.git react`
-- React Native: `git submodule add https://github.com/potentialInc/claude-react-native.git react-native`
+Based on `$FRONTENDS` and `$DASHBOARD`:
+- React (if in $FRONTENDS OR $DASHBOARD is true): `git submodule add https://github.com/potentialInc/claude-react.git react`
+- React Native (if in $FRONTENDS): `git submodule add https://github.com/potentialInc/claude-react-native.git react-native`
 
 ```bash
 git submodule update --init --recursive
