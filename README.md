@@ -101,6 +101,7 @@ git pull origin main
 | `/extract-screens-from-figma` | Extract Figma screen names and node IDs |
 | `/dev-docs` | Create strategic plan with task breakdown |
 | `/dev-docs-update` | Update dev documentation before context compaction |
+| `/ralph` | Run autonomous workflow loops (design-qa, e2e-tests, backend-qa, api-docs) |
 
 ---
 

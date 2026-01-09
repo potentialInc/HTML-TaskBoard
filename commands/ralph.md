@@ -1,3 +1,8 @@
+---
+description: Run autonomous workflow loops (design-qa, e2e-tests, backend-qa, api-docs)
+argument-hint: "<workflow> <project> [--incremental] [--category <name>] [--dry-run] [--list]"
+---
+
 # Ralph Workflow Launcher
 
 Run autonomous, iterative tasks using the Ralph Wiggum plugin. This command launches a continuous feedback loop that processes items until completion.
