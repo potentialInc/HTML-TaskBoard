@@ -246,15 +246,37 @@ For EACH feature branch:
 
 ### For "Single branch" workflows:
 
-Push all commits to user's branch:
-```bash
-git push origin $USER_PREFIX
-```
+1. **Push all commits to user's branch:**
+   ```bash
+   git push -u origin $USER_PREFIX
+   ```
 
-If push fails:
-```bash
-git push -u origin $USER_PREFIX
-```
+2. **Check if PR already exists:**
+   ```bash
+   gh pr view $USER_PREFIX --json number 2>/dev/null || echo "NO_PR"
+   ```
+
+3. **Create PR if none exists:**
+   ```bash
+   gh pr create --base dev --head $USER_PREFIX --title "<PR title summarizing all commits>" --body "$(cat <<'EOF'
+   ## Summary
+   <1-3 bullet points describing all changes>
+
+   ## Projects Modified
+   <list of projects with changes>
+
+   ## Commits
+   <list of commit summaries>
+
+   🤖 Generated with [Claude Code](https://claude.com/claude-code)
+   EOF
+   )"
+   ```
+
+4. **If PR already exists, show the existing PR link:**
+   ```bash
+   gh pr view $USER_PREFIX --web
+   ```
 
 ## Step 7: Report Results
 
@@ -288,6 +310,7 @@ Current branch: <original-branch>
    - 12 files in frontend-coach-dashboard/
 
 ✓ Pushed to origin/$USER_PREFIX
+✓ PR: https://github.com/org/repo/pull/44 (created/updated)
 ```
 
 ## Error Handling
