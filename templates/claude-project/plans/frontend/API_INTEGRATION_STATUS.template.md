@@ -1,5 +1,8 @@
 # API Integration Status: $PROJECT_NAME
 
+> **Framework:** React Web (React Router 7)
+> **Last Updated:** YYYY-MM-DD
+
 ## Overview
 
 This document tracks which frontend screens have been integrated with their required API endpoints.

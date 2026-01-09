@@ -1,12 +1,11 @@
-# Admin Dashboard API Integration Status: $PROJECT_NAME
+# Mobile API Integration Status: $PROJECT_NAME
 
-> **Framework:** React (Next.js)
-> **Dashboard Type:** Admin Dashboard
+> **Framework:** React Native
 > **Last Updated:** YYYY-MM-DD
 
 ## Overview
 
-This document tracks which admin dashboard screens have been integrated with their required API endpoints.
+This document tracks which mobile screens have been integrated with their required API endpoints.
 
 ---
 
@@ -49,10 +48,21 @@ This document tracks which admin dashboard screens have been integrated with the
 
 ## Implementation Checklist
 
-- [ ] Axios instance configured
+- [ ] Axios/Fetch instance configured
+- [ ] Auth token storage (AsyncStorage/SecureStore)
 - [ ] Auth token interceptors
 - [ ] Error handling
 - [ ] TypeScript types
+- [ ] Offline queue for failed requests
+- [ ] Retry logic for network errors
+
+### Mobile-Specific Considerations
+
+- [ ] Token refresh handling
+- [ ] Biometric authentication integration
+- [ ] Secure storage for sensitive data
+- [ ] Network connectivity monitoring
+- [ ] Background sync support
 
 ---
 

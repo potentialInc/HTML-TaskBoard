@@ -1,5 +1,8 @@
 # Dashboard Screen Implementation Status: $PROJECT_NAME
 
+> **Framework:** React (Next.js)
+> **Last Updated:** YYYY-MM-DD
+
 ## Overview
 
 This document tracks the implementation status of all admin/management dashboard screens.

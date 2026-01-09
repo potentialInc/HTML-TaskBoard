@@ -1,5 +1,8 @@
 # Screen Implementation Status: $PROJECT_NAME
 
+> **Framework:** React Web (React Router 7)
+> **Last Updated:** YYYY-MM-DD
+
 ## Overview
 
 This document tracks the implementation status of all frontend screens/pages.

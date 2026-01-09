@@ -76,12 +76,48 @@ cd .claude && git checkout main && git pull origin main
 
 Note: Always use `main` branch for submodules regardless of the parent repo branch.
 
-## Step 6: Report Results
+## Step 6: Sync Commands from Submodules
+
+After pulling submodule updates, sync any new commands to `.claude/commands/`:
+
+```bash
+# Ensure .claude/commands/ is a directory (not a symlink)
+if [ -L .claude/commands ]; then
+  rm .claude/commands
+  mkdir -p .claude/commands
+fi
+
+# Sync commands from all submodules
+for submodule in .claude/*/; do
+  submodule_name=$(basename "$submodule")
+  commands_dir="$submodule/commands"
+
+  if [ -d "$commands_dir" ]; then
+    for cmd in "$commands_dir"/*.md; do
+      if [ -f "$cmd" ]; then
+        cmd_name=$(basename "$cmd")
+        target=".claude/commands/$cmd_name"
+
+        # Create symlink if it doesn't exist
+        if [ ! -e "$target" ]; then
+          ln -s "../$submodule_name/commands/$cmd_name" "$target"
+          echo "Added command: /$cmd_name (from $submodule_name)"
+        fi
+      fi
+    done
+  fi
+done
+```
+
+This ensures any new commands added to submodules are automatically symlinked.
+
+## Step 7: Report Results
 
 After completion, report:
 - Parent repo: which branch was pulled and what changed
 - `.claude/base`: whether updated from main
 - `.claude`: whether updated from main
+- Any new commands that were synced
 - Any warnings or issues encountered
 
 ## Error Handling

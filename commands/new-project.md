@@ -35,19 +35,20 @@ At least one must be selected. Both can be selected.
 Store as:
 - `$FRONTENDS` = array of ["react", "react-native"] (at least one required)
 
-### Dashboard (Always ask)
+### Dashboard(s) (Optional, multiSelect: true)
 
-**Do you need an admin/management dashboard?**
+**What dashboards do you need?**
 
 | Option | Description |
 |--------|-------------|
-| **Yes** | Create `frontend-dashboard/` with React starter (admin panel, management UI) |
-| **No** | No dashboard needed |
+| **Admin Dashboard** | Create `frontend-admin-dashboard/` for system administration |
+| **Coach Dashboard** | Create `frontend-coach-dashboard/` for coach/user-specific features |
+| **None** | No dashboard needed |
 
-Note: Dashboard uses React Web. Can be selected regardless of frontend choice (e.g., React Native mobile + React dashboard).
+Note: Dashboards use React Web (Next.js). Can be selected regardless of frontend choice (e.g., React Native mobile + React dashboard).
 
 Store as:
-- `$DASHBOARD` = true | false
+- `$DASHBOARDS` = array of ["admin", "coach"] (can be empty or have both)
 
 ## Step 2: Confirm Project Structure
 
@@ -61,11 +62,12 @@ Claude Configuration:
   - Submodules: base, $BACKEND, $FRONTENDS
 
 Boilerplate Code:
-  - backend/            ← nestjs-starter-kit (if NestJS)
-  - backend/            ← django-starter-kit (if Django)
-  - frontend/           ← react-starter-kit (if React Web)
-  - frontend-dashboard/ ← react-starter-kit (if Dashboard)
-  - mobile/             ← react-native-starter-kit (if React Native)
+  - backend/                  ← nestjs-starter-kit (if NestJS)
+  - backend/                  ← django-starter-kit (if Django)
+  - frontend/                 ← react-starter-kit (if React Web)
+  - frontend-admin-dashboard/ ← react-starter-kit (if Admin Dashboard)
+  - frontend-coach-dashboard/ ← react-starter-kit (if Coach Dashboard)
+  - mobile/                   ← react-native-starter-kit (if React Native)
 
 Project Documentation:
   - .claude-project/plans/
@@ -198,7 +200,8 @@ Execute the `/create-mono-repo` workflow internally (without interactive prompts
 | NestJS | `https://github.com/potentialInc/nestjs-starter-kit` | `backend/` |
 | Django | `https://github.com/potentialInc/django-starter-kit` | `backend/` |
 | React Web | `https://github.com/potentialInc/react-starter-kit` | `frontend/` |
-| Dashboard | `https://github.com/potentialInc/react-starter-kit` | `frontend-dashboard/` |
+| Admin Dashboard | `https://github.com/potentialInc/react-starter-kit` | `frontend-admin-dashboard/` |
+| Coach Dashboard | `https://github.com/potentialInc/react-starter-kit` | `frontend-coach-dashboard/` |
 | React Native | `https://github.com/potentialInc/react-native-starter-kit` | `mobile/` |
 
 ### Clone Each Selected Repo
@@ -249,15 +252,27 @@ services:
     networks:
       - $PROJECT_NAME-network
 
-  # Dashboard service (if selected)
-  frontend-dashboard:
+  # Admin Dashboard service (if selected)
+  frontend-admin-dashboard:
     build:
-      context: ./frontend-dashboard
+      context: ./frontend-admin-dashboard
       dockerfile: Dockerfile
-    container_name: $PROJECT_NAME-dashboard
+    container_name: $PROJECT_NAME-admin-dashboard
     restart: unless-stopped
     ports:
       - '5174:5173'
+    networks:
+      - $PROJECT_NAME-network
+
+  # Coach Dashboard service (if selected)
+  frontend-coach-dashboard:
+    build:
+      context: ./frontend-coach-dashboard
+      dockerfile: Dockerfile
+    container_name: $PROJECT_NAME-coach-dashboard
+    restart: unless-stopped
+    ports:
+      - '5175:5173'
     networks:
       - $PROJECT_NAME-network
 
@@ -417,11 +432,17 @@ $PROJECT_NAME/
 │   └── ...
 ├── .claude-project/            # Project docs
 │   ├── plans/
+│   │   ├── backend/
+│   │   ├── frontend/
+│   │   ├── frontend-admin-dashboard/
+│   │   ├── frontend-coach-dashboard/
+│   │   └── mobile/
 │   ├── memory/
 │   └── docs/
 ├── backend/                    # $BACKEND boilerplate
 ├── frontend/                   # React Web (if selected)
-├── frontend-dashboard/         # Dashboard (if selected)
+├── frontend-admin-dashboard/   # Admin Dashboard (if selected)
+├── frontend-coach-dashboard/   # Coach Dashboard (if selected)
 ├── mobile/                     # React Native (if selected)
 ├── docker-compose.yml
 ├── .gitignore

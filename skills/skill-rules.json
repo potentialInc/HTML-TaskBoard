@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "description": "Base skill triggers - shared across all projects",
+  "skills": {
+    "skill-developer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["create skill", "new skill", "skill development", "skill-rules", "build skill"],
+        "intentPatterns": [
+          "(create|build|add|develop).*skill",
+          "skill.*?(template|structure|format)"
+        ]
+      }
+    },
+    "error-tracking": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["sentry", "error tracking", "error monitoring", "exception tracking", "crash reporting"],
+        "intentPatterns": [
+          "(setup|configure|add|implement).*?(sentry|error.*track)",
+          "(capture|log|report).*?(error|exception)"
+        ]
+      }
+    }
+  }
+}

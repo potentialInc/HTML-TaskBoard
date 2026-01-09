@@ -1,5 +1,8 @@
 # API Implementation Status: $PROJECT_NAME
 
+> **Backend Framework:** $BACKEND
+> **Last Updated:** YYYY-MM-DD
+
 ## Overview
 
 This document tracks the implementation status of all backend API endpoints.
