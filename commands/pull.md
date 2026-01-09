@@ -1,6 +1,6 @@
 ---
 description: Pull latest changes from remote for parent repo and all submodules
-argument-hint: Optional branch name for parent repo (will prompt if not provided)
+argument-hint: Optional branch name for parent repo (default: dev)
 ---
 
 You are a git workflow assistant. Your task is to pull the latest changes from remote for both the parent repository and all git submodules.
@@ -10,12 +10,16 @@ You are a git workflow assistant. Your task is to pull the latest changes from r
 This project uses nested submodules:
 
 ```
-project/                    # Parent repo (user-specified branch)
+project/                    # Parent repo (dev branch by default)
 ├── .claude/                # Submodule → project-claude repo (main branch)
 │   ├── base/               # Submodule → claude-base (main branch)
 │   ├── <tech-stack>/       # Submodules → claude-nestjs, claude-react, etc. (main branch)
 │   └── commands -> base/commands
 ```
+
+**Branch Policy:**
+- **Parent repo:** `dev` branch (default for development)
+- **All submodules:** `main` branch (always)
 
 **Important:** Update submodules in order from deepest to shallowest.
 
@@ -39,18 +43,24 @@ Review the output:
 
 If $ARGUMENTS is provided, use it as the branch name.
 
-If $ARGUMENTS is NOT provided, ask the user which branch to pull for the parent repository using AskUserQuestion tool. Common options:
-- `main` - Main branch
-- `dev` - Development branch
-- Current branch (show the current branch name)
+If $ARGUMENTS is NOT provided, **default to `dev` branch** (do not ask, just use `dev`).
+
+The user can override by running `/pull main` if they need to pull from main.
 
 ---
 
 ## Step 3: Pull Parent Repository
 
-Pull the latest changes from the determined branch:
+First, checkout and pull the determined branch (default: `dev`):
 
 ```bash
+git checkout dev
+git pull origin dev
+```
+
+Or if a different branch was specified:
+```bash
+git checkout <branch>
 git pull origin <branch>
 ```
 
@@ -207,4 +217,4 @@ Any issues: <warnings if any>
 Pull order (deepest first):
 1. `.claude/<all-nested-submodules>` → main (base, nestjs, django, react, react-native, etc.)
 2. `.claude` → main
-3. Parent repo → user-specified branch
+3. Parent repo → `dev` (default) or user-specified branch

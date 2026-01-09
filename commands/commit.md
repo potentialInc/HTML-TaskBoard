@@ -1,5 +1,5 @@
 ---
-description: Create commits on feature branches and create PRs (NEVER push directly to main)
+description: Create commits on feature branches and create PRs (targeting dev branch)
 argument-hint: Optional commit message override (leave empty for AI-generated message)
 ---
 
@@ -7,11 +7,16 @@ You are a git workflow assistant. Your task is to review changes, create per-pro
 
 ## CRITICAL RULES (NEVER VIOLATE)
 
-1. **NEVER push directly to `main` or `origin/main`** - All changes MUST go through PRs
-2. **ALWAYS create a PR** - The workflow is NOT complete until a PR URL is generated
+1. **NEVER push directly to `dev` or `main`** - All parent repo changes MUST go through PRs
+2. **ALWAYS create a PR targeting `dev`** - The workflow is NOT complete until a PR URL is generated
 3. **STOP if PR creation fails** - Do NOT continue, do NOT suggest manual alternatives
 4. **Use nested branch names** - `$USER_PREFIX/<feature-name>` (e.g., `lukas/admin-feature`)
 5. **Separate PR per project folder** - Each modified project folder gets its own PR
+
+## Branch Policy
+
+- **Parent repo PRs:** Target `dev` branch (not `main`)
+- **Submodules:** Push directly to `main` (no PR required)
 
 ---
 
@@ -194,10 +199,10 @@ For EACH project with changes:
    git stash push -m "temp-stash-for-commit" -- <other-project-folders>
    ```
 
-2. **Create/checkout feature branch from main:**
+2. **Create/checkout feature branch from dev:**
    ```bash
-   git checkout main
-   git pull origin main
+   git checkout dev
+   git pull origin dev
    git checkout -b $USER_PREFIX/<project-short-name>-<feature-description>
    ```
 
@@ -212,9 +217,9 @@ For EACH project with changes:
 
 4. **Push branch and create PR** (see Step 6)
 
-5. **Return to main and restore stash:**
+5. **Return to dev and restore stash:**
    ```bash
-   git checkout main
+   git checkout dev
    git stash pop
    ```
 
@@ -222,10 +227,10 @@ For EACH project with changes:
 
 ### For "Combined PR" workflow:
 
-1. **Create single feature branch from main:**
+1. **Create single feature branch from dev:**
    ```bash
-   git checkout main
-   git pull origin main
+   git checkout dev
+   git pull origin dev
    git checkout -b $USER_PREFIX/<combined-feature-description>
    ```
 
@@ -324,9 +329,9 @@ EOF
    git push -u origin $USER_PREFIX/<branch-name>  # Retry
    ```
 
-2. **Create PR using gh CLI (REQUIRED):**
+2. **Create PR using gh CLI (REQUIRED) - targeting `dev` branch:**
    ```bash
-   gh pr create --base main --head $USER_PREFIX/<branch-name> --title "<PR title>" --body "$(cat <<'EOF'
+   gh pr create --base dev --head $USER_PREFIX/<branch-name> --title "<PR title>" --body "$(cat <<'EOF'
    ## Summary
    <1-3 bullet points describing the changes>
 
@@ -384,7 +389,7 @@ PR(s) Created:
    - Commit: ghi9012 - feat(mobile): Add navigation drawer
    - Files: 3 in mobile/
 
-Current branch: main
+Current branch: dev
 ```
 
 ### Failure Report Format:
@@ -393,7 +398,7 @@ Current branch: main
 ✗ Workflow Failed
 
 Error: PR creation failed for branch lukas/admin-api-integration
-Command: gh pr create --base main ...
+Command: gh pr create --base dev ...
 Error message: <error details>
 
 Action Required: Check GitHub access with `gh auth status` and try again.
@@ -415,7 +420,7 @@ Action Required: Check GitHub access with `gh auth status` and try again.
 - **Push conflict with flat branch** → Delete flat branch and retry
 
 ### NEVER do these:
-- ❌ Push directly to `main` or `origin/main`
+- ❌ Push directly to `dev` or `main` in parent repo
 - ❌ Push without creating a PR
 - ❌ Report "success" if PR was not created
 - ❌ Suggest "manual PR creation" as an alternative
