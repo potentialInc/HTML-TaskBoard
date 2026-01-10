@@ -42,7 +42,80 @@ Store the result as `$USER_PREFIX` for use throughout this workflow (e.g., `luka
 
 ---
 
-## Step 1: Handle Submodule Changes (CRITICAL - Must Be Done First)
+## Step 0.5: Verify Submodule Health (CRITICAL)
+
+Before creating any branches or commits, ensure submodules are properly configured. This prevents inheriting stale submodule references from parent branches.
+
+### 0.5.1 Check if .claude is a submodule
+
+```bash
+if [ -f ".claude/.git" ]; then
+  echo "✓ .claude is a submodule"
+else
+  echo "ℹ️ .claude is not a submodule, skipping health check"
+  # Skip to Step 1
+fi
+```
+
+### 0.5.2 Check .claude submodule branch
+
+```bash
+cd .claude
+CURRENT_BRANCH=$(git branch --show-current)
+if [ -z "$CURRENT_BRANCH" ]; then
+  echo "⚠️ .claude submodule is in detached HEAD, switching to main..."
+  git checkout main
+  git pull origin main
+elif [ "$CURRENT_BRANCH" != "main" ]; then
+  echo "⚠️ .claude submodule is on '$CURRENT_BRANCH', switching to main..."
+  git checkout main
+  git pull origin main
+else
+  echo "✓ .claude is on main branch"
+fi
+cd ..
+```
+
+### 0.5.3 Check nested submodule branches
+
+```bash
+cd .claude
+for dir in base nestjs react django; do
+  if [ -d "$dir" ] && [ -e "$dir/.git" ]; then
+    cd "$dir"
+    NESTED_BRANCH=$(git branch --show-current)
+    if [ -z "$NESTED_BRANCH" ]; then
+      echo "⚠️ .claude/$dir is in detached HEAD, switching to main..."
+      git checkout main
+      git pull origin main
+    elif [ "$NESTED_BRANCH" != "main" ]; then
+      echo "⚠️ .claude/$dir is on '$NESTED_BRANCH', switching to main..."
+      git checkout main
+      git pull origin main
+    else
+      echo "✓ .claude/$dir is on main branch"
+    fi
+    cd ..
+  fi
+done
+cd ..
+```
+
+### 0.5.4 Note if submodule reference changed
+
+After switching branches, check if the parent repo sees the submodule as modified:
+
+```bash
+if git status --porcelain .claude | grep -q "^ M\|^M"; then
+  echo "ℹ️ Submodule reference was updated - will be included in commit"
+fi
+```
+
+**Why this matters:** Feature branches created from `dev` may inherit stale submodule references pointing to wrong branches. This pre-flight check ensures all submodules are on `main` before any commits are made.
+
+---
+
+## Step 1: Handle Submodule Changes (After Health Check)
 
 This project uses **nested submodules**. Changes must be committed from deepest to shallowest:
 

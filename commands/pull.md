@@ -25,6 +25,61 @@ project/                    # Parent repo (dev branch by default)
 
 ---
 
+## Step 0.5: Verify Submodule Health (CRITICAL)
+
+Before pulling, ensure submodules are on the correct branches. This prevents issues when feature branches have inherited stale submodule references.
+
+### 0.5.1 Check if .claude is a submodule
+
+```bash
+if [ -f ".claude/.git" ]; then
+  echo "✓ .claude is a submodule"
+else
+  echo "ℹ️ .claude is not a submodule, skipping health check"
+  # Skip to Step 1
+fi
+```
+
+### 0.5.2 Check and fix .claude submodule branch
+
+```bash
+cd .claude
+CURRENT_BRANCH=$(git branch --show-current)
+if [ -z "$CURRENT_BRANCH" ]; then
+  echo "⚠️ .claude submodule is in detached HEAD, will switch to main during pull"
+elif [ "$CURRENT_BRANCH" != "main" ]; then
+  echo "⚠️ .claude submodule is on '$CURRENT_BRANCH', will switch to main during pull"
+else
+  echo "✓ .claude is on main branch"
+fi
+cd ..
+```
+
+### 0.5.3 Check nested submodule branches
+
+```bash
+cd .claude
+for dir in base nestjs react django; do
+  if [ -d "$dir" ] && [ -e "$dir/.git" ]; then
+    cd "$dir"
+    NESTED_BRANCH=$(git branch --show-current)
+    if [ -z "$NESTED_BRANCH" ]; then
+      echo "⚠️ .claude/$dir is in detached HEAD, will switch to main during pull"
+    elif [ "$NESTED_BRANCH" != "main" ]; then
+      echo "⚠️ .claude/$dir is on '$NESTED_BRANCH', will switch to main during pull"
+    else
+      echo "✓ .claude/$dir is on main branch"
+    fi
+    cd ..
+  fi
+done
+cd ..
+```
+
+**Why this matters:** Feature branches may have inherited incorrect submodule references. This check identifies issues before pulling.
+
+---
+
 ## Step 1: Check Git Status
 
 First, check the current state of the repository:
