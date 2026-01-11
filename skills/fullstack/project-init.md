@@ -56,20 +56,45 @@ When `.claude/` doesn't exist, run the full project setup:
 
 ### A.1 Gather Tech Stack
 
-Use **AskUserQuestion** to determine:
+Use **AskUserQuestion** to determine the tech stack. This information will be persisted to PIPELINE_STATUS.md for all subsequent phases.
 
-1. **Backend Framework**
-   - NestJS (Recommended)
-   - Django
+**Question 1: Backend Framework** (single selection)
+```
+Question: "Which backend framework will this project use?"
+Header: "Backend"
+Options:
+  - label: "NestJS (Recommended)"
+    description: "TypeScript, TypeORM, JWT, Swagger - Full-featured Node.js framework"
+  - label: "Django"
+    description: "Python, DRF, SimpleJWT, drf-spectacular - Batteries-included Python framework"
+```
+Store as: `$BACKEND` = "nestjs" | "django"
 
-2. **Frontend Framework(s)** (multiSelect)
-   - React Web
-   - React Native
+**Question 2: Frontend Framework(s)** (multiSelect: true)
+```
+Question: "Which frontend framework(s) will this project use?"
+Header: "Frontend"
+Options:
+  - label: "React Web"
+    description: "React 19, TailwindCSS 4, shadcn/ui - Modern web application"
+  - label: "React Native"
+    description: "NativeWind, React Navigation - Cross-platform mobile app"
+```
+Store as: `$FRONTENDS` = ["react"] | ["react-native"] | ["react", "react-native"]
 
-3. **Dashboards** (multiSelect, optional)
-   - Admin Dashboard
-   - Coach Dashboard
-   - None
+**Question 3: Dashboards** (multiSelect: true, optional)
+```
+Question: "Do you need any dashboard applications?"
+Header: "Dashboards"
+Options:
+  - label: "Admin Dashboard"
+    description: "System administration interface (uses React)"
+  - label: "Coach Dashboard"
+    description: "Coach/user-specific management interface (uses React)"
+  - label: "None"
+    description: "No dashboard needed for this project"
+```
+Store as: `$DASHBOARDS` = [] | ["admin"] | ["coach"] | ["admin", "coach"]
 
 ### A.2 Create Claude Config Repository
 
@@ -149,7 +174,54 @@ rm -f $FOLDER/Dockerfile* $FOLDER/docker-compose*.yml
 
 Create root `docker-compose.yml` with services for each selected component.
 
-### A.7 Continue to Init Project Docs
+### A.7 Persist Tech Stack to PIPELINE_STATUS.md
+
+After creating the status file, update the Configuration section with the selected tech stack:
+
+```bash
+# Create PIPELINE_STATUS.md from template
+mkdir -p .claude-project/plans/{project}
+cp .claude/base/templates/PIPELINE_STATUS.template.md .claude-project/plans/{project}/PIPELINE_STATUS.md
+
+# Replace placeholders
+sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" .claude-project/plans/{project}/PIPELINE_STATUS.md
+sed -i '' "s/{DATE}/$(date +%Y-%m-%d)/g" .claude-project/plans/{project}/PIPELINE_STATUS.md
+```
+
+**Update the tech_stack configuration:**
+
+```yaml
+tech_stack:
+  backend: $BACKEND          # e.g., "nestjs"
+  frontends: $FRONTENDS      # e.g., ["react"]
+  dashboards: $DASHBOARDS    # e.g., ["admin"]
+```
+
+This persisted configuration will be used by all subsequent phases to resolve the correct skill paths.
+
+### A.8 Validate Submodules
+
+Before completing, verify all required submodules exist:
+
+```bash
+# Check backend submodule
+if [ ! -d ".claude/$BACKEND" ]; then
+  echo "ERROR: Missing backend submodule .claude/$BACKEND/"
+  echo "Install with: git submodule add https://github.com/potentialInc/claude-$BACKEND.git .claude/$BACKEND"
+  exit 1
+fi
+
+# Check frontend submodule(s)
+for frontend in "${FRONTENDS[@]}"; do
+  if [ ! -d ".claude/$frontend" ]; then
+    echo "ERROR: Missing frontend submodule .claude/$frontend/"
+    echo "Install with: git submodule add https://github.com/potentialInc/claude-$frontend.git .claude/$frontend"
+    exit 1
+  fi
+done
+```
+
+### A.9 Continue to Init Project Docs
 
 After setup, continue to Execution Path B.
 
@@ -265,6 +337,8 @@ Project is ready for next phase.
 - [ ] `.claude-project/docs/` has required files
 - [ ] `.claude-project/memory/` has required files
 - [ ] `.claude-project/plans/` has project-specific subfolders
+- [ ] `PIPELINE_STATUS.md` exists with valid `tech_stack` configuration
+- [ ] All required framework submodules exist (`.claude/$BACKEND/`, `.claude/$FRONTEND/`)
 
 ## On Success
 

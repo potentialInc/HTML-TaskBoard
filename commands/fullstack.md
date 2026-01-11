@@ -36,7 +36,7 @@ A skill-chain orchestrator that runs the full development lifecycle from project
 | 2 | prd | convert-prd-to-knowledge.md | nestjs | init | PROJECT_KNOWLEDGE.md |
 | 3 | database | database-schema-designer.md | nestjs | prd | Entities, migrations |
 | 4 | backend | (composite skills) | nestjs | database | API endpoints |
-| 5 | frontend | convert-figma-to-react.md | react | prd | React screens |
+| 5 | frontend | (user choice: design-scratch / figma / html) | react | prd | React screens |
 | 6 | integrate | api-integration.md | react | backend, frontend | Connected UI |
 | 7 | test | e2e-test-generator.md | stack | integrate | E2E test specs |
 | 8 | qa | design-qa.md + Ralph | react | test | 95% pass rate |
@@ -150,7 +150,10 @@ init      → base   → .claude/base/skills/fullstack/project-init.md
 prd       → nestjs → .claude/nestjs/skills/convert-prd-to-knowledge.md
 database  → nestjs → .claude/nestjs/skills/database-schema-designer.md
 backend   → nestjs → (use architecture-overview.md + services-and-repositories.md)
-frontend  → react  → .claude/react/skills/convert-figma-to-react.md
+frontend  → react  → (multi-path - see "Frontend Phase: Multi-Path Selection")
+                     ├─ design-scratch → /prd-to-design-prompts (command)
+                     ├─ figma         → .claude/react/skills/convert-figma-to-react.md
+                     └─ html          → .claude/react/skills/convert-html-to-react.md
 integrate → react  → .claude/react/guides/api-integration.md
 test      → stack  → .claude/{detected-stack}/skills/e2e-test-generator.md
 qa        → react  → .claude/react/skills/design-qa-patterns.md (+ /ralph for iteration)
@@ -183,6 +186,61 @@ Add error details to Notes column
 Add to Execution Log
 STOP execution (do not continue to next phase)
 ```
+
+---
+
+## Frontend Phase: Multi-Path Selection
+
+The frontend phase supports three implementation paths. The agent MUST ask the user to choose.
+
+### Step F1: Present Options
+
+Use **AskUserQuestion** with:
+
+```
+Question: "How would you like to implement the frontend screens?"
+Header: "Frontend Path"
+Options:
+  1. "Design from scratch" - Generate design prompts from PRD, create designs externally, then implement
+  2. "Convert from Figma" - Implement from existing Figma designs using MCP tools
+  3. "Convert from HTML" - Convert existing HTML/Tailwind templates to React
+```
+
+### Step F2: Execute Selected Path
+
+#### Path A: Design from Scratch
+
+1. Run `/prd-to-design-prompts {prd-path} --tool generic`
+2. Update status: `frontend` | `Blocked` | `Awaiting external designs`
+3. Report output location and next steps:
+   - Prompts saved to `.claude-project/design-prompts/`
+   - User should create designs using AI tools (Aura, v0, Gemini, etc.)
+   - Re-run `/fullstack {project} --phase frontend` when designs are ready
+4. **STOP** - User must create designs externally
+5. On re-run: ask if designs are ready → proceed to Figma or HTML conversion
+
+#### Path B: Convert from Figma
+
+1. Ask for Figma URL(s) or use PROJECT_KNOWLEDGE.md figma links
+2. Load skill: `.claude/react/skills/convert-figma-to-react.md`
+3. Execute per skill instructions
+4. Update status on completion
+
+#### Path C: Convert from HTML
+
+1. Ask for HTML file path(s)
+2. Load skill: `.claude/react/skills/convert-html-to-react.md`
+3. Execute per skill instructions
+4. Update status on completion
+
+### Step F3: Status Updates
+
+| Path | On Success Status | Notes |
+|------|------------------|-------|
+| Design from scratch (prompts) | Blocked | "Awaiting external designs - prompts at {path}" |
+| Design from scratch (implement) | Complete | "Implemented from {source}" |
+| Figma | Complete | "Converted from Figma" |
+| HTML | Complete | "Converted from HTML templates" |
 
 ---
 
