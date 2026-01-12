@@ -25,6 +25,26 @@
           "(capture|log|report).*?(error|exception)"
         ]
       }
+    },
+    "generate-ppt": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["presentation", "ppt", "powerpoint", "slides", "reveal.js", "townhall", "deck", "generate-ppt"],
+        "intentPatterns": [
+          "(create|generate|build|make).*?(presentation|slides|deck|ppt)",
+          "(html|reveal).*?presentation",
+          "brand.*?(presentation|slides)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "presentations/**/*.html",
+          "presentations/**/*.md",
+          ".claude/**/reveal*.html"
+        ]
+      }
     }
   }
 }
