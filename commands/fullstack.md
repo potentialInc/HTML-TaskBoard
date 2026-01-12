@@ -48,8 +48,12 @@ A skill-chain orchestrator that runs the full development lifecycle from project
 |------|------|-------------|
 | base | `.claude/base/skills/fullstack/` | Generic orchestration skills |
 | nestjs | `.claude/nestjs/skills/` | NestJS backend skills |
-| react | `.claude/react/skills/` | React frontend skills |
-| stack | Auto-detected based on project | Framework-specific |
+| django | `.claude/django/skills/` | Django backend skills |
+| react | `.claude/react/skills/` | React Web frontend skills |
+| react-native | `.claude/react-native/skills/` | React Native mobile skills |
+| stack | Auto-detected from tech_stack config | Framework-specific (resolves to $BACKEND or $FRONTEND) |
+
+**Note:** The tier is determined by the `tech_stack` configuration in PIPELINE_STATUS.md. For mobile projects, `react-native` is used instead of `react` for frontend phases.
 
 ---
 
@@ -75,6 +79,88 @@ Status file path: `.claude-project/plans/{project}/PIPELINE_STATUS.md`
 1. Copy template from `.claude/base/templates/PIPELINE_STATUS.template.md`
 2. Replace `{PROJECT_NAME}` with actual project name
 3. Set all phases to `Pending` status
+
+### Step 2.5: Resolve and Validate Tech Stack
+
+**CRITICAL**: Before executing any phase, validate that required submodules exist.
+
+#### 2.5.1 Read Tech Stack from Configuration
+
+Read the `tech_stack` section from PIPELINE_STATUS.md:
+
+```yaml
+tech_stack:
+  backend: nestjs          # or django
+  frontends: [react-native, react]  # one or more
+  dashboards: [admin]      # optional
+```
+
+Set variables:
+- `$BACKEND` = tech_stack.backend
+- `$FRONTEND` = tech_stack.frontends[0] (primary)
+- `$FRONTENDS` = tech_stack.frontends (array)
+
+#### 2.5.2 Validate Required Submodules Exist
+
+**For backend:**
+```bash
+if [ ! -d ".claude/$BACKEND" ]; then
+  echo "ERROR: Missing backend submodule .claude/$BACKEND/"
+  echo ""
+  echo "This submodule is required for backend development. Install with:"
+  echo ""
+  echo "  cd .claude"
+  echo "  git submodule add https://github.com/potentialInc/claude-$BACKEND.git $BACKEND"
+  echo "  git submodule update --init --recursive"
+  echo "  git add -A && git commit -m 'feat: Add claude-$BACKEND submodule'"
+  echo "  git push"
+  echo "  cd .."
+  echo "  git add .claude && git commit -m 'chore: Update .claude submodule'"
+  echo ""
+  exit 1
+fi
+```
+
+**For each frontend in $FRONTENDS:**
+```bash
+for frontend in "${FRONTENDS[@]}"; do
+  if [ ! -d ".claude/$frontend" ]; then
+    echo "ERROR: Missing frontend submodule .claude/$frontend/"
+    echo ""
+    echo "This submodule is required for frontend development. Install with:"
+    echo ""
+    echo "  cd .claude"
+    echo "  git submodule add https://github.com/potentialInc/claude-$frontend.git $frontend"
+    echo "  git submodule update --init --recursive"
+    echo "  git add -A && git commit -m 'feat: Add claude-$frontend submodule'"
+    echo "  git push"
+    echo "  cd .."
+    echo "  git add .claude && git commit -m 'chore: Update .claude submodule'"
+    echo ""
+    exit 1
+  fi
+done
+```
+
+**Common submodule URLs:**
+
+| Framework | Submodule URL |
+|-----------|---------------|
+| nestjs | `https://github.com/potentialInc/claude-nestjs.git` |
+| django | `https://github.com/potentialInc/claude-django.git` |
+| react | `https://github.com/potentialInc/claude-react.git` |
+| react-native | `https://github.com/potentialInc/claude-react-native.git` |
+
+#### 2.5.3 Resolve Skill Paths
+
+Based on phase tier, resolve the skill path:
+
+| Phase Tier | Skill Base Path |
+|------------|-----------------|
+| base | `.claude/base/skills/fullstack/` |
+| $BACKEND (nestjs/django) | `.claude/$BACKEND/skills/` |
+| $FRONTEND (react/react-native) | `.claude/$FRONTEND/skills/` |
+| stack | Determined by phase context |
 
 ### Step 3: Action Handler
 
@@ -141,23 +227,33 @@ Set phase status = In Progress (icon)
 
 **4.2 Load Skill (Tier-Aware)**
 
-Look up the skill path based on the phase-to-tier mapping:
+Look up the skill path based on the phase-to-tier mapping. Use `$BACKEND` and `$FRONTEND` variables resolved from Step 2.5:
 
 ```
-Phase → Tier → Skill Path
+Phase → Tier → Skill Path (with resolved $BACKEND/$FRONTEND)
 ─────────────────────────────────────────────────────────────────
-init      → base   → .claude/base/skills/fullstack/project-init.md
-prd       → nestjs → .claude/nestjs/skills/convert-prd-to-knowledge.md
-database  → nestjs → .claude/nestjs/skills/database-schema-designer.md
-backend   → nestjs → (use architecture-overview.md + services-and-repositories.md)
-frontend  → react  → (multi-path - see "Frontend Phase: Multi-Path Selection")
-                     ├─ design-scratch → /prd-to-design-prompts (command)
-                     ├─ figma         → .claude/react/skills/convert-figma-to-react.md
-                     └─ html          → .claude/react/skills/convert-html-to-react.md
-integrate → react  → .claude/react/guides/api-integration.md
-test      → stack  → .claude/{detected-stack}/skills/e2e-test-generator.md
-qa        → react  → .claude/react/skills/design-qa-patterns.md (+ /ralph for iteration)
-ship      → base   → .claude/base/skills/fullstack/deployment.md
+init      → base      → .claude/base/skills/fullstack/project-init.md
+prd       → $BACKEND  → .claude/$BACKEND/skills/convert-prd-to-knowledge.md
+database  → $BACKEND  → .claude/$BACKEND/skills/database-schema-designer.md
+backend   → $BACKEND  → .claude/$BACKEND/guides/architecture-overview.md + services-and-repositories.md
+frontend  → $FRONTEND → (multi-path - see "Frontend Phase: Multi-Path Selection")
+                        ├─ design-scratch → /prd-to-design-prompts (command)
+                        ├─ figma         → .claude/$FRONTEND/skills/*figma*.md
+                        └─ html          → .claude/$FRONTEND/skills/*convert-html*.md
+integrate → $FRONTEND → .claude/$FRONTEND/skills/api-integration.md (or guides/)
+test      → $FRONTEND → .claude/$FRONTEND/skills/e2e-test-generator.md
+qa        → $FRONTEND → .claude/$FRONTEND/skills/design-qa-patterns.md (+ /ralph for iteration)
+ship      → base      → .claude/base/skills/fullstack/deployment.md
+```
+
+**Example resolution for `nestjs + react-native`:**
+```
+$BACKEND = nestjs
+$FRONTEND = react-native
+
+database → .claude/nestjs/skills/database-schema-designer.md
+frontend → .claude/react-native/skills/frontend-dev-guidelines/resources/convert-html-to-react.md
+test     → .claude/react-native/skills/frontend-dev-guidelines/resources/e2e-test-generator.md
 ```
 
 Read the skill file from its correct tier location and follow its instructions.
