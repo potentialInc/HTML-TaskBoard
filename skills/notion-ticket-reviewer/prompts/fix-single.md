@@ -23,8 +23,8 @@ Analyzes a single Bug Report ticket, implements the fix in the codebase, and upd
    └── Search by title or ID via curl
    └── Fetch ticket details from Notion API
 
-2. SET FIXING
-   └── Update Status via curl: "New" → "Fixing"
+2. SET IN PROGRESS
+   └── Update Status via curl: "New" → "In Progress"
 
 3. ANALYZE
    └── Parse ticket title for intent
@@ -44,7 +44,7 @@ Analyzes a single Bug Report ticket, implements the fix in the codebase, and upd
    └── Run tests if applicable
 
 6. COMPLETE
-   └── Update Status via curl: "Fixing" → "Resolved"
+   └── Update Status via curl: "In Progress" → "Ready for test"
    └── Add Dev's Comment with implementation details
    └── Suggest git commit message
 ```
@@ -65,22 +65,22 @@ curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
   -d '{"filter": {"property": "Title", "title": {"contains": "[SEARCH_TERM]"}}}'
 ```
 
-### Set Status to Fixing
+### Set Status to In Progress
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "Fixing"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "In Progress"}}}}'
 ```
 
-### Set Status to Resolved
+### Set Status to Ready for test
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "Resolved"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "Ready for test"}}}}'
 ```
 
 ### Add Dev's Comment
@@ -124,7 +124,7 @@ Context: Gap height is too large between calendar and content
 ### Success
 ```
 Ticket Fixed: My profile detail page (#2)
-Status: New → Fixing → Resolved
+Status: New → In Progress → Ready for test
 
 App: APP
 Pages: /patient
@@ -141,10 +141,10 @@ Dev's Comment Added: Yes
 Commit Suggested: fix: redirect to profile page instead of dropdown
 ```
 
-### Won't Fix
+### Not Bug
 ```
 Ticket Blocked: [Title]
-Status: New → Won't Fix
+Status: New → Not Bug
 
 Reason: This is expected behavior per design spec
 
@@ -159,10 +159,12 @@ Dev's Comment Added: Yes (with explanation)
 
 | From | To | Trigger |
 |------|-----|---------|
-| New | Fixing | `Fix ticket:` command |
-| Fixing | Resolved | Implementation complete |
-| Fixing | Won't Fix | Cannot or should not proceed |
-| Won't Fix | Fixing | Decision reversed |
+| New | In Progress | `Fix ticket:` command |
+| In Progress | Ready for test | Implementation complete |
+| In Progress | Not Bug | Cannot or should not proceed |
+| Not Bug | In Progress | Decision reversed |
+| Ready for test | Test Done | QA verification passed |
+| Ready for test | Test Failed | QA verification failed |
 
 ## Comment Template
 

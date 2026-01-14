@@ -20,7 +20,7 @@ This skill enables Claude Code to:
 2. **Filter** by status, priority, type, or app
 3. **Analyze requirements** from ticket descriptions
 4. **Implement fixes** in the codebase automatically
-5. **Update ticket status** to "Fixing" → "Resolved"
+5. **Update ticket status** to "In Progress" → "Ready for test"
 6. **Add comments** with implementation details
 
 ---
@@ -68,7 +68,7 @@ Enter plan mode - Review notion tickets for database [DATABASE_ID]
 ```
 Fix ticket: [ticket title or ID]
 ```
-- Sets status to **"Fixing"**
+- Sets status to **"In Progress"**
 - Analyzes ticket requirements
 - Explores relevant codebase files
 
@@ -81,7 +81,7 @@ Claude will:
 
 ### Step 4: Complete
 After implementation:
-- Sets status to **"Resolved"**
+- Sets status to **"Ready for test"**
 - Adds Dev's Comment with:
   - Files modified
   - Changes made
@@ -103,8 +103,8 @@ or select another ticket by name/ID
 | Property | Type | Values |
 |----------|------|--------|
 | **Title** | title | Bug/issue name |
-| **Status** | status | New, Fixing, Resolved, Closed, Won't Fix |
-| **Priority** | select | Critical, Urgent, High, Medium, Low |
+| **Status** | status | Need Urgent Fix, New, Checked, In Progress, Need to discuss, Client Rejected, Test Failed, Not Bug, Ready for test, Test Done |
+| **Priority** | select | 0. Highest, 1. High, 2. Medium, 3. Low |
 | **Type** | multi_select | Bug, Feature, Improvement, Task |
 | **Description** | rich_text | Detailed bug description |
 
@@ -137,13 +137,27 @@ or select another ticket by name/ID
 
 ## Status Values
 
+### To-do Group (red)
 | Status | Color | Description |
 |--------|-------|-------------|
+| **Need Urgent Fix** | red | Critical bug, must fix immediately |
 | **New** | red | Newly reported, ready to be fixed |
-| **Fixing** | blue | Currently being worked on |
-| **Resolved** | purple | Fix complete, needs verification |
-| **Closed** | green | Verified and closed |
-| **Won't Fix** | gray | Not going to be fixed |
+
+### In Progress Group
+| Status | Color | Description |
+|--------|-------|-------------|
+| **Checked** | gray | Reviewed by developer |
+| **In Progress** | blue | Currently being worked on |
+| **Need to discuss** | orange | Requires team discussion |
+| **Client Rejected** | red | Client did not accept the fix |
+| **Test Failed** | red | QA testing failed |
+
+### Complete Group (green)
+| Status | Color | Description |
+|--------|-------|-------------|
+| **Not Bug** | blue | Not a bug, expected behavior |
+| **Ready for test** | green | Fix complete, ready for QA |
+| **Test Done** | green | QA verified and passed |
 
 ---
 
@@ -151,11 +165,10 @@ or select another ticket by name/ID
 
 | Priority | Color | Description |
 |----------|-------|-------------|
-| **Critical** | orange | Must fix immediately |
-| **Urgent** | purple | Fix today |
-| **High** | red | Fix this sprint |
-| **Medium** | yellow | Fix when possible |
-| **Low** | green | Nice to have |
+| **0. Highest** | red | Critical, fix immediately |
+| **1. High** | brown | Fix this sprint |
+| **2. Medium** | yellow | Fix when possible |
+| **3. Low** | pink | Nice to have |
 
 ---
 
@@ -223,7 +236,7 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/PAGE_ID" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "Fixing"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "In Progress"}}}}'
 ```
 
 ### Add Dev's Comment
@@ -287,7 +300,7 @@ curl -s -X GET "https://api.notion.com/v1/users/me" \
 
 ### "Status update failed"
 1. Verify "Status" property exists
-2. Check status option names match exactly: New, Fixing, Resolved, Closed, Won't Fix
+2. Check status option names match exactly: Need Urgent Fix, New, Checked, In Progress, Need to discuss, Client Rejected, Test Failed, Not Bug, Ready for test, Test Done
 3. Ensure property type is "Status" (not "Select")
 
 ### Test curl connection
@@ -332,13 +345,13 @@ Claude: Found 6 tickets with "New" status:
 User: Fix ticket: My profile detail page
 
 Claude:
-1. Setting status to "Fixing"...
+1. Setting status to "In Progress"...
 2. Reading ticket description: "It should be directed to my profile page, not a dropdown."
 3. Affected page: /patient
 4. Exploring codebase for patient profile routing...
 5. Found: frontend/src/pages/patient/...
 6. Implementing fix...
-7. Setting status to "Resolved"
+7. Setting status to "Ready for test"
 8. Adding Dev's Comment with implementation details
 
 Done! Ticket ready for QA verification.

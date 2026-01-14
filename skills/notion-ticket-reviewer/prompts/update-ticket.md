@@ -23,7 +23,7 @@ Update ticket status and add comments to Notion Bug Report tickets using curl co
 
 ## Update Status
 
-### Set to "Fixing"
+### Set to "In Progress"
 
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
@@ -34,14 +34,14 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "Fixing"
+          "name": "In Progress"
         }
       }
     }
   }'
 ```
 
-### Set to "Resolved"
+### Set to "Ready for test"
 
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
@@ -52,14 +52,14 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "Resolved"
+          "name": "Ready for test"
         }
       }
     }
   }'
 ```
 
-### Set to "Closed"
+### Set to "Test Done"
 
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
@@ -70,14 +70,14 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "Closed"
+          "name": "Test Done"
         }
       }
     }
   }'
 ```
 
-### Set to "Won't Fix"
+### Set to "Not Bug"
 
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
@@ -88,7 +88,7 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "Won'\''t Fix"
+          "name": "Not Bug"
         }
       }
     }
@@ -174,7 +174,7 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "Resolved"
+          "name": "Ready for test"
         }
       },
       "Dev'\''s Comment": {
@@ -205,12 +205,12 @@ curl -s -X GET "https://api.notion.com/v1/comments?block_id=[PAGE_ID]" \
 ### Step 1: Start Work
 
 ```bash
-# Set status to "Fixing"
+# Set status to "In Progress"
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "Fixing"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "In Progress"}}}}'
 ```
 
 ### Step 2: Implement Changes
@@ -220,14 +220,14 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
 ### Step 3: Complete Work
 
 ```bash
-# Set status to "Resolved" and add Dev's Comment
+# Set status to "Ready for test" and add Dev's Comment
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
   -d '{
     "properties": {
-      "Status": {"status": {"name": "Resolved"}},
+      "Status": {"status": {"name": "Ready for test"}},
       "Dev'\''s Comment": {"rich_text": [{"text": {"content": "Fixed navigation to profile page. Modified: PatientLayout.tsx"}}]}
     }
   }'
@@ -244,7 +244,7 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   "properties": {
     "Status": {
       "status": {
-        "name": "Fixing"
+        "name": "In Progress"
       }
     }
   }
@@ -264,13 +264,27 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
 
 ## Status Values Reference
 
+### To-do Group (red)
 | Status | Description |
 |--------|-------------|
+| **Need Urgent Fix** | Critical bug, must fix immediately |
 | **New** | Newly reported, ready to be fixed |
-| **Fixing** | Currently being worked on |
-| **Resolved** | Fix complete, needs QA verification |
-| **Closed** | Verified and closed |
-| **Won't Fix** | Not going to be fixed |
+
+### In Progress Group
+| Status | Description |
+|--------|-------------|
+| **Checked** | Reviewed by developer |
+| **In Progress** | Currently being worked on |
+| **Need to discuss** | Requires team discussion |
+| **Client Rejected** | Client did not accept the fix |
+| **Test Failed** | QA testing failed |
+
+### Complete Group (green)
+| Status | Description |
+|--------|-------------|
+| **Not Bug** | Not a bug, expected behavior |
+| **Ready for test** | Fix complete, ready for QA |
+| **Test Done** | QA verified and passed |
 
 ## Troubleshooting
 
@@ -280,7 +294,7 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
 - "Dev's Comment" includes an apostrophe
 
 ### "Validation error"
-- Check status value matches exactly (e.g., "Fixing" not "fixing")
+- Check status value matches exactly (e.g., "In Progress" not "in progress")
 - Verify page_id format (UUID with or without dashes)
 
 ### "Object not found"

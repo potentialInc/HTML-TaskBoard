@@ -25,24 +25,22 @@
   },
 
   "statusValues": {
-    "todo": "New",
-    "inProgress": "Fixing",
-    "review": "Resolved",
-    "done": "Closed",
-    "blocked": "Won't Fix"
+    "todo": ["Need Urgent Fix", "New"],
+    "inProgress": ["Checked", "In Progress", "Need to discuss", "Client Rejected", "Test Failed"],
+    "done": ["Not Bug", "Ready for test", "Test Done"]
   },
 
-  "priorityValues": ["Critical", "Urgent", "High", "Medium", "Low"],
+  "priorityValues": ["0. Highest", "1. High", "2. Medium", "3. Low"],
 
   "typeValues": ["Bug", "Feature", "Improvement", "Task"],
 
   "appValues": ["APP", "Dashboard", "Admin", "Web"],
 
   "workflowMapping": {
-    "start": "Fixing",
-    "complete": "Resolved",
-    "verify": "Closed",
-    "block": "Won't Fix"
+    "start": "In Progress",
+    "complete": "Ready for test",
+    "verify": "Test Done",
+    "block": "Not Bug"
   },
 
   "commentTemplate": "Fix implemented:\n- Files modified: {files}\n- Changes: {changes}\n- Pages affected: {pages}\n- Ready for QA"
