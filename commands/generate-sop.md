@@ -103,13 +103,12 @@ Generate a clear, readable SOP based on the topic. Follow this structure:
 ```markdown
 # [SOP Title]
 
-## Overview
-[1-2 sentences explaining the purpose of this SOP]
+## Task Description
+[1-2 sentences explaining what this SOP is about and its purpose]
 
-## Prerequisites
-[List any prerequisites, tools, access, or knowledge required. If none, write "None"]
+## Video Description
 
-## Steps
+## Step By Step Instructions
 
 ### Step 1: [Action Title]
 [Clear description of what to do]
@@ -122,15 +121,52 @@ Generate a clear, readable SOP based on the topic. Follow this structure:
 
 [Continue with as many steps as needed...]
 
-## Notes
-- [Any important notes, tips, or warnings]
-- [Common mistakes to avoid]
+## Check List
+- [ ] [First verification item]
+- [ ] [Second verification item]
+- [ ] [Third verification item]
+[Add as many checklist items as needed]
 
-## Related SOPs
-- [List any related SOPs if applicable, or write "None"]
+## Training
+
+## Example
+[Provide a real-world example of this task being completed, or write "N/A" if not applicable]
+
+## Other Important Links & Information
+- [Related documentation or resources]
+- [Or write "N/A" if none]
+
+## Picture
+
+## Definition of Done
+[Clear criteria to know the task is complete. Example:]
+- [Criterion 1]
+- [Criterion 2]
+
+## What To Do When Done
+[Next steps after completing this SOP. Example:]
+- [Notify someone]
+- [Update a document]
+- [Or write "N/A" if none]
 ```
 
 **SOP Writing Guidelines**:
+
+**Sections to WRITE** (7 sections):
+1. Task Description - Purpose of the SOP
+2. Step By Step Instructions - Detailed numbered steps
+3. Check List - Verification checkboxes
+4. Example - Real-world example if applicable
+5. Other Important Links & Information - Related resources
+6. Definition of Done - Completion criteria
+7. What To Do When Done - Next steps
+
+**Sections to SKIP** (3 sections - leave placeholder for user):
+1. Video Description - User adds video link
+2. Training - User adds training materials
+3. Picture - User adds screenshots
+
+**General Writing Rules**:
 1. Use clear, simple language
 2. Each step should be one action
 3. Use numbered steps for sequential actions
