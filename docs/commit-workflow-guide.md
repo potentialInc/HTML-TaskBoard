@@ -1,6 +1,6 @@
 # Claude Commit Workflow Guide
 
-This guide explains how to use Claude to commit code and create pull requests in our monorepo setup.
+This guide explains how to use Claude to commit code and create pull requests.
 
 ---
 
@@ -18,7 +18,7 @@ or
 Please commit my changes
 ```
 
-Claude will handle everything automatically - detecting changes, creating branches, committing, and creating PRs.
+Claude will commit to your **current branch** and create a PR to `dev`.
 
 ---
 
@@ -27,24 +27,33 @@ Claude will handle everything automatically - detecting changes, creating branch
 ### The Workflow
 
 1. **You make code changes** in any project folder
-2. **Run `/commit`** or ask Claude to commit
-3. **Claude asks for your branch prefix** (e.g., your name: `john`, `sarah`, `alex`)
-4. **Claude detects all changed projects** and shows you a summary
-5. **You choose** separate PRs per project or one combined PR
-6. **Claude creates feature branches, commits, and PRs** targeting the `dev` branch
-7. **You receive PR URLs** to review and share with your team
+2. **Ensure you're on your personal branch** (e.g., `siam`, `john`)
+3. **Run `/commit`** or ask Claude to commit
+4. **Claude validates your branch** - must not be `main` or `dev`
+5. **Claude commits and pushes** to your current branch
+6. **Claude creates a PR** targeting `dev`
+7. **You receive a PR URL** to review and share
 
-### Branch Naming Convention
+### Key Principle
 
-All branches follow this pattern:
-```
-<your-prefix>/<project>-<feature-description>
-```
+**Use current branch** - Claude does NOT create new branches. It commits to whatever branch you're currently on.
 
-Examples:
-- `john/admin-user-management`
-- `sarah/backend-auth-fix`
-- `alex/mobile-navigation`
+---
+
+## Branch Requirements
+
+### Valid Branches (Personal)
+- `siam`
+- `john`
+- `lukas`
+- Any branch that is NOT `main` or `dev`
+
+### Invalid Branches (Protected)
+- `main` - Cannot commit directly
+- `dev` - Cannot commit directly
+- Detached HEAD - Must checkout a branch first
+
+If you're on a protected branch, Claude will ask you to create a personal branch.
 
 ---
 
@@ -54,10 +63,10 @@ Examples:
 
 | What to Say | What Happens |
 |-------------|--------------|
-| `/commit` | Start the commit workflow |
+| `/commit` | Commit to current branch, create PR to dev |
 | `commit my changes` | Same as above |
 | `create a PR for my changes` | Same as above |
-| `/commit fix login bug` | Commit with custom message "fix login bug" |
+| `/commit fix login bug` | Commit with custom message |
 
 ### With Custom Commit Messages
 
@@ -73,72 +82,56 @@ Please commit with message "fix: Resolve authentication timeout"
 
 ## Step-by-Step Example
 
-### 1. Make Your Changes
+### 1. Checkout Your Branch
+
+First, make sure you're on your personal branch:
+
+```bash
+git checkout siam
+```
+
+Or create one if it doesn't exist:
+
+```bash
+git checkout -b siam
+git push -u origin siam
+```
+
+### 2. Make Your Changes
 
 Edit files in any project folder:
-- `frontend-admin-dashboard/`
+- `frontend/`
 - `backend/`
 - `mobile/`
 - etc.
 
-### 2. Start the Commit Workflow
+### 3. Run Commit
 
 Type:
 ```
 /commit
 ```
 
-### 3. Provide Your Branch Prefix
-
-Claude will ask:
-```
-What is your branch name prefix? (e.g., your name or username)
-```
-
-Options might include:
-- `john` (Recommended if you're John)
-- `sarah`
-- `alex`
-- Other (type your own)
-
-### 4. Choose PR Strategy
-
-If you have changes in multiple projects, Claude will ask:
-
-```
-Projects with changes detected:
-1. frontend-admin-dashboard/ (8 files)
-2. backend/ (3 files)
-
-How would you like to create PRs?
-```
-
-Options:
-- **Separate PRs per project** (Recommended) - Each project gets its own PR
-- **Combined PR** - All changes in one PR
-
-### 5. Review the Results
+### 4. Review the Results
 
 Claude will show you:
 ```
-Workflow Complete
+✓ Workflow Complete
 
-PR(s) Created:
+PR Created:
+https://github.com/org/repo/pull/42
+  - Branch: siam
+  - Commit: abc1234 - feat(admin): Add user management
+  - Files: 8
 
-1. https://github.com/org/repo/pull/42
-   - Branch: john/admin-user-management
-   - Commit: abc1234 - feat(admin): Add user management
-   - Files: 8 in frontend-admin-dashboard/
-
-2. https://github.com/org/repo/pull/43
-   - Branch: john/backend-auth-fix
-   - Commit: def5678 - fix(backend): Resolve auth issue
-   - Files: 3 in backend/
+Submodule PRs (if any):
+1. https://github.com/org/claude-base/pull/15 (base)
+2. https://github.com/org/project-claude/pull/8 (.claude)
 ```
 
-### 6. Share PR Links
+### 5. Share PR Link
 
-Copy the PR URLs and share with your team for code review.
+Copy the PR URL and share with your team for code review.
 
 ---
 
@@ -159,8 +152,8 @@ project/                    (Parent repo)
 
 1. **Detects submodule changes** - If you modified files in `.claude/base/` or other submodules
 2. **Commits deepest first** - Starts with nested submodules, then `.claude`, then parent
-3. **Creates PRs for each level** - Every repo gets its own feature branch and PR
-4. **Updates references** - Parent repos automatically reference the new submodule commits
+3. **Uses current branch in each** - Each submodule commits to its own current branch
+4. **Creates PRs for each level** - Every repo gets a PR targeting `dev`
 
 ### Example with Submodule Changes
 
@@ -170,17 +163,28 @@ If you edited files in `.claude/base/`:
 PRs Created:
 
 1. https://github.com/org/claude-base/pull/15
-   - Branch: john/base-update-commands
-   - Submodule: claude-base
+   - Branch: siam (in base submodule)
 
 2. https://github.com/org/project-claude/pull/8
-   - Branch: john/claude-submodule-refs
-   - Submodule: .claude
+   - Branch: siam (in .claude submodule)
 
 3. https://github.com/org/project/pull/42
-   - Branch: john/admin-feature
-   - Parent repo
+   - Branch: siam (in parent repo)
 ```
+
+---
+
+## Pull Command
+
+To pull latest changes:
+
+```
+/pull
+```
+
+This will:
+1. Pull your current branch in the parent repo
+2. Update and pull all submodules on their current branches
 
 ---
 
@@ -190,8 +194,8 @@ PRs Created:
 
 - **All changes go through PRs** - No direct pushes to `main` or `dev`
 - **PRs target `dev` branch** - Not `main`
-- **One PR per project folder** (or combined if you choose)
-- **Workflow stops if PR creation fails** - Check GitHub access if this happens
+- **Use your personal branch** - Create one if needed
+- **Workflow stops if PR creation fails** - Check GitHub access
 
 ### What NOT to Commit
 
@@ -206,6 +210,21 @@ Claude automatically excludes:
 
 ## Troubleshooting
 
+### "You are on a protected branch"
+
+Solution: Create and checkout your personal branch:
+```bash
+git checkout -b <your-name>
+git push -u origin <your-name>
+```
+
+### "Detached HEAD state"
+
+Solution: Checkout a branch:
+```bash
+git checkout siam
+```
+
 ### "PR creation failed"
 
 1. Check GitHub authentication:
@@ -218,25 +237,12 @@ Claude automatically excludes:
    gh auth login
    ```
 
-### "Branch already exists"
-
-Claude will ask if you want to:
-- Delete and recreate the branch
-- Use a different branch name
-
 ### "No changes detected"
 
 Make sure you:
 1. Saved all your files
 2. Are in the correct project directory
 3. Haven't already committed the changes
-
-### "Submodule in detached HEAD"
-
-Claude automatically fixes this by:
-1. Checking out the `dev` branch
-2. Pulling latest changes
-3. Continuing with the workflow
 
 ---
 
@@ -298,19 +304,21 @@ A: This is not supported. PRs are mandatory for code review.
 A: Yes! Add it after `/commit`: `/commit your message here`
 
 **Q: What happens to my changes after the PR is merged?**
-A: Delete your feature branch to keep the repo clean.
+A: Your branch remains. You can continue working on it or delete it.
 
 **Q: Do I need to handle submodules manually?**
 A: No. Claude detects and handles all submodule changes automatically.
+
+**Q: What if I'm on `dev` and want to commit?**
+A: Claude will ask you to create a personal branch first.
 
 ---
 
 ## Summary
 
-1. Make changes to your code
-2. Run `/commit`
-3. Provide your branch prefix (e.g., your name)
-4. Choose separate or combined PRs
-5. Get PR URLs and share with team
-6. Review and merge PRs
-7. Delete feature branches after merge
+1. Checkout your personal branch (e.g., `siam`)
+2. Make changes to your code
+3. Run `/commit`
+4. Get PR URL and share with team
+5. Review and merge PR
+6. Continue working on your branch

@@ -1,122 +1,68 @@
 ---
-description: Pull latest changes from remote for parent repo and all submodules
-argument-hint: Optional branch name for parent repo (default: dev)
+description: Pull latest changes from remote for current branch and all submodules
+argument-hint: Optional branch name override (default: current branch)
 ---
 
-You are a git workflow assistant. Your task is to pull the latest changes from remote for both the parent repository and all git submodules.
+You are a git workflow assistant. Your task is to pull the latest changes from remote for the **current branch** in both the parent repository and all git submodules.
+
+## Key Principle
+
+**Pull to current branch** - Do NOT switch branches. Pull updates for whatever branch each repo is currently on.
 
 ## Submodule Architecture
 
 This project uses nested submodules:
 
 ```
-project/                    # Parent repo (dev branch by default)
-├── .claude/                # Submodule → project-claude repo (main branch)
-│   ├── base/               # Submodule → claude-base (main branch)
-│   ├── <tech-stack>/       # Submodules → claude-nestjs, claude-react, etc. (main branch)
+project/                    # Parent repo (current branch)
+├── .claude/                # Submodule → project-claude (current branch)
+│   ├── base/               # Submodule → claude-base (current branch)
+│   ├── <tech-stack>/       # Submodules → claude-nestjs, claude-react, etc. (current branch)
 │   └── commands -> base/commands
 ```
 
 **Branch Policy:**
-- **Parent repo:** `dev` branch (default for development)
-- **All submodules:** `main` branch (always)
+- **All repos:** Pull to current branch (do NOT switch branches)
+- **Submodules:** Pull whatever branch they're currently on
 
 **Important:** Update submodules in order from deepest to shallowest.
 
 ---
 
-## Step 0.5: Verify Submodule Health (CRITICAL)
+## Step 0: Check Current State
 
-Before pulling, ensure submodules are on the correct branches. This prevents issues when feature branches have inherited stale submodule references.
-
-### 0.5.1 Check if .claude is a submodule
+Before pulling, check the current state of all repos:
 
 ```bash
-if [ -f ".claude/.git" ]; then
-  echo "✓ .claude is a submodule"
-else
-  echo "ℹ️ .claude is not a submodule, skipping health check"
-  # Skip to Step 1
-fi
-```
-
-### 0.5.2 Check and fix .claude submodule branch
-
-```bash
-cd .claude
 CURRENT_BRANCH=$(git branch --show-current)
-if [ -z "$CURRENT_BRANCH" ]; then
-  echo "⚠️ .claude submodule is in detached HEAD, will switch to main during pull"
-elif [ "$CURRENT_BRANCH" != "main" ]; then
-  echo "⚠️ .claude submodule is on '$CURRENT_BRANCH', will switch to main during pull"
-else
-  echo "✓ .claude is on main branch"
-fi
-cd ..
-```
-
-### 0.5.3 Check nested submodule branches
-
-```bash
-cd .claude
-for dir in base nestjs react django; do
-  if [ -d "$dir" ] && [ -e "$dir/.git" ]; then
-    cd "$dir"
-    NESTED_BRANCH=$(git branch --show-current)
-    if [ -z "$NESTED_BRANCH" ]; then
-      echo "⚠️ .claude/$dir is in detached HEAD, will switch to main during pull"
-    elif [ "$NESTED_BRANCH" != "main" ]; then
-      echo "⚠️ .claude/$dir is on '$NESTED_BRANCH', will switch to main during pull"
-    else
-      echo "✓ .claude/$dir is on main branch"
-    fi
-    cd ..
-  fi
-done
-cd ..
-```
-
-**Why this matters:** Feature branches may have inherited incorrect submodule references. This check identifies issues before pulling.
-
----
-
-## Step 1: Check Git Status
-
-First, check the current state of the repository:
-
-```bash
+echo "Parent repo branch: $CURRENT_BRANCH"
 git status
 ```
 
-Review the output:
-- If there are uncommitted changes (staged or unstaged), warn the user that pulling may cause conflicts
-- If the working directory is clean, proceed to the next step
+If there are uncommitted changes (staged or unstaged), warn the user that pulling may cause conflicts.
 
 ---
 
-## Step 2: Determine Parent Branch
+## Step 1: Pull Parent Repository (Current Branch)
 
-If $ARGUMENTS is provided, use it as the branch name.
-
-If $ARGUMENTS is NOT provided, **default to `dev` branch** (do not ask, just use `dev`).
-
-The user can override by running `/pull main` if they need to pull from main.
-
----
-
-## Step 3: Pull Parent Repository
-
-First, checkout and pull the determined branch (default: `dev`):
+Pull the current branch without switching:
 
 ```bash
-git checkout dev
-git pull origin dev
+CURRENT_BRANCH=$(git branch --show-current)
+
+if [ -z "$CURRENT_BRANCH" ]; then
+  echo "⚠️ Parent repo is in detached HEAD state"
+  # Cannot pull in detached HEAD - inform user
+else
+  echo "Pulling $CURRENT_BRANCH..."
+  git pull origin "$CURRENT_BRANCH"
+fi
 ```
 
-Or if a different branch was specified:
+If $ARGUMENTS is provided, use it as the branch name:
 ```bash
-git checkout <branch>
-git pull origin <branch>
+git checkout "$ARGUMENTS"
+git pull origin "$ARGUMENTS"
 ```
 
 Handle potential issues:
@@ -125,7 +71,7 @@ Handle potential issues:
 
 ---
 
-## Step 4: Initialize and Update Submodules
+## Step 2: Initialize and Update Submodules
 
 First, ensure all submodules are initialized:
 
@@ -138,21 +84,20 @@ This syncs submodules to the commits recorded in the parent repo.
 
 ---
 
-## Step 5: Pull Latest in Nested Submodules (Deepest First)
+## Step 3: Pull Nested Submodules (Deepest First)
 
 **IMPORTANT:** Update submodules from deepest to shallowest to avoid conflicts.
 
-### 5.1 Discover and Update All Nested Submodules
-
-Dynamically find and update all submodules inside `.claude`:
+### 3.1 Pull All Nested Submodules in .claude
 
 ```bash
-# Find all subdirectories in .claude that are git repos (submodules)
 cd .claude
+
+# Find and pull all nested submodules
 for submodule in */; do
   submodule_name="${submodule%/}"
 
-  # Skip if not a git submodule (check for .git file or directory)
+  # Skip if not a git submodule
   if [ ! -e "$submodule_name/.git" ]; then
     continue
   fi
@@ -162,30 +107,38 @@ for submodule in */; do
     continue
   fi
 
-  echo "Updating .claude/$submodule_name..."
+  echo "Pulling .claude/$submodule_name..."
   cd "$submodule_name"
-  git checkout main
-  git pull origin main
+
+  NESTED_BRANCH=$(git branch --show-current)
+  if [ -z "$NESTED_BRANCH" ]; then
+    echo "⚠️ .claude/$submodule_name is in detached HEAD, skipping pull"
+  else
+    echo "  Branch: $NESTED_BRANCH"
+    git pull origin "$NESTED_BRANCH"
+  fi
+
   cd ..
 done
+
 cd ..
 ```
 
-This handles any nested submodules including:
-- `base` (always present)
-- `nestjs` (if NestJS project)
-- `django` (if Django project)
-- `react` (if React project)
-- `react-native` (if React Native project)
+### 3.2 Pull .claude Submodule
 
-### 5.2 Update .claude Submodule
-
-After nested submodules are updated, update `.claude` itself:
+After nested submodules are pulled, pull `.claude` itself:
 
 ```bash
 cd .claude
-git checkout main
-git pull origin main
+
+CLAUDE_BRANCH=$(git branch --show-current)
+if [ -z "$CLAUDE_BRANCH" ]; then
+  echo "⚠️ .claude is in detached HEAD, skipping pull"
+else
+  echo "Pulling .claude on branch: $CLAUDE_BRANCH"
+  git pull origin "$CLAUDE_BRANCH"
+fi
+
 cd ..
 ```
 
@@ -195,7 +148,7 @@ cd ..
 
 ---
 
-## Step 6: Check for Submodule Reference Updates
+## Step 4: Check for Submodule Reference Updates
 
 After pulling, check if the parent repo needs to record new submodule commits:
 
@@ -212,7 +165,7 @@ run `/commit` to create a commit with the updated submodule references.
 
 ---
 
-## Step 7: Sync Commands from Submodules
+## Step 5: Sync Commands from Submodules
 
 After pulling submodule updates, verify commands are properly linked:
 
@@ -231,7 +184,7 @@ fi
 
 ---
 
-## Step 8: Report Results
+## Step 6: Report Results
 
 After completion, report:
 
@@ -239,13 +192,13 @@ After completion, report:
 ✓ Pull Complete
 
 Parent repo:
-  - Branch: <branch>
+  - Branch: <current-branch>
   - Status: <updated/already up to date>
 
 Submodules updated:
-  - .claude/base: <commit> (main)
-  - .claude/<other>: <commit> (main)
-  - .claude: <commit> (main)
+  - .claude/base: <branch> - <status>
+  - .claude/<other>: <branch> - <status>
+  - .claude: <branch> - <status>
 
 Commands: <symlink status>
 
@@ -260,8 +213,9 @@ Any issues: <warnings if any>
 |-------|------------|
 | Working directory is dirty | Warn user, continue (let git handle conflicts) |
 | Pull fails due to conflicts | STOP, inform user how to resolve |
-| Submodule update fails | Report which submodule failed and why |
-| "Entry would be overwritten" | Nested submodule has uncommitted changes - stash or commit first |
+| Submodule in detached HEAD | Skip pull for that submodule, inform user |
+| Submodule pull fails | Report which submodule failed and why |
+| "Entry would be overwritten" | Nested submodule has uncommitted changes |
 | No submodules exist | Skip submodule steps silently |
 | Commands symlink broken | Recreate symlink to base/commands |
 
@@ -270,6 +224,21 @@ Any issues: <warnings if any>
 ## Quick Reference
 
 Pull order (deepest first):
-1. `.claude/<all-nested-submodules>` → main (base, nestjs, django, react, react-native, etc.)
-2. `.claude` → main
-3. Parent repo → `dev` (default) or user-specified branch
+1. `.claude/<all-nested-submodules>` → current branch
+2. `.claude` → current branch
+3. Parent repo → current branch (or user-specified)
+
+---
+
+## Alternative: Pull Specific Branch
+
+To pull a specific branch instead of current:
+
+```
+/pull dev
+```
+
+This will:
+1. Checkout `dev` in parent repo
+2. Pull from `dev`
+3. Update submodules (still use their current branches)
