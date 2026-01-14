@@ -1,38 +1,49 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Example database configuration. Copy and customize for your database.",
+  "description": "Example Bug Report database configuration. Copy and customize for your project.",
 
-  "id": "YOUR_DATABASE_ID_HERE",
-  "name": "Your Database Name",
-  "description": "Description of your ticket database",
+  "id": "[YOUR_DATABASE_ID]",
+  "name": "Bug Report",
+  "description": "Track bugs, issues, and feature requests",
 
   "properties": {
     "title": "Title",
     "status": "Status",
     "priority": "Priority",
-    "team": "Team",
-    "assignee": "Assignee",
-    "description": "Description"
+    "type": "Type",
+    "app": "App / Dashboard",
+    "pages": "Pages",
+    "description": "Description",
+    "devComment": "Dev's Comment",
+    "reportedBy": "Reported by",
+    "doneBy": "Done by",
+    "responsibleFor": "Responsible for",
+    "difficulty": "Difficulty",
+    "attachments": "Image, Video",
+    "dueDate": "Due Date",
+    "createdTime": "Created time"
   },
 
   "statusValues": {
-    "todo": "Not Started",
-    "inProgress": "In Progress",
-    "review": "In Review",
-    "done": "Done",
-    "blocked": "Blocked"
+    "todo": "New",
+    "inProgress": "Fixing",
+    "review": "Resolved",
+    "done": "Closed",
+    "blocked": "Won't Fix"
   },
 
   "priorityValues": ["Critical", "Urgent", "High", "Medium", "Low"],
 
-  "teamValues": ["Full-Stack", "Design", "Mobile", "Operation"],
+  "typeValues": ["Bug", "Feature", "Improvement", "Task"],
+
+  "appValues": ["APP", "Dashboard", "Admin", "Web"],
 
   "workflowMapping": {
-    "start": "In Progress",
-    "complete": "In Review",
-    "verify": "Done",
-    "block": "Blocked"
+    "start": "Fixing",
+    "complete": "Resolved",
+    "verify": "Closed",
+    "block": "Won't Fix"
   },
 
-  "commentTemplate": "Implementation complete:\n- Files modified: {files}\n- Changes: {changes}\n- Ready for review"
+  "commentTemplate": "Fix implemented:\n- Files modified: {files}\n- Changes: {changes}\n- Pages affected: {pages}\n- Ready for QA"
 }

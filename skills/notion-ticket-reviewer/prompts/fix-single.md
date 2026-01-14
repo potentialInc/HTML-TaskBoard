@@ -8,7 +8,7 @@ Fix ticket: [TICKET_TITLE_OR_ID]
 
 ## Description
 
-Analyzes a single ticket, implements the fix in the codebase, and updates the ticket status with implementation details.
+Analyzes a single Bug Report ticket, implements the fix in the codebase, and updates the ticket status with implementation details.
 
 ## Parameters
 
@@ -23,16 +23,18 @@ Analyzes a single ticket, implements the fix in the codebase, and updates the ti
    └── Search by title or ID via curl
    └── Fetch ticket details from Notion API
 
-2. SET IN PROGRESS
-   └── Update Status via curl: "Not Started" → "In Progress"
+2. SET FIXING
+   └── Update Status via curl: "New" → "Fixing"
 
 3. ANALYZE
    └── Parse ticket title for intent
-   └── Extract requirements from Comment/Description
-   └── Identify mentioned files, components, features
+   └── Extract requirements from Description
+   └── Identify affected Pages (e.g., /patient, /patient/chat)
+   └── Check App / Dashboard context
+   └── Review attached images/screenshots
 
 4. EXPLORE CODEBASE
-   └── Search for relevant files
+   └── Search for files matching Pages path
    └── Read existing implementations
    └── Understand context
 
@@ -42,8 +44,8 @@ Analyzes a single ticket, implements the fix in the codebase, and updates the ti
    └── Run tests if applicable
 
 6. COMPLETE
-   └── Update Status via curl: "In Progress" → "In Review"
-   └── Add comment via curl with implementation details
+   └── Update Status via curl: "Fixing" → "Resolved"
+   └── Add Dev's Comment with implementation details
    └── Suggest git commit message
 ```
 
@@ -60,28 +62,37 @@ curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"filter": {"property": "Ticket Title", "title": {"contains": "[SEARCH_TERM]"}}}'
+  -d '{"filter": {"property": "Title", "title": {"contains": "[SEARCH_TERM]"}}}'
 ```
 
-### Set Status to In Progress
+### Set Status to Fixing
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "In Progress"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "Fixing"}}}}'
 ```
 
-### Set Status to In Review
+### Set Status to Resolved
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "In Review"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "Resolved"}}}}'
 ```
 
-### Add Comment
+### Add Dev's Comment
+```bash
+curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2022-06-28" \
+  -H "Content-Type: application/json" \
+  -d '{"properties": {"Dev'\''s Comment": {"rich_text": [{"text": {"content": "[COMMENT_TEXT]"}}]}}}'
+```
+
+### Add Page Comment
 ```bash
 curl -s -X POST "https://api.notion.com/v1/comments" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
@@ -94,69 +105,71 @@ curl -s -X POST "https://api.notion.com/v1/comments" \
 
 ### By Title
 ```
-Fix ticket: Fix login validation bug
+Fix ticket: My profile detail page
 ```
 
 ### By ID
 ```
-Fix ticket: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Fix ticket: 2e6b6d88-d2cf-8006-a54e-d420667b579f
 ```
 
 ### With Context
 ```
-Fix ticket: Fix login validation bug
-Context: Users report validation not triggering on empty fields
+Fix ticket: Calendar gap between elements
+Context: Gap height is too large between calendar and content
 ```
 
 ## Output Format
 
 ### Success
 ```
-Ticket Fixed: [Title]
-Status: Not Started → In Progress → In Review
+Ticket Fixed: My profile detail page (#2)
+Status: New → Fixing → Resolved
+
+App: APP
+Pages: /patient
 
 Files Modified:
-- src/components/LoginForm.tsx
-- src/utils/validation.ts
+- frontend/src/pages/patient/PatientLayout.tsx
+- frontend/src/components/ProfileButton.tsx
 
 Changes:
-- Fixed validation trigger on empty fields
-- Added proper error messages
-- Updated form submission handling
+- Fixed navigation to redirect to profile page
+- Removed dropdown behavior
 
-Comment Added: Yes
-Commit Suggested: fix: resolve login form validation issue
+Dev's Comment Added: Yes
+Commit Suggested: fix: redirect to profile page instead of dropdown
 ```
 
-### Blocked
+### Won't Fix
 ```
 Ticket Blocked: [Title]
-Status: Not Started → Blocked
+Status: New → Won't Fix
 
-Reason: Missing API endpoint documentation
+Reason: This is expected behavior per design spec
 
 Action Required:
-- Clarify expected API response format
-- Confirm authentication requirements
+- Confirm with design team
+- Update ticket description if needed
 
-Comment Added: Yes (with clarification request)
+Dev's Comment Added: Yes (with explanation)
 ```
 
 ## Status Transitions
 
 | From | To | Trigger |
 |------|-----|---------|
-| Not Started | In Progress | `Fix ticket:` command |
-| In Progress | In Review | Implementation complete |
-| In Progress | Blocked | Cannot proceed |
-| Blocked | In Progress | Issue resolved |
+| New | Fixing | `Fix ticket:` command |
+| Fixing | Resolved | Implementation complete |
+| Fixing | Won't Fix | Cannot or should not proceed |
+| Won't Fix | Fixing | Decision reversed |
 
 ## Comment Template
 
-When completing a ticket, the following comment is added:
+When completing a ticket, the Dev's Comment is updated:
 
 ```
-## Implementation Complete
+## Fix Implemented
 
 **Files Modified:**
 - [file1.ts]
@@ -165,6 +178,8 @@ When completing a ticket, the following comment is added:
 **Changes:**
 - [Change 1 description]
 - [Change 2 description]
+
+**Pages Affected:** [/patient, /patient/chat]
 
 **Testing:**
 - [Test notes or N/A]
