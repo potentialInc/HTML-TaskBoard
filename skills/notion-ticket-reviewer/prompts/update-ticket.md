@@ -14,7 +14,7 @@ Add comment to ticket [PAGE_ID]: [COMMENT_TEXT]
 
 ## Description
 
-Update ticket status and add comments to Notion tickets using curl commands. Works independently of the MCP server.
+Update ticket status and add comments to Notion Bug Report tickets using curl commands. Works independently of the MCP server.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ Update ticket status and add comments to Notion tickets using curl commands. Wor
 
 ## Update Status
 
-### Set to "In Progress"
+### Set to "Fixing"
 
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
@@ -34,14 +34,14 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "In Progress"
+          "name": "Fixing"
         }
       }
     }
   }'
 ```
 
-### Set to "In Review"
+### Set to "Resolved"
 
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
@@ -52,14 +52,14 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "In Review"
+          "name": "Resolved"
         }
       }
     }
   }'
 ```
 
-### Set to "Done"
+### Set to "Closed"
 
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
@@ -70,14 +70,14 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "Done"
+          "name": "Closed"
         }
       }
     }
   }'
 ```
 
-### Set to "Blocked"
+### Set to "Won't Fix"
 
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
@@ -88,16 +88,38 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "Blocked"
+          "name": "Won'\''t Fix"
         }
       }
     }
   }'
 ```
 
-## Add Comment
+## Add Dev's Comment
 
-### Simple Comment
+### Update Dev's Comment Property
+
+```bash
+curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Notion-Version: 2022-06-28" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "properties": {
+      "Dev'\''s Comment": {
+        "rich_text": [
+          {
+            "text": {
+              "content": "Your developer comment here"
+            }
+          }
+        ]
+      }
+    }
+  }'
+```
+
+### Add Page Comment (Discussion)
 
 ```bash
 curl -s -X POST "https://api.notion.com/v1/comments" \
@@ -132,7 +154,7 @@ curl -s -X POST "https://api.notion.com/v1/comments" \
     "rich_text": [
       {
         "text": {
-          "content": "Implementation complete.\n\nFiles modified:\n- file1.ts\n- file2.ts\n\nChanges:\n- Description of changes\n\nTesting:\n- Tested locally"
+          "content": "Fix implemented.\n\nFiles modified:\n- file1.ts\n- file2.ts\n\nChanges:\n- Description of changes\n\nTesting:\n- Tested locally\n- Ready for QA"
         }
       }
     ]
@@ -141,7 +163,7 @@ curl -s -X POST "https://api.notion.com/v1/comments" \
 
 ## Update Multiple Properties
 
-### Status + Comment Field
+### Status + Dev's Comment
 
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
@@ -152,14 +174,14 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
     "properties": {
       "Status": {
         "status": {
-          "name": "In Review"
+          "name": "Resolved"
         }
       },
-      "Comment": {
+      "Dev'\''s Comment": {
         "rich_text": [
           {
             "text": {
-              "content": "Implementation complete - ready for review"
+              "content": "Fix implemented - ready for QA verification"
             }
           }
         ]
@@ -178,17 +200,17 @@ curl -s -X GET "https://api.notion.com/v1/comments?block_id=[PAGE_ID]" \
   -H "Notion-Version: 2022-06-28"
 ```
 
-## Workflow: Fix a Ticket
+## Workflow: Fix a Bug
 
 ### Step 1: Start Work
 
 ```bash
-# Set status to "In Progress"
+# Set status to "Fixing"
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "In Progress"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "Fixing"}}}}'
 ```
 
 ### Step 2: Implement Changes
@@ -198,21 +220,16 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
 ### Step 3: Complete Work
 
 ```bash
-# Set status to "In Review"
+# Set status to "Resolved" and add Dev's Comment
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "In Review"}}}}'
-
-# Add implementation comment
-curl -s -X POST "https://api.notion.com/v1/comments" \
-  -H "Authorization: Bearer $NOTION_API_KEY" \
-  -H "Notion-Version: 2022-06-28" \
-  -H "Content-Type: application/json" \
   -d '{
-    "parent": {"page_id": "[PAGE_ID]"},
-    "rich_text": [{"text": {"content": "Implementation complete.\n\nFiles: src/file.ts\nChanges: Fixed the bug\nTested: Yes"}}]
+    "properties": {
+      "Status": {"status": {"name": "Resolved"}},
+      "Dev'\''s Comment": {"rich_text": [{"text": {"content": "Fixed navigation to profile page. Modified: PatientLayout.tsx"}}]}
+    }
   }'
 ```
 
@@ -227,7 +244,7 @@ curl -s -X POST "https://api.notion.com/v1/comments" \
   "properties": {
     "Status": {
       "status": {
-        "name": "In Progress"
+        "name": "Fixing"
       }
     }
   }
@@ -249,20 +266,21 @@ curl -s -X POST "https://api.notion.com/v1/comments" \
 
 | Status | Description |
 |--------|-------------|
-| **Not Started** | Ready to be worked on |
-| **In Progress** | Currently being worked on |
-| **In Review** | Implementation complete, needs review |
-| **Blocked** | Cannot proceed due to dependency |
-| **Done** | Completed and verified |
+| **New** | Newly reported, ready to be fixed |
+| **Fixing** | Currently being worked on |
+| **Resolved** | Fix complete, needs QA verification |
+| **Closed** | Verified and closed |
+| **Won't Fix** | Not going to be fixed |
 
 ## Troubleshooting
 
 ### "Could not find property"
 - Ensure "Status" property exists and is type "status" (not "select")
 - Property names are case-sensitive
+- "Dev's Comment" includes an apostrophe
 
 ### "Validation error"
-- Check status value matches exactly (e.g., "In Progress" not "in progress")
+- Check status value matches exactly (e.g., "Fixing" not "fixing")
 - Verify page_id format (UUID with or without dashes)
 
 ### "Object not found"
@@ -271,6 +289,6 @@ curl -s -X POST "https://api.notion.com/v1/comments" \
 
 ## Related
 
-- [notion-curl-review.md](./notion-curl-review.md) - Review tickets via curl
+- [review-tickets.md](./review-tickets.md) - Review tickets via curl
 - [fix-all-by-status.md](./fix-all-by-status.md) - Fix all tickets sequentially
 - [fix-single.md](./fix-single.md) - Fix a single ticket

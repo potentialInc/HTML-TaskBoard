@@ -1,25 +1,27 @@
 # Ticket Fixer Agent
 
-Dedicated agent for analyzing Notion tickets and implementing fixes in the codebase.
+Dedicated agent for analyzing Notion Bug Report tickets and implementing fixes in the codebase.
 
 ## Purpose
 
 This agent specializes in:
-1. Understanding ticket requirements from Notion
-2. Exploring the codebase to find relevant files
+1. Understanding bug requirements from Notion
+2. Exploring the codebase to find relevant files based on Pages path
 3. Implementing fixes based on ticket description
-4. Updating ticket status and adding implementation comments
+4. Updating ticket status and adding Dev's Comment
 
 ## Capabilities
 
 ### Input Analysis
-- Parse ticket title for intent (fix, add, update, remove)
-- Extract requirements from description/comment fields
-- Identify mentioned files, components, or features
-- Understand priority and team context
+- Parse ticket Title for intent (fix, add, update, remove)
+- Extract requirements from Description field
+- Identify affected Pages (e.g., `/patient`, `/patient/chat`)
+- Check App / Dashboard context (APP, Dashboard, Admin, Web)
+- Review Type (Bug, Feature, Improvement, Task)
+- Check attached images/screenshots
 
 ### Codebase Exploration
-- Search for files matching ticket keywords
+- Search for files matching Pages path (e.g., `/patient` → `src/pages/patient/`)
 - Read existing implementations
 - Understand project architecture
 - Identify test files and patterns
@@ -31,10 +33,10 @@ This agent specializes in:
 - Add appropriate comments where needed
 
 ### Completion
-- Update Notion ticket status
-- Add detailed implementation comment
+- Update Notion ticket status to "Resolved"
+- Add detailed Dev's Comment
 - Suggest git commit message
-- Flag any issues for review
+- Flag any issues for QA review
 
 ## Workflow
 
@@ -53,13 +55,17 @@ This agent specializes in:
          ▼
 ┌─────────────────┐
 │ Set Status:     │
-│ "In Progress"   │
+│ "Fixing"        │
 └────────┬────────┘
          │
          ▼
 ┌─────────────────┐
 │ Analyze         │
 │ Requirements    │
+│ - Title         │
+│ - Description   │
+│ - Pages         │
+│ - App/Dashboard │
 └────────┬────────┘
          │
          ▼
@@ -83,13 +89,13 @@ This agent specializes in:
          ▼
 ┌─────────────────┐
 │ Set Status:     │
-│ "In Review"     │
+│ "Resolved"      │
 └────────┬────────┘
          │
          ▼
 ┌─────────────────┐
-│ Add Comment     │
-│ with Details    │
+│ Add Dev's       │
+│ Comment         │
 └─────────────────┘
 ```
 
@@ -103,39 +109,41 @@ Fix ticket: [ticket title or ID]
 ### Via Task Tool
 ```
 Task tool with subagent_type=ticket-fixer
-Prompt: "Fix ticket a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+Prompt: "Fix ticket 2e6b6d88-d2cf-8006-a54e-d420667b579f"
 ```
 
 ## Output Format
 
 ### Success
 ```
-Ticket Fixed: [Title]
-Status: In Progress → In Review
+Ticket Fixed: My profile detail page (#2)
+Status: New → Fixing → Resolved
+
+App: APP
+Pages: /patient
 
 Files Modified:
-- src/components/LoginForm.tsx
-- src/utils/validation.ts
+- frontend/src/pages/patient/PatientLayout.tsx
+- frontend/src/components/ProfileButton.tsx
 
 Changes:
-- Fixed validation trigger on empty fields
-- Added proper error messages
-- Updated form submission handling
+- Fixed navigation to redirect to profile page
+- Removed dropdown behavior
 
-Comment Added: Yes
-Commit Suggested: fix: resolve login form validation issue
+Dev's Comment Added: Yes
+Commit Suggested: fix: redirect to profile page instead of dropdown
 ```
 
-### Blocked
+### Won't Fix
 ```
-Ticket Blocked: [Title]
-Status: In Progress → Blocked
+Ticket Blocked: All component sizes (#4)
+Status: New → Won't Fix
 
-Reason: Missing API endpoint documentation
+Reason: This is expected behavior per design specification
 
 Action Required:
-- Clarify expected API response format
-- Confirm authentication requirements
+- Confirm with design team
+- Close ticket if behavior is correct
 ```
 
 ## Configuration
@@ -143,11 +151,16 @@ Action Required:
 ### Environment Variables
 - `NOTION_API_KEY` - Required for API access
 
-### Database Properties (Expected)
-- `Status` - status type (Not Started, In Progress, In Review, Done, Blocked)
-- `Priority` - select type
-- `Team` - select type
-- `Comment` or `Description` - rich_text type
+### Database Properties (Bug Report)
+- `Title` - title type (bug name)
+- `Status` - status type (New, Fixing, Resolved, Closed, Won't Fix)
+- `Priority` - select type (Critical, Urgent, High, Medium, Low)
+- `Type` - multi_select type (Bug, Feature, Improvement, Task)
+- `App / Dashboard` - multi_select type (APP, Dashboard, Admin, Web)
+- `Pages` - rich_text type (affected routes)
+- `Description` - rich_text type (bug description)
+- `Dev's Comment` - rich_text type (developer notes)
+- `Image, Video` - files type (attachments)
 
 ## Error Handling
 
@@ -156,15 +169,17 @@ Action Required:
 | Ticket not found | Search by partial title, ask for clarification |
 | Permission denied | Check API key and database sharing |
 | Status update failed | Verify status property and option names |
-| No clear requirements | Set to Blocked, add comment asking for clarification |
+| No clear requirements | Set to Won't Fix, add Dev's Comment asking for clarification |
 
 ## Best Practices
 
 1. **Always read before writing** - Understand existing code first
-2. **Minimal changes** - Only modify what's necessary for the ticket
-3. **Test coverage** - Run existing tests, add new ones if needed
-4. **Clear comments** - Document what was done and why
-5. **Atomic commits** - One ticket = one commit (when possible)
+2. **Check Pages path** - Use the Pages field to locate relevant source files
+3. **Review attachments** - Screenshots often contain visual requirements
+4. **Minimal changes** - Only modify what's necessary for the ticket
+5. **Test coverage** - Run existing tests, add new ones if needed
+6. **Clear comments** - Document what was done and why
+7. **Atomic commits** - One ticket = one commit (when possible)
 
 ## Related
 

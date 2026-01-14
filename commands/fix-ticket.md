@@ -1,6 +1,6 @@
 # Fix Ticket Command
 
-Fix a single Notion ticket by analyzing requirements and implementing changes.
+Fix a single Notion Bug Report ticket by analyzing requirements and implementing changes.
 
 ## Usage
 
@@ -24,21 +24,23 @@ Fix ticket: [ticket title or ID]
 
 ### 1. Find Ticket
 - Search by ID (UUID format) or title (partial match)
-- Retrieve full ticket details from Notion
+- Retrieve full ticket details from Notion API
 
 ### 2. Update Status
-- Set status to **"In Progress"**
+- Set status to **"Fixing"**
 - This signals to others that work has started
 
 ### 3. Analyze Requirements
 Extract from ticket:
 - Title: What needs to be done
-- Description/Comment: Detailed requirements
-- Related files mentioned
-- Acceptance criteria (if any)
+- Description: Detailed requirements
+- Pages: Affected routes (e.g., `/patient`, `/patient/chat`)
+- App / Dashboard: Which application
+- Type: Bug, Feature, etc.
+- Attachments: Screenshots for context
 
 ### 4. Explore Codebase
-- Search for relevant files based on ticket description
+- Search for files matching the Pages path
 - Read existing implementations
 - Understand current architecture
 
@@ -48,12 +50,12 @@ Extract from ticket:
 - Run tests if applicable
 
 ### 6. Complete Ticket
-- Set status to **"In Review"**
-- Add comment with:
+- Set status to **"Resolved"**
+- Add Dev's Comment with:
   - Files modified
   - Changes made
   - Testing notes
-  - Any blockers or notes for reviewer
+  - Any notes for QA
 
 ### 7. Optional: Create Commit
 ```
@@ -67,25 +69,25 @@ Notion Ticket: https://notion.so/[ticket-id]
 
 ### By Title
 ```
-Fix ticket: Fix login validation bug
+Fix ticket: My profile detail page
 ```
 
 ### By ID
 ```
-Fix ticket: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Fix ticket: 2e6b6d88-d2cf-8006-a54e-d420667b579f
 ```
 
 ### With Plan Mode
 ```
-Enter plan mode - Fix ticket: Add loading spinner to dashboard
+Enter plan mode - Fix ticket: Calendar gap between elements
 ```
 
 ## Status Flow
 
 ```
-Not Started → In Progress → In Review → Done
-                  ↓
-               Blocked
+New → Fixing → Resolved → Closed
+         ↓
+      Won't Fix
 ```
 
 ## Curl Commands
@@ -101,46 +103,43 @@ curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"filter": {"property": "Ticket Title", "title": {"contains": "[SEARCH_TERM]"}}}'
+  -d '{"filter": {"property": "Title", "title": {"contains": "[SEARCH_TERM]"}}}'
 ```
 
-### Set Status to In Progress
+### Set Status to Fixing
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "In Progress"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "Fixing"}}}}'
 ```
 
-### Set Status to In Review
+### Set Status to Resolved
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "In Review"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "Resolved"}}}}'
 ```
 
-### Set Status to Blocked
+### Set Status to Won't Fix
 ```bash
 curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{"properties": {"Status": {"status": {"name": "Blocked"}}}}'
+  -d '{"properties": {"Status": {"status": {"name": "Won'\''t Fix"}}}}'
 ```
 
-### Add Comment
+### Add Dev's Comment
 ```bash
-curl -s -X POST "https://api.notion.com/v1/comments" \
+curl -s -X PATCH "https://api.notion.com/v1/pages/[PAGE_ID]" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Notion-Version: 2022-06-28" \
   -H "Content-Type: application/json" \
-  -d '{
-    "parent": {"page_id": "[PAGE_ID]"},
-    "rich_text": [{"text": {"content": "[COMMENT_TEXT]"}}]
-  }'
+  -d '{"properties": {"Dev'\''s Comment": {"rich_text": [{"text": {"content": "[COMMENT_TEXT]"}}]}}}'
 ```
 
 ## Related

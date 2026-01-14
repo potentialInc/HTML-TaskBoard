@@ -8,7 +8,7 @@ Review notion tickets for database [DATABASE_ID]
 
 ## Description
 
-Review all tickets from a Notion database using curl commands. This works independently of the MCP server and is compatible with any project.
+Review all tickets from a Notion Bug Report database using curl commands. This works independently of the MCP server and is compatible with any project.
 
 ## Prerequisites
 
@@ -25,15 +25,9 @@ Review all tickets from a Notion database using curl commands. This works indepe
 Read the API key from `.env` file:
 
 ```bash
-# Read from .env file
+# Read from .env file (Unix)
 NOTION_API_KEY=$(grep -E "^NOTION_API_KEY=" .env | cut -d'=' -f2)
 echo "API Key found: ${NOTION_API_KEY:0:10}..."
-```
-
-Or from environment variable:
-
-```bash
-echo "API Key: ${NOTION_API_KEY:0:10}..."
 ```
 
 ### Step 2: Test Connection
@@ -62,78 +56,49 @@ curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
 
 ### Step 4: Parse and Display
 
-Save response to temp file and parse with Python:
+Save response to temp file and parse with Node.js:
 
-```bash
-curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
-  -H "Authorization: Bearer $NOTION_API_KEY" \
-  -H "Notion-Version: 2022-06-28" \
-  -H "Content-Type: application/json" \
-  -d '{"page_size": 100}' > /tmp/notion_tickets.json
-```
+```javascript
+const fs = require('fs');
+const data = JSON.parse(fs.readFileSync('/tmp/notion_tickets.json', 'utf8'));
 
-Parse with Python:
+const tickets = data.results.map(page => {
+  const props = page.properties;
+  return {
+    id: page.id,
+    uniqueId: props['']?.unique_id?.number || '-',
+    title: props['Title']?.title?.[0]?.plain_text || 'Untitled',
+    status: props['Status']?.status?.name || 'Unknown',
+    priority: props['Priority']?.select?.name || 'None',
+    type: props['Type']?.multi_select?.map(t => t.name).join(', ') || '-',
+    app: props['App / Dashboard']?.multi_select?.map(a => a.name).join(', ') || '-',
+    pages: props['Pages']?.rich_text?.[0]?.plain_text || '-',
+    description: props['Description']?.rich_text?.[0]?.plain_text || '-'
+  };
+});
 
-```python
-import json
-import sys
-sys.stdout.reconfigure(encoding='utf-8')
+// Group by status
+const byStatus = {};
+tickets.forEach(t => {
+  if (!byStatus[t.status]) byStatus[t.status] = [];
+  byStatus[t.status].push(t);
+});
 
-with open('/tmp/notion_tickets.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
+console.log(`Total tickets: ${tickets.length}\n`);
 
-tickets = []
-for page in data.get('results', []):
-    props = page.get('properties', {})
-
-    # Extract title
-    title = ''
-    title_prop = props.get('Ticket Title', {}).get('title', [])
-    if title_prop:
-        title = title_prop[0].get('text', {}).get('content', '')
-
-    # Extract status
-    status = props.get('Status', {}).get('status', {}).get('name', 'Unknown')
-
-    # Extract priority
-    priority = props.get('Priority', {}).get('select', {})
-    priority_name = priority.get('name', 'None') if priority else 'None'
-
-    # Extract team
-    team = props.get('Team', {}).get('select', {})
-    team_name = team.get('name', 'None') if team else 'None'
-
-    page_id = page.get('id', '')
-    tickets.append({
-        'title': title,
-        'status': status,
-        'priority': priority_name,
-        'team': team_name,
-        'id': page_id
-    })
-
-# Group by status
-by_status = {}
-for t in tickets:
-    s = t['status']
-    if s not in by_status:
-        by_status[s] = []
-    by_status[s].append(t)
-
-# Display summary
-print(f'Total tickets: {len(tickets)}')
-print()
-
-# Display by status
-for status in ['Not Started', 'In Progress', 'In Review', 'Blocked', 'Done']:
-    items = by_status.get(status, [])
-    if items:
-        print(f'=== {status} ({len(items)}) ===')
-        for t in items:
-            title_display = t['title'][:55] + '...' if len(t['title']) > 55 else t['title']
-            print(f"  [{t['priority']:8}] {title_display}")
-            print(f"            Team: {t['team']} | ID: {t['id'][:8]}")
-        print()
+// Display by status
+['New', 'Fixing', 'Resolved', 'Closed', 'Won\'t Fix'].forEach(status => {
+  const items = byStatus[status] || [];
+  if (items.length) {
+    console.log(`=== ${status} (${items.length}) ===`);
+    items.forEach(t => {
+      console.log(`  #${t.uniqueId} [${t.app}] ${t.pages}`);
+      console.log(`       ${t.title}`);
+      console.log(`       ${t.description.substring(0, 60)}...`);
+    });
+    console.log();
+  }
+});
 ```
 
 ## Filter Options
@@ -148,13 +113,13 @@ curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
   -d '{
     "filter": {
       "property": "Status",
-      "status": {"equals": "Not Started"}
+      "status": {"equals": "New"}
     },
     "page_size": 100
   }'
 ```
 
-### By Team
+### By Type
 
 ```bash
 curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
@@ -163,14 +128,14 @@ curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
   -H "Content-Type: application/json" \
   -d '{
     "filter": {
-      "property": "Team",
-      "select": {"equals": "Full-Stack"}
+      "property": "Type",
+      "multi_select": {"contains": "Bug"}
     },
     "page_size": 100
   }'
 ```
 
-### By Priority
+### By App
 
 ```bash
 curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
@@ -179,8 +144,8 @@ curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
   -H "Content-Type: application/json" \
   -d '{
     "filter": {
-      "property": "Priority",
-      "select": {"equals": "High"}
+      "property": "App / Dashboard",
+      "multi_select": {"contains": "APP"}
     },
     "page_size": 100
   }'
@@ -196,8 +161,8 @@ curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
   -d '{
     "filter": {
       "and": [
-        {"property": "Status", "status": {"equals": "Not Started"}},
-        {"property": "Team", "select": {"equals": "Full-Stack"}}
+        {"property": "Status", "status": {"equals": "New"}},
+        {"property": "Type", "multi_select": {"contains": "Bug"}}
       ]
     },
     "page_size": 100
@@ -207,21 +172,22 @@ curl -s -X POST "https://api.notion.com/v1/databases/[DATABASE_ID]/query" \
 ## Output Format
 
 ```
-Total tickets: 100
+Total tickets: 6
 
-=== Not Started (53) ===
-  [High    ] Fix logout redirect that sends users to wrong env...
-            Team: Full-Stack | ID: 0707a4ef
-  [High    ] Work on API integration with content APIs
-            Team: Full-Stack | ID: 07462277
+=== New (6) ===
+  #2 [APP] /patient
+       My profile detail page
+       It should be directed to my profile page, not a dropdown...
+  #3 [APP] /patient
+       Calendar gap between elements
+       It is too large...
+  #4 [APP] /patient/exercise
+       All component sizes
+       The header heights and profile size are different...
 
-=== In Progress (1) ===
-  [High    ] Continue dashboard components work
-            Team: Design | ID: 14a2693b
+=== Fixing (0) ===
 
-=== Done (46) ===
-  [High    ] Implement value calculation logic and expose via API
-            Team: Full-Stack | ID: 00ec6a80
+=== Resolved (0) ===
 ```
 
 ## Troubleshooting
@@ -239,10 +205,10 @@ Total tickets: 100
 ### "Could not find property"
 - Property names are case-sensitive
 - Check exact property names in your database schema
-- Common: "Ticket Title", "Status", "Priority", "Team"
+- Common: "Title", "Status", "Type", "App / Dashboard", "Pages"
 
 ## Related
 
-- [notion-curl-update.md](./notion-curl-update.md) - Update tickets via curl
+- [update-ticket.md](./update-ticket.md) - Update tickets via curl
 - [fix-all-by-status.md](./fix-all-by-status.md) - Fix all tickets sequentially
 - [fix-single.md](./fix-single.md) - Fix a single ticket
