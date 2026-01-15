@@ -32,12 +32,12 @@ Create a new GitHub repository, push HTML files, and enable GitHub Pages for ins
 
 | Argument | Description | Default |
 |----------|-------------|---------|
-| `<project-name>` | GitHub repository name | (required) |
+| `<project-name>` | GitHub repository name (created as `HTML-{project-name}`) | (required) |
 | `--html-dir` | HTML files directory | (required) |
 | `--org` | GitHub organization name | `potentialInc` |
 | `--private` | Create private repository | false (public) |
 | `--no-pages` | Disable GitHub Pages | false |
-| `--description` | Repository description | `{project-name} - Generated prototype` |
+| `--description` | Repository description | `HTML-{project-name} - Generated prototype` |
 
 ---
 
@@ -53,7 +53,7 @@ Create a new GitHub repository, push HTML files, and enable GitHub Pages for ins
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │  Phase 2: Create Repository                                  │
-│  - gh repo create {org}/{project-name}                       │
+│  - gh repo create {org}/HTML-{project-name}                  │
 │  - Set public/private                                        │
 └─────────────────────────────────────────────────────────────┘
                               ↓
@@ -66,7 +66,7 @@ Create a new GitHub repository, push HTML files, and enable GitHub Pages for ins
                               ↓
 ┌─────────────────────────────────────────────────────────────┐
 │  Phase 4: Enable GitHub Pages                                │
-│  - gh api repos/{org}/{repo}/pages                           │
+│  - gh api repos/{org}/HTML-{project-name}/pages              │
 │  - source: branch=main, path=/                               │
 │  - build_type: legacy (no workflow needed)                   │
 └─────────────────────────────────────────────────────────────┘
@@ -105,18 +105,18 @@ Create a new GitHub repository, push HTML files, and enable GitHub Pages for ins
 # Create new repository
 # IMPORTANT: Never push/clone/modify existing repos
 
-gh repo create {org}/{project-name} \
+gh repo create {org}/HTML-{project-name} \
   --public \  # Use --private if flag is set
-  --description "{project-name} - Generated prototype"
+  --description "HTML-{project-name} - Generated prototype"
 
-# Result: https://github.com/{org}/{project-name}
+# Result: https://github.com/{org}/HTML-{project-name}
 ```
 
 ### Step 3: Prepare & Push HTML Files
 
 ```bash
 # Work in temp directory (protect current project)
-TEMP_DIR="/tmp/{project-name}-deploy"
+TEMP_DIR="/tmp/HTML-{project-name}-deploy"
 rm -rf $TEMP_DIR && mkdir -p $TEMP_DIR
 
 # Copy HTML files
@@ -129,9 +129,9 @@ cp $(ls $TEMP_DIR/*.html | head -1) $TEMP_DIR/index.html
 # Initialize git and push
 cd $TEMP_DIR
 git init
-git remote add origin https://github.com/{org}/{project-name}.git
+git remote add origin https://github.com/{org}/HTML-{project-name}.git
 git add .
-git commit -m "Initial commit: {project-name} HTML prototype"
+git commit -m "Initial commit: HTML-{project-name} prototype"
 git branch -M main
 git push -u origin main
 ```
@@ -140,7 +140,7 @@ git push -u origin main
 
 ```bash
 # Enable GitHub Pages (branch mode, no workflow needed)
-gh api repos/{org}/{project-name}/pages \
+gh api repos/{org}/HTML-{project-name}/pages \
   -X POST \
   --input - <<EOF
 {
@@ -162,15 +162,15 @@ EOF
 sleep 30
 
 # Check live site
-curl -s -o /dev/null -w "%{http_code}" https://{org}.github.io/{project-name}/
+curl -s -o /dev/null -w "%{http_code}" https://{org}.github.io/HTML-{project-name}/
 ```
 
 **Output:**
 ```
 ✅ Repository Created & Deployed!
 
-Repository: https://github.com/{org}/{project-name}
-Live URL:   https://{org}.github.io/{project-name}/
+Repository: https://github.com/{org}/HTML-{project-name}
+Live URL:   https://{org}.github.io/HTML-{project-name}/
 
 Files pushed: 12 HTML files
 - index.html (landing page)
@@ -178,7 +178,7 @@ Files pushed: 12 HTML files
 - 02-login-page.html
 - ...
 
-Next step: /set-html-routing ./generated-screens/{project-name} --live-url https://{org}.github.io/{project-name}/
+Next step: /set-html-routing ./generated-screens/{project-name} --live-url https://{org}.github.io/HTML-{project-name}/
 ```
 
 ---
@@ -227,12 +227,12 @@ Make sure the directory contains HTML files.
 ### Repository Already Exists
 
 ```
-ERROR: Repository {org}/{project-name} already exists.
+ERROR: Repository {org}/HTML-{project-name} already exists.
 
 Options:
 1. Use a different project name
 2. Delete the existing repository first:
-   gh repo delete {org}/{project-name} --yes
+   gh repo delete {org}/HTML-{project-name} --yes
 ```
 
 ### No Org Access
@@ -253,7 +253,7 @@ WARNING: Could not enable GitHub Pages.
 
 The repository was created and files pushed, but Pages activation failed.
 You can manually enable Pages in repository settings:
-  https://github.com/{org}/{project-name}/settings/pages
+  https://github.com/{org}/HTML-{project-name}/settings/pages
 ```
 
 ---
@@ -271,8 +271,8 @@ Claude:
    ✅ Access to potentialInc organization
 
 2. Creating repository...
-   gh repo create potentialInc/crowd-building --public
-   ✅ Repository created: https://github.com/potentialInc/crowd-building
+   gh repo create potentialInc/HTML-crowd-building --public
+   ✅ Repository created: https://github.com/potentialInc/HTML-crowd-building
 
 3. Pushing HTML files...
    ✅ 12 files pushed (including index.html)
@@ -286,8 +286,8 @@ Claude:
 
 ✅ Done!
 
-Repository: https://github.com/potentialInc/crowd-building
-Live URL:   https://potentialinc.github.io/crowd-building/
+Repository: https://github.com/potentialInc/HTML-crowd-building
+Live URL:   https://potentialinc.github.io/HTML-crowd-building/
 
 Files pushed:
 - index.html
@@ -298,7 +298,7 @@ Files pushed:
 - ... (12 files total)
 
 Next step:
-/set-html-routing ./generated-screens/crowd-building --live-url https://potentialinc.github.io/crowd-building/
+/set-html-routing ./generated-screens/crowd-building --live-url https://potentialinc.github.io/HTML-crowd-building/
 ```
 
 ---
@@ -338,6 +338,6 @@ PRD prompts.md ──────► ./generated-screens/{project}/ ────
 
 1. **Project naming** - Use lowercase, hyphen-separated (e.g., `crowd-building`)
 2. **Public vs Private** - Prototypes are usually public (free GitHub Pages)
-3. **Pages URL format** - `https://{org}.github.io/{project-name}/`
+3. **Pages URL format** - `https://{org}.github.io/HTML-{project-name}/`
 4. **Build time** - First deployment takes 30 seconds to 1 minute after Pages activation
 5. **index.html** - Landing page is automatically copied as index.html
