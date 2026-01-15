@@ -293,6 +293,7 @@ Next steps:
 
 If setup fails midway, provide cleanup commands:
 
+
 ```bash
 # Remove partially cloned folders
 rm -rf <folder1> <folder2> ...
