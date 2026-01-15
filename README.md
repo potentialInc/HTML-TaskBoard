@@ -391,8 +391,6 @@ Complete annotated structure of the `.claude/` system:
 │   │   └── ...
 │   ├── docs/                       # Generic documentation
 │   │   ├── BEST_PRACTICES.md
-│   │   ├── E2E_TESTING.md
-│   │   ├── TROUBLESHOOTING.md
 │   │   └── NEW_PROJECT_SETUP_GUIDE.md
 │   ├── hooks/                      # Core hooks
 │   │   ├── skill-activation-prompt.sh   # Auto-suggest skills
@@ -1722,14 +1720,6 @@ For advanced use cases, refer to these detailed guides:
 - **PATTERNS_LIBRARY.md**: Common skill patterns
   - Location: `.claude/base/skills/skill-developer/PATTERNS_LIBRARY.md`
 
-### Testing
-- **E2E_TESTING.md**: Playwright test patterns
-  - Location: `.claude/base/docs/E2E_TESTING.md`
-
-### Troubleshooting
-- **TROUBLESHOOTING.md**: Comprehensive problem-solving guide
-  - Location: `.claude/base/docs/TROUBLESHOOTING.md`
-
 </details>
 
 ---
@@ -1737,6 +1727,5 @@ For advanced use cases, refer to these detailed guides:
 ## Need Help?
 
 - **Documentation**: Check the `docs/` folder for detailed guides
-- **Troubleshooting**: See [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
 - **Questions**: Ask Claude! It knows this system.
 - **Issues**: Report at your project's issue tracker
