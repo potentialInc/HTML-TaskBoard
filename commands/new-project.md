@@ -3,7 +3,7 @@ description: Create a complete new project with Claude config and boilerplate co
 argument-hint: Project name (e.g., monkey, coaching-platform)
 ---
 
-You are a full project setup assistant. This command combines `/init-claude-config` and `/create-mono-repo` into a single streamlined workflow.
+You are a full project setup assistant. This command creates a new project with the shared claude-workflow as `.claude` submodule.
 
 ## Step 0: Get Project Name
 
@@ -58,8 +58,8 @@ Display the planned structure and ask for confirmation:
 === Project Setup Plan: $PROJECT_NAME ===
 
 Claude Configuration:
-  - Repo: potentialInc/$PROJECT_NAME-claude
-  - Submodules: base, $BACKEND, $FRONTENDS
+  - Uses shared claude-workflow submodule
+  - Contains: base, nestjs, react, react-native skills
 
 Boilerplate Code:
   - backend/                  ← nestjs-starter-kit (if NestJS)
@@ -90,108 +90,22 @@ fi
 git init 2>/dev/null || true
 ```
 
-## Step 4: Set Up Claude Configuration
+## Step 4: Add Claude Configuration
 
-Execute the `/init-claude-config` workflow internally:
-
-### 4.1 Create Config Repo on GitHub
+Add the shared claude-workflow as `.claude` submodule:
 
 ```bash
-gh repo create potentialInc/$PROJECT_NAME-claude --public --description "Claude Code configuration for $PROJECT_NAME"
-git clone https://github.com/potentialInc/$PROJECT_NAME-claude.git /tmp/$PROJECT_NAME-claude
-cd /tmp/$PROJECT_NAME-claude
-```
-
-### 4.2 Add Framework Submodules
-
-```bash
-# Always add base
-git submodule add https://github.com/potentialInc/claude-base.git base
-```
-
-Based on `$BACKEND`:
-- NestJS: `git submodule add https://github.com/potentialInc/claude-nestjs.git nestjs`
-- Django: `git submodule add https://github.com/potentialInc/claude-django.git django`
-
-Based on `$FRONTENDS` and `$DASHBOARD`:
-- React (if in $FRONTENDS OR $DASHBOARD is true): `git submodule add https://github.com/potentialInc/claude-react.git react`
-- React Native (if in $FRONTENDS): `git submodule add https://github.com/potentialInc/claude-react-native.git react-native`
-
-```bash
+git submodule add https://github.com/potentialInc/claude-workflow.git .claude
 git submodule update --init --recursive
 ```
 
-### 4.3 Create Config Structure
-
-```bash
-mkdir -p agents hooks skills
-ln -s base/commands commands
-
-cat > .gitignore << 'EOF'
-settings.local.json
-*.local.*
-EOF
-
-cat > settings.json << 'EOF'
-{
-  "hooks": {
-    "UserPromptSubmit": [],
-    "PostToolUse": [],
-    "Stop": []
-  },
-  "mcpServers": {}
-}
-EOF
-
-cat > skills/skill-rules.json << 'EOF'
-{
-  "version": "1.0",
-  "skills": {
-    "backend-dev-guidelines": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "high",
-      "promptTriggers": {
-        "keywords": ["api", "backend", "controller", "service", "entity", "repository"]
-      }
-    },
-    "frontend-dev-guidelines": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "high",
-      "promptTriggers": {
-        "keywords": ["react", "component", "frontend", "ui", "tsx", "page"]
-      }
-    }
-  }
-}
-EOF
-```
-
-### 4.4 Push Config Repo
-
-```bash
-git add -A
-git commit -m "$(cat <<'EOF'
-feat: Initialize Claude Code config with modular submodules
-
-Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
-EOF
-)"
-git push -u origin main
-```
-
-### 4.5 Add .claude Submodule to Project
-
-```bash
-cd $PROJECT_DIR
-git submodule add https://github.com/potentialInc/$PROJECT_NAME-claude.git .claude
-git submodule update --init --recursive
-```
+This provides:
+- `base/` - shared commands and skills
+- `nestjs/` - NestJS-specific skills
+- `react/` - React web skills
+- `react-native/` - React Native mobile skills
 
 ## Step 5: Clone Boilerplate Repositories
-
-Execute the `/create-mono-repo` workflow internally (without interactive prompts):
 
 ### Boilerplate Mapping
 
@@ -327,7 +241,7 @@ docker-compose up -d
 
 ```
 $PROJECT_NAME/
-├── .claude/              # Claude Code configuration
+├── .claude/              # Claude Code configuration (shared)
 ├── .claude-project/      # Project documentation
 ├── backend/              # Backend API
 ├── frontend/             # Web frontend
@@ -374,7 +288,7 @@ git add -A
 git commit -m "$(cat <<'EOF'
 feat: Initial $PROJECT_NAME project setup
 
-- .claude/ submodule for Claude Code configuration
+- .claude/ submodule using shared claude-workflow
 - Backend: $BACKEND
 - Frontend: $FRONTENDS
 - Docker orchestration configured
@@ -426,10 +340,11 @@ git checkout main
 === Project Setup Complete ===
 
 $PROJECT_NAME/
-├── .claude/                    # Claude Code config
-│   ├── base/                   → claude-base
-│   ├── $BACKEND/               → claude-$BACKEND
-│   └── ...
+├── .claude/                    # Shared claude-workflow
+│   ├── base/                   → shared commands/skills
+│   ├── nestjs/                 → NestJS skills
+│   ├── react/                  → React skills
+│   └── react-native/           → React Native skills
 ├── .claude-project/            # Project docs
 │   ├── plans/
 │   │   ├── backend/
@@ -448,9 +363,12 @@ $PROJECT_NAME/
 ├── .gitignore
 └── README.md
 
-GitHub Repos Created:
-- https://github.com/potentialInc/$PROJECT_NAME (Main project - private)
-- https://github.com/potentialInc/$PROJECT_NAME-claude (Claude config - public)
+GitHub Repo Created:
+- https://github.com/potentialInc/$PROJECT_NAME (private)
+
+Claude Configuration:
+- Uses shared claude-workflow submodule
+- https://github.com/potentialInc/claude-workflow
 
 Branches Created:
 - main (production-ready code)
@@ -479,7 +397,6 @@ If setup fails midway:
 # Clean up local
 rm -rf backend frontend frontend-dashboard mobile .claude .claude-project docker-compose.yml
 
-# Clean up GitHub (if repos were created)
+# Clean up GitHub (if repo was created)
 gh repo delete potentialInc/$PROJECT_NAME --yes
-gh repo delete potentialInc/$PROJECT_NAME-claude --yes
 ```
