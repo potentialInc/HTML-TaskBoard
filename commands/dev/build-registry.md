@@ -20,7 +20,7 @@ Scan for command files and extract metadata from frontmatter.
 
 ```bash
 echo "=== Discovering Commands ==="
-find .claude -path "*commands/*.md" -type f 2>/dev/null | sort
+find .claude -path "*commands/*/*.md" -type f 2>/dev/null | sort
 ```
 
 For each command file found, read it and extract:

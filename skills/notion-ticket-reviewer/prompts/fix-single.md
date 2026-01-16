@@ -197,4 +197,4 @@ When completing a ticket, the Dev's Comment is updated:
 - [review-tickets.md](./review-tickets.md) - Review all tickets
 - [update-ticket.md](./update-ticket.md) - Update ticket status
 - [fix-all-by-status.md](./fix-all-by-status.md) - Fix all tickets by status
-- [../../../commands/fix-ticket.md](../../../commands/fix-ticket.md) - Full command documentation
+- [../../../commands/dev/fix-ticket.md](../../../commands/dev/fix-ticket.md) - Full command documentation

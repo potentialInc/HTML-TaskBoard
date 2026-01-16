@@ -58,7 +58,7 @@ done
 
 **Example checks:**
 ```bash
-ls .claude/base/commands/ralph.md
+ls .claude/base/commands/dev/ralph.md
 ls .claude/react/skills/design-qa-patterns.md
 ls .claude/react/agents/frontend-developer.md
 ```
@@ -142,7 +142,7 @@ CLAUDE.md
 .claude/nestjs/README.md
 
 # Command files (they reference skills)
-.claude/base/commands/*.md
+.claude/base/commands/**/*.md
 ```
 
 **Report format:**
@@ -151,7 +151,7 @@ CLAUDE.md
 
 References to non-existent resources:
   - CLAUDE.md:45 mentions "database-verification" skill (NOT IN REGISTRY)
-  - .claude/base/commands/fullstack.md:23 references "api-validator" (NOT IN REGISTRY)
+  - .claude/base/commands/dev/fullstack.md:23 references "api-validator" (NOT IN REGISTRY)
 
 Possible causes:
   - Skill was renamed or removed

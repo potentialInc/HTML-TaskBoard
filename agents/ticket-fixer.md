@@ -183,5 +183,5 @@ Action Required:
 
 ## Related
 
-- [fix-ticket command](../commands/fix-ticket.md)
+- [fix-ticket command](../commands/dev/fix-ticket.md)
 - [notion-ticket-reviewer skill](../skills/notion-ticket-reviewer/SKILL.md)
