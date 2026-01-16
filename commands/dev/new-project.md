@@ -35,20 +35,30 @@ At least one must be selected. Both can be selected.
 Store as:
 - `$FRONTENDS` = array of ["react", "react-native"] (at least one required)
 
-### Dashboard(s) (Optional, multiSelect: true)
+### Dashboard(s) (Optional)
 
-**What dashboards do you need?**
+**How many web dashboards do you need?**
 
-| Option | Description |
-|--------|-------------|
-| **Admin Dashboard** | Create `frontend-admin-dashboard/` for system administration |
-| **Coach Dashboard** | Create `frontend-coach-dashboard/` for coach/user-specific features |
-| **None** | No dashboard needed |
+Use **AskUserQuestion** to gather dashboard requirements:
+
+Question: "How many web dashboards do you need?"
+Header: "Dashboards"
+Options:
+  1. "None" - No dashboard needed
+  2. "1 Dashboard" - Single dashboard (e.g., Admin)
+  3. "2 Dashboards" - Two dashboards (e.g., Admin + Coach)
+  4. "3+ Dashboards" - Three or more dashboards
+
+**If user selects 1+ dashboards**, ask follow-up for EACH dashboard:
+
+Question: "What is the name/purpose of dashboard #N?" (User enters custom text: "Admin", "Coach", "Partner", "Vendor", etc.)
+Header: "Dashboard #N"
 
 Note: Dashboards use React Web (Next.js). Can be selected regardless of frontend choice (e.g., React Native mobile + React dashboard).
 
 Store as:
-- `$DASHBOARDS` = array of ["admin", "coach"] (can be empty or have both)
+- `$DASHBOARDS` = array of dashboard names (e.g., ["admin", "coach", "partner"])
+- Each dashboard creates folder: `frontend-{name}-dashboard/`
 
 ## Step 2: Confirm Project Structure
 
@@ -65,8 +75,7 @@ Boilerplate Code:
   - backend/                  ← nestjs-starter-kit (if NestJS)
   - backend/                  ← django-starter-kit (if Django)
   - frontend/                 ← react-starter-kit (if React Web)
-  - frontend-admin-dashboard/ ← react-starter-kit (if Admin Dashboard)
-  - frontend-coach-dashboard/ ← react-starter-kit (if Coach Dashboard)
+  - frontend-{name}-dashboard/ ← react-starter-kit (for each dashboard in $DASHBOARDS)
   - mobile/                   ← react-native-starter-kit (if React Native)
 
 Project Documentation:
@@ -95,7 +104,7 @@ git init 2>/dev/null || true
 Add the shared claude-workflow as `.claude` submodule:
 
 ```bash
-git submodule add https://github.com/potentialInc/claude-workflow.git .claude
+git submodule add --branch dev https://github.com/potentialInc/claude-workflow.git .claude
 git submodule update --init --recursive
 ```
 
@@ -115,8 +124,7 @@ This provides:
 | NestJS | `https://github.com/potentialInc/nestjs-starter-kit` | `backend/` |
 | Django | `https://github.com/potentialInc/django-starter-kit` | `backend/` |
 | React Web | `https://github.com/potentialInc/react-starter-kit` | `frontend/` |
-| Admin Dashboard | `https://github.com/potentialInc/react-starter-kit` | `frontend-admin-dashboard/` |
-| Coach Dashboard | `https://github.com/potentialInc/react-starter-kit` | `frontend-coach-dashboard/` |
+| Dashboard (each) | `https://github.com/potentialInc/react-starter-kit` | `frontend-{name}-dashboard/` |
 | React Native | `https://github.com/potentialInc/react-native-starter-kit` | `mobile/` |
 
 ### Clone Each Selected Repo
@@ -167,27 +175,16 @@ services:
     networks:
       - $PROJECT_NAME-network
 
-  # Admin Dashboard service (if selected)
-  frontend-admin-dashboard:
+  # Dashboard services (for each dashboard in $DASHBOARDS)
+  # Port assignment: 5174 + index (e.g., admin=5174, coach=5175, partner=5176)
+  frontend-{name}-dashboard:
     build:
-      context: ./frontend-admin-dashboard
+      context: ./frontend-{name}-dashboard
       dockerfile: Dockerfile
-    container_name: $PROJECT_NAME-admin-dashboard
+    container_name: $PROJECT_NAME-{name}-dashboard
     restart: unless-stopped
     ports:
-      - '5174:5173'
-    networks:
-      - $PROJECT_NAME-network
-
-  # Coach Dashboard service (if selected)
-  frontend-coach-dashboard:
-    build:
-      context: ./frontend-coach-dashboard
-      dockerfile: Dockerfile
-    container_name: $PROJECT_NAME-coach-dashboard
-    restart: unless-stopped
-    ports:
-      - '5175:5173'
+      - '{5174 + index}:5173'
     networks:
       - $PROJECT_NAME-network
 
@@ -215,6 +212,16 @@ find .claude-project -name "*.md" -exec sed -i '' "s/\$BACKEND/$BACKEND/g" {} \;
 
 # Replace $FRONTENDS placeholder
 find .claude-project -name "*.md" -exec sed -i '' "s/\$FRONTENDS/$FRONTENDS/g" {} \;
+
+# Create dashboard-specific plan folders from generic template
+for dashboard in $DASHBOARDS; do
+  mkdir -p .claude-project/plans/frontend-${dashboard}-dashboard/
+  cp .claude/base/templates/claude-project/plans/frontend-dashboard/* \
+     .claude-project/plans/frontend-${dashboard}-dashboard/
+done
+
+# Remove generic template folder (already copied to specific dashboards)
+rm -rf .claude-project/plans/frontend-dashboard/
 
 # Append gitignore rules from template
 cat .claude-project/gitignore.template >> .gitignore
@@ -351,15 +358,13 @@ $PROJECT_NAME/
 │   ├── plans/
 │   │   ├── backend/
 │   │   ├── frontend/
-│   │   ├── frontend-admin-dashboard/
-│   │   ├── frontend-coach-dashboard/
+│   │   ├── frontend-{name}-dashboard/  # For each dashboard
 │   │   └── mobile/
 │   ├── memory/
 │   └── docs/
 ├── backend/                    # $BACKEND boilerplate
 ├── frontend/                   # React Web (if selected)
-├── frontend-admin-dashboard/   # Admin Dashboard (if selected)
-├── frontend-coach-dashboard/   # Coach Dashboard (if selected)
+├── frontend-{name}-dashboard/  # For each dashboard in $DASHBOARDS
 ├── mobile/                     # React Native (if selected)
 ├── docker-compose.yml
 ├── .gitignore
