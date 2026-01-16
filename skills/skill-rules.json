@@ -65,26 +65,6 @@
         ]
       }
     },
-    "e2e-testing": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "medium",
-      "promptTriggers": {
-        "keywords": ["e2e test", "playwright", "test fixtures", "page objects", "end to end", "e2e fixtures"],
-        "intentPatterns": [
-          "(create|add|write|generate).*?e2e.*?test",
-          "(playwright|e2e).*?(fixture|page.*object)",
-          "test.*?(fixture|page.*object)"
-        ]
-      },
-      "fileTriggers": {
-        "pathPatterns": [
-          "**/test/**/*.spec.ts",
-          "**/e2e/**/*.ts",
-          "**/playwright/**/*.ts"
-        ]
-      }
-    },
     "git-workflow": {
       "type": "domain",
       "enforcement": "suggest",
@@ -95,37 +75,6 @@
           "(create|make|open).*?pr",
           "(push|submit).*?dev",
           "pull.*?request.*?dev"
-        ]
-      }
-    },
-    "debugging": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "medium",
-      "promptTriggers": {
-        "keywords": ["fix bug", "debug", "react error", "frontend bug", "typescript error", "runtime error"],
-        "intentPatterns": [
-          "(fix|debug|solve|resolve).*?bug",
-          "(react|frontend|typescript).*?error",
-          "troubleshoot.*?(issue|problem|error)"
-        ]
-      }
-    },
-    "code-quality": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "low",
-      "promptTriggers": {
-        "keywords": ["organize types", "typescript types", "type organization", "refactor types", "centralize types"],
-        "intentPatterns": [
-          "(organize|clean|refactor|centralize).*?types",
-          "type.*?(organization|structure|cleanup)"
-        ]
-      },
-      "fileTriggers": {
-        "pathPatterns": [
-          "**/types/**/*.ts",
-          "**/types/**/*.d.ts"
         ]
       }
     }
