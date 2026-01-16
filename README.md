@@ -383,12 +383,12 @@ Complete annotated structure of the `.claude/` system:
 │   │   ├── documentation-architect.md
 │   │   ├── refactor-planner.md
 │   │   └── README.md
-│   ├── commands/                   # Slash commands
-│   │   ├── commit.md               # /commit - Git workflow
-│   │   ├── pull.md                 # /pull - Sync repos
-│   │   ├── ralph.md                # /ralph - Autonomous loops
-│   │   ├── new-project.md          # /new-project - Bootstrap
-│   │   └── ...
+│   ├── commands/                   # Slash commands (categorized)
+│   │   ├── design/                 # Design workflow (/figma-extract-screens, /prd-to-design-prompts)
+│   │   ├── dev/                    # Development (/ralph, /fullstack, /new-project)
+│   │   ├── git/                    # Git operations (/commit, /pull, /git-create)
+│   │   ├── operation/              # Operations (/generate-prd, /generate-ppt)
+│   │   └── utility/                # Utilities (/md-to-pdf, /notify-slack)
 │   ├── docs/                       # Generic documentation
 │   │   ├── BEST_PRACTICES.md
 │   │   └── NEW_PROJECT_SETUP_GUIDE.md
@@ -977,7 +977,7 @@ The `claude-registry.json` contains:
     "commands": {
       "ralph": {
         "source": "base",
-        "file": ".claude/base/commands/ralph.md",
+        "file": ".claude/base/commands/dev/ralph.md",
         "description": "Run autonomous workflow loops",
         "references": {
           "documentedIn": ["CLAUDE.md", ".claude/base/README.md"],

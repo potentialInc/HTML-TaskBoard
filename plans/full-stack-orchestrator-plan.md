@@ -532,7 +532,7 @@ aws ecs update-service --cluster $CLUSTER --service $SERVICE --force-new-deploym
 ## Implementation Files to Create
 
 ### 1. Master Command
-**File:** `.claude/base/commands/fullstack.md`
+**File:** `.claude/base/commands/dev/fullstack.md`
 
 ### 2. Pipeline Status Template
 **File:** `.claude/base/templates/claude-project/PIPELINE_STATUS.template.md`
@@ -567,7 +567,7 @@ aws ecs update-service --cluster $CLUSTER --service $SERVICE --force-new-deploym
 
 | File | Changes |
 |------|---------|
-| `.claude/base/commands/ralph.md` | Add new workflows to registry |
+| `.claude/base/commands/dev/ralph.md` | Add new workflows to registry |
 | `.claude/base/templates/claude-project/plans/` | Add phase tracking columns |
 
 ---
