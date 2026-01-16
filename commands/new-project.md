@@ -59,7 +59,7 @@ Display the planned structure and ask for confirmation:
 
 Claude Configuration:
   - Uses shared claude-workflow submodule
-  - Contains: base, nestjs, react, react-native skills
+  - Contains: base, nestjs, django, react, react-native skills
 
 Boilerplate Code:
   - backend/                  ← nestjs-starter-kit (if NestJS)
@@ -101,7 +101,8 @@ git submodule update --init --recursive
 
 This provides:
 - `base/` - shared commands and skills
-- `nestjs/` - NestJS-specific skills
+- `nestjs/` - NestJS backend skills
+- `django/` - Django REST Framework skills
 - `react/` - React web skills
 - `react-native/` - React Native mobile skills
 
@@ -342,9 +343,10 @@ git checkout main
 $PROJECT_NAME/
 ├── .claude/                    # Shared claude-workflow
 │   ├── base/                   → shared commands/skills
-│   ├── nestjs/                 → NestJS skills
-│   ├── react/                  → React skills
-│   └── react-native/           → React Native skills
+│   ├── nestjs/                 → NestJS backend skills
+│   ├── django/                 → Django REST Framework skills
+│   ├── react/                  → React web skills
+│   └── react-native/           → React Native mobile skills
 ├── .claude-project/            # Project docs
 │   ├── plans/
 │   │   ├── backend/
