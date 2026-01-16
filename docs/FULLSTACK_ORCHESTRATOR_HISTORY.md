@@ -199,7 +199,7 @@ Ralph is perfect for many items, but 9 phases don't need autonomous loops.
 
 ```
 Base tier (unique to /fullstack):
-├── .claude/base/commands/fullstack.md           # Orchestrator
+├── .claude/base/commands/dev/fullstack.md       # Orchestrator
 ├── .claude/base/templates/PIPELINE_STATUS.template.md
 └── .claude/base/skills/fullstack/
     ├── project-init.md                          # Unique
@@ -296,10 +296,10 @@ Referenced from existing tiers:
 
 ## Related Documentation
 
-- [fullstack.md](../commands/fullstack.md) - Command reference
+- [fullstack.md](../commands/dev/fullstack.md) - Command reference
 - [PIPELINE_STATUS.template.md](../templates/PIPELINE_STATUS.template.md) - Status file template
 - [base/README.md](../README.md) - 3-tier architecture overview
-- [ralph.md](../commands/ralph.md) - Ralph workflow reference
+- [ralph.md](../commands/dev/ralph.md) - Ralph workflow reference
 
 ---
 
