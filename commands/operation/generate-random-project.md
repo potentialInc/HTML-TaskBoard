@@ -86,6 +86,34 @@ Options:
 
 ---
 
+### Step 1.5: Check Existing Projects (Duplicate Prevention)
+
+Before generating a new project, scan existing projects to avoid duplicates.
+
+**Scan directories:**
+```bash
+ls .claude-project/training/*.md 2>/dev/null | xargs -I {} basename {} .md | cut -d'_' -f1 | sort -u
+ls .claude-project/prd/*.md 2>/dev/null | xargs -I {} basename {} .md | sed 's/_PRD_.*//' | sort -u
+```
+
+**Store existing project names:**
+- Extract project names from training files (format: `[ProjectName]_YYMMDD_HHMMSS.md`)
+- Extract project names from PRD files (format: `[ProjectName]_PRD_YYMMDD.md`)
+- Create a combined list of existing project names: `$EXISTING_PROJECTS`
+
+**Duplicate prevention rules:**
+1. When generating an app name in Step 3.1, check against `$EXISTING_PROJECTS`
+2. If the generated name already exists:
+   - First attempt: Add a unique suffix (e.g., "QuickBite" → "QuickBite Pro", "QuickBite Plus", "QuickBite Express")
+   - Second attempt: If still duplicate, select a different app name entirely
+   - Third attempt: If the domain is exhausted, select a different domain and regenerate
+3. The final app name **MUST** be unique before proceeding to Step 4
+
+**Available name suffixes for duplicates:**
+- Pro, Plus, Elite, Express, Hub, Connect, Link, Go, Now, Max
+
+---
+
 ### Step 2: Select Random Domain
 
 Randomly select one domain from the following list. Each domain comes with associated characteristics.
@@ -116,6 +144,11 @@ Generate realistic project details scaled to the selected difficulty level.
 **App Name Generation:**
 - Combine domain-relevant prefix with creative suffix
 - Examples: "MediConnect", "LearnHub Pro", "FitTrack Elite", "QuickBite"
+- **CRITICAL: Validate against `$EXISTING_PROJECTS` from Step 1.5**
+- If name already exists in `$EXISTING_PROJECTS`:
+  1. Try adding suffixes: "Pro", "Plus", "Elite", "Express", "Hub", "Connect", "Link", "Go", "Now", "Max"
+  2. If still duplicate, generate a completely different name for the same domain
+  3. If all attempts fail for this domain, select a different domain and regenerate
 
 **App Type Selection (based on tech stack):**
 - If `$FRONTEND` = "react" → Web
