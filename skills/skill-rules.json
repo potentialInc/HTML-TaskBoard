@@ -6,6 +6,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "medium",
+      "file": "skill-developer/SKILL.md",
       "promptTriggers": {
         "keywords": ["create skill", "new skill", "skill development", "skill-rules", "build skill"],
         "intentPatterns": [
@@ -18,6 +19,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "medium",
+      "file": "generate-ppt/SKILL.md",
       "promptTriggers": {
         "keywords": ["presentation", "ppt", "powerpoint", "slides", "reveal.js", "townhall", "deck", "generate-ppt"],
         "intentPatterns": [
@@ -38,6 +40,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "high",
+      "file": "notion-ticket-reviewer/SKILL.md",
       "promptTriggers": {
         "keywords": ["notion ticket", "review ticket", "notion task", "ticket reviewer", "notion database", "notion review", "fix ticket"],
         "intentPatterns": [
@@ -69,6 +72,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "medium",
+      "file": "git-workflow/create-dev-pr.md",
       "promptTriggers": {
         "keywords": ["create pr", "pull request", "dev branch", "push to dev", "pr to dev"],
         "intentPatterns": [
