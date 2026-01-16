@@ -228,16 +228,73 @@ Create the PRD following this structure:
 
 # Part 3: Admin Dashboard PRD
 
+## Admin Dashboard Standard Features
+
+All admin dashboard pages should include the following standard features unless otherwise specified.
+
+### List Page Standard Features
+
+| Feature | Description | Required |
+|---------|-------------|:--------:|
+| **Search** | Keyword search field (name, ID, email, etc.) | ✅ |
+| **Filters** | Status / Date / Category dropdown filters | ✅ |
+| **Column Sorting** | Click table header to sort ASC/DESC | ✅ |
+| **Checkbox Selection** | Row checkboxes + Select All checkbox | ✅ |
+| **Bulk Actions** | Bulk delete / Status change / Export for selected items | ✅ |
+| **Pagination** | Page navigation + Items per page selector (10/25/50/100) | ✅ |
+
+### Table UI Standard Features
+
+| Feature | Description | Required |
+|---------|-------------|:--------:|
+| **Loading State** | Skeleton or spinner while data loads | ✅ |
+| **Empty State** | Message displayed when no data exists | ✅ |
+| **Action Column** | Edit / Delete / View Detail buttons per row | ✅ |
+
+### Detail/Edit Standard Features
+
+| Feature | Description | Required |
+|---------|-------------|:--------:|
+| **Detail Drawer/Modal** | Click row to open detail panel | ✅ |
+| **Edit Form** | Switch to edit mode within detail view | ✅ |
+| **Delete Confirmation** | Confirmation dialog before deletion | ✅ |
+| **Audit Log** | Track who/when/what was modified | Optional |
+
+### Data Export Standard Features
+
+| Feature | Description | Required |
+|---------|-------------|:--------:|
+| **CSV/Excel Download** | Export current filtered/searched results | ✅ |
+| **Date Range Selection** | Period filter for export | ✅ |
+
+### Common UI/UX Standard Features
+
+| Feature | Description | Required |
+|---------|-------------|:--------:|
+| **Toast Notifications** | Success/Error feedback messages | ✅ |
+| **Breadcrumb** | Current location navigation | ✅ |
+| **Create Modal/Drawer** | Form for adding new items | ✅ |
+
+---
+
 ## Page Architecture & Feature Specification
 
-### Dashboard Page
-[Configure dashboard based on core app features]
+### Dashboard Home Page
 
-**Card Components**
-- [Key statistics managed in the app]
+**Statistics Cards**
+- [Key metrics - total users, today's signups, active sessions, etc.]
+- Show increase/decrease percentage compared to previous period
 
-**Additional Components (based on app features)**
-- [Components needed - calendar, charts, notifications, etc.]
+**Period Filter**
+- Today / Last 7 days / Last 30 days / Custom date range
+
+**Charts**
+- [Trend visualization - line/bar charts based on app metrics]
+
+**Recent Activity**
+- [Recently created/modified items list]
+
+---
 
 ## User Management
 
@@ -247,25 +304,34 @@ Create the PRD following this structure:
 
 **Main Page**
 1. Top Area:
-   - Filters: [Filter options]
-   - Search: [Search fields]
+   - Search: [Keyword search - name, email, ID]
+   - Filters: [Status (Active/Inactive), Date range, Role]
    - Create button → Creation Modal
-   - Action button: [Actions]
+   - Bulk Action dropdown: [Delete / Activate / Deactivate / Export]
 
-2. List Item Component:
-   - [Fields]
-   - [Action column]
+2. Table Component:
+   - Checkbox column (with Select All)
+   - [Data columns - name, email, status, created at, last login, etc.]
+   - Action column: [View / Edit / Delete]
 
-3. Bulk Action: [Bulk operations - if needed]
-4. Sort Order: [Sorting options]
+3. Table Features:
+   - Column sorting (click header)
+   - Pagination with items per page selector
 
 **Creation Modal**
-- Input fields: [Fields]
+- Input fields: [Required fields based on user type]
 - Create button / Cancel button
 
 **Detail Drawer**
-- Header Info: [Display information]
-- Sub-tabs: [Sub-tabs - if needed]
+- Header Info: [User profile information]
+- Account Actions:
+  - Activate / Deactivate account
+  - Reset password (issue temporary password)
+  - Change role/permissions
+- Activity Log: [Recent user activities]
+- Timestamps: Created at / Last login / Last modified
+
+---
 
 ## Feature Management
 
@@ -274,20 +340,42 @@ Create the PRD following this structure:
 ### [Feature Name] Management Page
 
 **Main Page**
-- List Component: [List items]
-- Search: [Search options]
-- Actions: [Actions]
+1. Top Area:
+   - Search: [Relevant search fields]
+   - Filters: [Status, Category, Date range]
+   - Create button → Creation Modal
+   - Bulk Action dropdown: [Delete / Status change / Export]
 
-**Detail/Edit View**
-- [Detail information]
-- [Editable items]
+2. Table Component:
+   - Checkbox column (with Select All)
+   - [Data columns specific to feature]
+   - Action column: [View / Edit / Delete]
 
-## Export / Data Download (if applicable)
+3. Table Features:
+   - Column sorting (click header)
+   - Pagination with items per page selector
+
+**Creation Modal**
+- Input fields: [Fields specific to feature]
+- Create button / Cancel button
+
+**Detail Drawer/Modal**
+- [Detail information display]
+- Edit mode toggle
+- Delete with confirmation
+- Audit log (if applicable)
+
+---
+
+## Export / Data Download
 
 **Data Download**
 - [Downloadable data - based on collected data in the app]
-- Format: CSV
-- Filter: All time / Custom date range
+- Format: CSV / Excel
+- Filter Options:
+  - All time
+  - Custom date range
+  - Current filtered results
 
 ---
 

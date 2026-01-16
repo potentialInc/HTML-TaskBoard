@@ -1,0 +1,148 @@
+# QuickBite - Client Requirements
+
+## Basic Info
+
+**1. App Name:** QuickBite
+
+**2. App Type:** App (iOS + Android)
+
+**3. Deadline:** Training Project - No deadline
+
+**4. All User Types:**
+- Customer
+- Restaurant Owner
+
+**5. User Roles & Permissions:**
+- **Customer**: Browse restaurants, view menus, place orders, track delivery status, manage saved addresses, view order history, leave reviews
+- **Restaurant Owner**: Manage menu items (add/edit/delete), view incoming orders, update order status, view sales summary, manage restaurant profile
+
+**6. User Relationships:**
+- Customer to Restaurant: N:N (one customer can order from many restaurants, one restaurant serves many customers)
+- Orders: 1:N (one customer has many orders, one restaurant has many orders)
+
+---
+
+## Design Reference
+
+**7. Reference App:**
+- **Uber Eats**: Clean card-based restaurant listings, smooth order tracking flow
+- **DoorDash**: Simple category filters, straightforward checkout process
+
+**8. What makes your app special:**
+- Focus on local neighborhood restaurants only (5km radius)
+- "Ready in X minutes" real-time preparation estimates
+- Simple, no-clutter interface optimized for quick ordering
+
+**9. Preferred Main Color:** Orange (#FF6B35) - energetic and appetite-stimulating
+
+**10. Preferred Font:** Poppins - modern and friendly
+
+---
+
+## Features
+
+**11. Main Features (per user type):**
+
+### Customer
+- Browse nearby restaurants with category filters
+- View restaurant menu with item details and photos
+- Add items to cart and place orders
+- Track order status (Confirmed → Preparing → Ready for Pickup/Out for Delivery)
+- View order history
+- Save favorite restaurants
+
+### Restaurant Owner
+- Dashboard with today's orders summary
+- Manage menu items (add, edit, delete, mark unavailable)
+- Receive and process incoming orders
+- Update order status
+- View basic sales reports (daily/weekly)
+
+**12. Main Feature Module Flow:**
+
+### Module: Place Order
+1. Customer browses restaurant list on Home
+2. Customer taps restaurant to view menu
+3. Customer adds items to cart with quantity
+4. Customer taps "Checkout" button
+5. Customer confirms delivery address and payment
+6. System creates order and notifies restaurant
+7. Customer sees order confirmation with estimated time
+
+### Module: Process Order (Restaurant)
+1. Restaurant Owner receives push notification for new order
+2. Restaurant Owner views order details on Orders tab
+3. Restaurant Owner taps "Accept Order"
+4. System updates order status to "Preparing"
+5. Restaurant Owner taps "Ready" when food is prepared
+6. System notifies Customer that order is ready
+
+### Module: Menu Management
+1. Restaurant Owner navigates to Menu tab
+2. Restaurant Owner taps "Add Item" button
+3. Restaurant Owner enters item name, description, price, photo
+4. Restaurant Owner selects category
+5. Restaurant Owner taps "Save"
+6. System adds item to menu, visible to customers
+
+**13. Authentication Method:**
+- **Login:** Email/Password, Google Sign-in
+- **Signup required fields:** Email, Password, Full Name, Phone Number
+- **Signup optional fields:** Profile Photo
+
+**14. Communication Features:**
+- **Chat:** No
+- **Video call:** No
+- **Push notifications:** Yes - Order status updates, new order alerts for restaurants
+
+---
+
+## Data
+
+**15. Data to Collect:**
+- User profiles (name, email, phone, addresses)
+- Restaurant profiles (name, address, cuisine type, operating hours)
+- Menu items (name, description, price, category, availability)
+- Orders (items, quantities, total, status, timestamps)
+- Reviews (rating, comment, date)
+
+**16. Data to Export:**
+- Restaurant Owner: Daily/weekly order summary (CSV)
+- Admin: User and restaurant lists (CSV)
+
+---
+
+## Technical
+
+**17. 3rd Party Integrations:**
+- **Google Authentication**: Social login for customers
+- **Firebase Cloud Messaging**: Push notifications for order updates
+
+**18. Domain Terminology:**
+
+| Term | Definition |
+|------|------------|
+| Order | A customer's request to purchase menu items from a restaurant |
+| Cart | Temporary collection of items before checkout |
+| Menu Item | A food or beverage product offered by a restaurant |
+| Order Status | Current state of an order (Pending, Confirmed, Preparing, Ready, Delivered, Cancelled) |
+| Cuisine Type | Category of food a restaurant specializes in (Korean, Japanese, Western, etc.) |
+| Pickup | Customer collects order from restaurant location |
+| Delivery | Order is brought to customer's address |
+
+---
+
+## Other
+
+**19. Additional Important Information:**
+- MVP focuses on pickup orders only (no delivery driver matching)
+- Restaurants must be verified before appearing in listings
+- Operating hours should be respected (can't order from closed restaurants)
+- Simple rating system (1-5 stars) without detailed review categories
+- No in-app payment for MVP - cash on pickup only
+
+---
+
+*Generated by /generate-random-project*
+*Difficulty Level: 2*
+*Domain: Food Delivery*

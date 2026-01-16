@@ -1,6 +1,5 @@
 ---
 description: Generate random complex project specifications for team training
-argument-hint: "[--difficulty <1-5>]"
 ---
 
 # Random Project Generator for Training
@@ -13,15 +12,7 @@ Generate detailed, realistic full-stack web/mobile app project specifications fo
 
 ```bash
 /generate-random-project
-/generate-random-project --difficulty 3
-/generate-random-project --difficulty 5
 ```
-
-### Arguments
-
-| Argument | Description | Default |
-|----------|-------------|---------|
-| `--difficulty <1-5>` | Project complexity level (1=simple, 5=expert) | Random (1-5) |
 
 ---
 
@@ -39,22 +30,87 @@ Generate detailed, realistic full-stack web/mobile app project specifications fo
 
 ## Execution Steps
 
-### Step 1: Parse Arguments
+### Step 1: Select Project Configuration
 
-Check `$ARGUMENTS` for the `--difficulty` flag.
+Use **AskUserQuestion** to prompt the user for project configuration options.
 
-**Parsing logic:**
-1. If `--difficulty <N>` is provided:
-   - Validate N is between 1-5
-   - If invalid, output error and stop
-2. If no argument provided:
-   - Randomly select difficulty level (1-5)
+**Question 1: Difficulty Level** (single select)
 
-**Error handling:**
 ```
-Error: Invalid difficulty level. Please use a number between 1 and 5.
-Usage: /generate-random-project --difficulty 3
+Question: "Select the project difficulty level"
+Header: "Difficulty"
+Options:
+  1. "Level 1 (Simple)" - 1-2 user types, 3-5 features, 0-1 integrations
+  2. "Level 2 (Basic)" - 2 user types, 5-7 features, 1-2 integrations
+  3. "Level 3 (Medium)" - 2-3 user types, 7-10 features, 2-3 integrations
+  4. "Level 4 (Complex)" - 3-4 user types, 10-15 features, 3-5 integrations
 ```
+
+If user selects "Other", ask for Level 5 (Expert): 4+ user types, 15+ features, 5+ integrations
+
+**Question 2: Backend Framework** (single select)
+
+```
+Question: "Select the backend framework"
+Header: "Backend"
+Options:
+  1. "NestJS" - TypeScript-based Node.js framework with enterprise architecture
+  2. "Django" - Python-based framework with batteries-included approach
+```
+
+**Question 3: Frontend Framework** (single select)
+
+```
+Question: "Select the frontend framework"
+Header: "Frontend"
+Options:
+  1. "React" - Web application using React.js
+  2. "React Native" - Mobile application using React Native
+```
+
+**Question 4: Admin Dashboard** (single select)
+
+```
+Question: "Include an admin dashboard?"
+Header: "Dashboard"
+Options:
+  1. "Yes" - Include React-based admin dashboard
+  2. "No" - No separate dashboard needed
+```
+
+**Store selections as:**
+- `$DIFFICULTY` = 1 | 2 | 3 | 4 | 5
+- `$BACKEND` = "nestjs" | "django"
+- `$FRONTEND` = "react" | "react-native"
+- `$DASHBOARD` = "yes" | "no"
+
+---
+
+### Step 1.5: Check Existing Projects (Duplicate Prevention)
+
+Before generating a new project, scan existing projects to avoid duplicates.
+
+**Scan directories:**
+```bash
+ls .claude-project/training/*.md 2>/dev/null | xargs -I {} basename {} .md | cut -d'_' -f1 | sort -u
+ls .claude-project/prd/*.md 2>/dev/null | xargs -I {} basename {} .md | sed 's/_PRD_.*//' | sort -u
+```
+
+**Store existing project names:**
+- Extract project names from training files (format: `[ProjectName]_YYMMDD_HHMMSS.md`)
+- Extract project names from PRD files (format: `[ProjectName]_PRD_YYMMDD.md`)
+- Create a combined list of existing project names: `$EXISTING_PROJECTS`
+
+**Duplicate prevention rules:**
+1. When generating an app name in Step 3.1, check against `$EXISTING_PROJECTS`
+2. If the generated name already exists:
+   - First attempt: Add a unique suffix (e.g., "QuickBite" → "QuickBite Pro", "QuickBite Plus", "QuickBite Express")
+   - Second attempt: If still duplicate, select a different app name entirely
+   - Third attempt: If the domain is exhausted, select a different domain and regenerate
+3. The final app name **MUST** be unique before proceeding to Step 4
+
+**Available name suffixes for duplicates:**
+- Pro, Plus, Elite, Express, Hub, Connect, Link, Go, Now, Max
 
 ---
 
@@ -88,11 +144,16 @@ Generate realistic project details scaled to the selected difficulty level.
 **App Name Generation:**
 - Combine domain-relevant prefix with creative suffix
 - Examples: "MediConnect", "LearnHub Pro", "FitTrack Elite", "QuickBite"
+- **CRITICAL: Validate against `$EXISTING_PROJECTS` from Step 1.5**
+- If name already exists in `$EXISTING_PROJECTS`:
+  1. Try adding suffixes: "Pro", "Plus", "Elite", "Express", "Hub", "Connect", "Link", "Go", "Now", "Max"
+  2. If still duplicate, generate a completely different name for the same domain
+  3. If all attempts fail for this domain, select a different domain and regenerate
 
-**App Type Selection (based on difficulty):**
-- Level 1-2: Single platform (App OR Web)
-- Level 3: App + Web (user-facing)
-- Level 4-5: App + Web + Admin Dashboard
+**App Type Selection (based on tech stack):**
+- If `$FRONTEND` = "react" → Web
+- If `$FRONTEND` = "react-native" → App
+- If `$DASHBOARD` = "yes" → + Admin Dashboard
 
 **User Types Generation:**
 - Select appropriate number of user types from domain list based on difficulty
@@ -281,9 +342,19 @@ Generate the output file matching the `/generate-prd` input format:
 
 ---
 
+## Tech Stack
+
+**19. Backend Framework:** [NestJS / Django]
+
+**20. Frontend Framework:** [React / React Native]
+
+**21. Admin Dashboard:** [Yes - React / No]
+
+---
+
 ## Other
 
-**19. Additional Important Information:**
+**22. Additional Important Information:**
 [Any additional context, constraints, or requirements]
 
 ---
@@ -324,6 +395,11 @@ Output a summary before triggering PRD generation. **Always display the full abs
 - **User Types:** [Count] types
 - **Main Features:** [Count] features
 - **Integrations:** [Count] 3rd party services
+
+### Tech Stack
+- **Backend:** [NestJS / Django]
+- **Frontend:** [React / React Native]
+- **Dashboard:** [Yes / No]
 
 ### Output File
 **Full Path:** `/Users/dongsub/Documents/Potential/projects/claude-base/.claude-project/training/[filename].md`
@@ -380,16 +456,6 @@ This creates a PDF at `.claude-project/prd/[ProjectName]_PRD_[YYMMDD].pdf`
 
 ## Error Handling
 
-**Invalid difficulty:**
-```
-Error: Invalid difficulty level "[value]"
-Difficulty must be a number between 1 and 5.
-
-Usage:
-  /generate-random-project              # Random difficulty
-  /generate-random-project --difficulty 3  # Specific difficulty
-```
-
 **File save error:**
 ```
 Error: Unable to save training project file.
@@ -400,7 +466,7 @@ Please check write permissions for .claude-project/training/ directory.
 
 ## Example Output Summary
 
-Running `/generate-random-project --difficulty 4`:
+Running `/generate-random-project`:
 
 ```
 ## Random Project Generated
@@ -412,6 +478,11 @@ Running `/generate-random-project --difficulty 4`:
 - **User Types:** 4 types (Patient, Doctor, Caregiver, Admin)
 - **Main Features:** 12 features
 - **Integrations:** 4 services (Google Auth, Stripe, Twilio, Google Maps)
+
+### Tech Stack
+- **Backend:** NestJS
+- **Frontend:** React Native
+- **Dashboard:** Yes
 
 ### Output File
 **Full Path:** /Users/dongsub/Documents/Potential/projects/claude-base/.claude-project/training/HealthBridge_Pro_260115_143022.md
