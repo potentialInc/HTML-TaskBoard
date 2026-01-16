@@ -58,28 +58,6 @@ Skills are modular knowledge bases that Claude loads when needed. They provide:
 
 ---
 
-### generate-ppt
-
-**Purpose:** Creating HTML presentations with reveal.js
-
-**Files:** 1 main file (SKILL.md)
-
-**Covers:**
-
-- Reveal.js presentation structure
-- Brand-consistent slide design
-- Townhall and meeting decks
-
-**Use when:**
-
-- Creating presentations
-- Building slide decks
-- Generating townhall materials
-
-**[View Skill →](generate-ppt/)**
-
----
-
 ### notion-ticket-reviewer
 
 **Purpose:** Notion database integration for ticket management
