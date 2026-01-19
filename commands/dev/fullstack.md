@@ -73,7 +73,7 @@ What is the project name?
 
 ### Step 2: Locate or Create Status File
 
-Status file path: `.claude-project/plans/{project}/PIPELINE_STATUS.md`
+Status file path: `.claude-project/status/{project}/PIPELINE_STATUS.md`
 
 **If status file doesn't exist:**
 1. Copy template from `.claude/base/templates/PIPELINE_STATUS.template.md`

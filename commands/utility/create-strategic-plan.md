@@ -29,9 +29,9 @@ You are an elite strategic planning specialist. Create a comprehensive, actionab
 
 5. **Create task management structure**:
     - Determine the appropriate output location based on task type:
-        - **Project features/implementation** → `.claude-project/plans/[task-name]/`
+        - **Project features/implementation** → `.claude-project/status/[task-name]/`
         - **Claude config changes** → `.claude/base/plans/[task-name]/` or relevant submodule
-        - **Cross-cutting concerns** → `.claude-project/plans/[task-name]/`
+        - **Cross-cutting concerns** → `.claude-project/status/[task-name]/`
     - Generate three files in the chosen directory:
         - `[task-name]-plan.md` - The comprehensive plan
         - `[task-name]-context.md` - Key files, decisions, dependencies

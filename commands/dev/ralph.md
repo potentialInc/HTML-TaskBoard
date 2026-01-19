@@ -113,7 +113,7 @@ workflows:
 
 ```
 skill_path = .claude/{stack}/skills/{skill}
-status_path = .claude-project/plans/{project}/{status_file}
+status_path = .claude-project/status/{project}/{status_file}
 ```
 
 ### Step 4: Load Skill Content
@@ -136,7 +136,7 @@ Generate the prompt for `/ralph-loop`:
 ## Context
 - Project: {PROJECT}
 - Skill: .claude/{STACK}/skills/{SKILL}
-- Status File: .claude-project/plans/{PROJECT}/{STATUS_FILE}
+- Status File: .claude-project/status/{PROJECT}/{STATUS_FILE}
 
 ## Instructions
 
@@ -201,7 +201,7 @@ Project: {project}
 Stack: {stack}
 
 Skill Path: .claude/{stack}/skills/{skill}
-Status File: .claude-project/plans/{project}/{status_file}
+Status File: .claude-project/status/{project}/{status_file}
 
 Completion Promise: {completion_promise}
 Max Iterations: {max_iterations}

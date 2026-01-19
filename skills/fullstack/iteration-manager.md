@@ -46,7 +46,7 @@ Start a new iteration cycle.
 
 1. **Read Status File**
    ```
-   Read .claude-project/plans/{project}/PIPELINE_STATUS.md
+   Read .claude-project/status/{project}/PIPELINE_STATUS.md
    Parse current iteration number
    ```
 
@@ -228,7 +228,7 @@ Compare all phases against current PRD to identify improvements.
    - Disconnected features
 
 4. **Generate Recommendations**
-   Create `.claude-project/plans/{project}/IMPROVEMENT_RECOMMENDATIONS.md`:
+   Create `.claude-project/status/{project}/IMPROVEMENT_RECOMMENDATIONS.md`:
 
    ```markdown
    # Improvement Recommendations - {project}
@@ -332,7 +332,7 @@ Compare two iterations.
    ```
 
 3. **Output**
-   Display comparison and save to `.claude-project/plans/{project}/COMPARISON_{iter1}_vs_{iter2}.md`
+   Display comparison and save to `.claude-project/status/{project}/COMPARISON_{iter1}_vs_{iter2}.md`
 
 ---
 
