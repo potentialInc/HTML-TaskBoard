@@ -1545,7 +1545,7 @@ Ralph is an autonomous workflow system that runs iterative tasks until completio
 │         │                                                                │
 │         ▼                                                                │
 │   ┌─────────────────┐                                                    │
-│   │ Load Status File │  ← .claude-project/plans/frontend/               │
+│   │ Load Status File │  ← .claude-project/status/frontend/               │
 │   │ & Skill          │    SCREEN_IMPLEMENTATION_STATUS.md                │
 │   └────────┬────────┘                                                    │
 │            │                                                             │

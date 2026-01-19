@@ -79,7 +79,7 @@ Boilerplate Code:
   - mobile/                   ← react-native-starter-kit (if React Native)
 
 Project Documentation:
-  - .claude-project/plans/
+  - .claude-project/status/
   - .claude-project/memory/
   - .claude-project/docs/
 
@@ -215,13 +215,13 @@ find .claude-project -name "*.md" -exec sed -i '' "s/\$FRONTENDS/$FRONTENDS/g" {
 
 # Create dashboard-specific plan folders from generic template
 for dashboard in $DASHBOARDS; do
-  mkdir -p .claude-project/plans/frontend-${dashboard}-dashboard/
-  cp .claude/base/templates/claude-project/plans/frontend-dashboard/* \
-     .claude-project/plans/frontend-${dashboard}-dashboard/
+  mkdir -p .claude-project/status/frontend-${dashboard}-dashboard/
+  cp .claude/base/templates/claude-project/status/frontend-dashboard/* \
+     .claude-project/status/frontend-${dashboard}-dashboard/
 done
 
 # Remove generic template folder (already copied to specific dashboards)
-rm -rf .claude-project/plans/frontend-dashboard/
+rm -rf .claude-project/status/frontend-dashboard/
 
 # Append gitignore rules from template
 cat .claude-project/gitignore.template >> .gitignore

@@ -404,7 +404,7 @@ Phase 4 (database-design) ██████████████████
 - **Outputs:**
   - [x] .claude-project/prd/prd.md
   - [x] .claude-project/docs/PROJECT_KNOWLEDGE.md
-  - [x] .claude-project/plans/ structure
+  - [x] .claude-project/status/ structure
 
 ### Phase 3: frontend-build 🔄
 - **Started:** 2025-01-09 10:00
@@ -568,7 +568,7 @@ aws ecs update-service --cluster $CLUSTER --service $SERVICE --force-new-deploym
 | File | Changes |
 |------|---------|
 | `.claude/base/commands/dev/ralph.md` | Add new workflows to registry |
-| `.claude/base/templates/claude-project/plans/` | Add phase tracking columns |
+| `.claude/base/templates/claude-project/status/` | Add phase tracking columns |
 
 ---
 
