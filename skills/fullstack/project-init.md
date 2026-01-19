@@ -180,12 +180,12 @@ After creating the status file, update the Configuration section with the select
 
 ```bash
 # Create PIPELINE_STATUS.md from template
-mkdir -p .claude-project/plans/{project}
-cp .claude/base/templates/PIPELINE_STATUS.template.md .claude-project/plans/{project}/PIPELINE_STATUS.md
+mkdir -p .claude-project/status/{project}
+cp .claude/base/templates/PIPELINE_STATUS.template.md .claude-project/status/{project}/PIPELINE_STATUS.md
 
 # Replace placeholders
-sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" .claude-project/plans/{project}/PIPELINE_STATUS.md
-sed -i '' "s/{DATE}/$(date +%Y-%m-%d)/g" .claude-project/plans/{project}/PIPELINE_STATUS.md
+sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" .claude-project/status/{project}/PIPELINE_STATUS.md
+sed -i '' "s/{DATE}/$(date +%Y-%m-%d)/g" .claude-project/status/{project}/PIPELINE_STATUS.md
 ```
 
 **Update the tech_stack configuration:**
@@ -260,7 +260,7 @@ touch .claude-project/memory/PREFERENCES.md
 # Create plan folders for each project folder
 for folder in backend frontend frontend-* mobile; do
   if [ -d "$folder" ]; then
-    mkdir -p ".claude-project/plans/$folder"
+    mkdir -p ".claude-project/status/$folder"
   fi
 done
 ```
@@ -286,7 +286,7 @@ When both `.claude/` and `.claude-project/` exist:
 required_folders=(
   ".claude-project/docs"
   ".claude-project/memory"
-  ".claude-project/plans"
+  ".claude-project/status"
 )
 
 for folder in "${required_folders[@]}"; do
@@ -336,7 +336,7 @@ Project is ready for next phase.
 - [ ] `.claude-project/` folder structure exists
 - [ ] `.claude-project/docs/` has required files
 - [ ] `.claude-project/memory/` has required files
-- [ ] `.claude-project/plans/` has project-specific subfolders
+- [ ] `.claude-project/status/` has project-specific subfolders
 - [ ] `PIPELINE_STATUS.md` exists with valid `tech_stack` configuration
 - [ ] All required framework submodules exist (`.claude/$BACKEND/`, `.claude/$FRONTEND/`)
 
