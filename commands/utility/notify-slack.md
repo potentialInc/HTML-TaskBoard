@@ -1,11 +1,11 @@
 ---
-description: Send PR statistics and Slack activity report to a Slack channel via webhook
+description: Send weekly activity report with commit stats, communication scores, and letter grades to Slack
 argument-hint: Optional - Slack webhook URL (uses SLACK_WEBHOOK_URL env var if not provided)
 ---
 
 # Notify Slack Command
 
-Collects PR statistics from GitHub repositories and Slack channel activity, then sends a combined report to Slack via webhook.
+Collects **commit statistics** from GitHub repositories and **communication scores** from Slack #ai-workflow channel, calculates weighted scores with letter grades, then sends a **weekly** activity report to Slack.
 
 ---
 
@@ -15,26 +15,30 @@ Collects PR statistics from GitHub repositories and Slack channel activity, then
 /notify-slack
         |
         v
-1. Collect GitHub PR stats (4 repos)
+1. Collect GitHub commit stats (4 repos, last 7 days)
         |
         v
-2. Query Slack channel for "today's winning" messages (via Slack API)
+2. Query Slack #ai-workflow channel messages
         |
         v
-3. Format and send report to Slack webhook
+3. Calculate weighted scores (commits + communication + bonuses)
+        |
+        v
+4. Assign letter grades and format weekly report
+        |
+        v
+5. Send to Slack webhook
+        |
+        v
+6. Write to Google Sheets (historical tracking by week)
 ```
 
 ---
 
 ## Prerequisites Check
 
-Before starting, verify required tools:
-
 ```bash
-# Check gh CLI authentication
 gh auth status
-
-# Check curl availability
 which curl
 ```
 
@@ -53,20 +57,11 @@ If `gh auth status` fails, instruct user to run `gh auth login` and **STOP**.
 
 *Can also be provided as `$ARGUMENTS`
 
-### Slack Bot Token Setup
-
-The bot token requires these OAuth scopes:
+### Slack Bot Token Scopes Required
 - `channels:history` - Read messages from public channels
 - `channels:read` - List channels to find channel ID
 - `users:read` - Get user display names
-
-To create a Slack Bot Token:
-1. Go to https://api.slack.com/apps
-2. Create a new app or select existing
-3. Go to "OAuth & Permissions"
-4. Add the required scopes
-5. Install to workspace
-6. Copy the "Bot User OAuth Token" (starts with `xoxb-`)
+- `reactions:read` - Read emoji reactions on messages
 
 ### Target Repositories
 - `potentialInc/claude-base`
@@ -75,228 +70,226 @@ To create a Slack Bot Token:
 - `potentialInc/claude-django`
 
 ### Slack Configuration
-- **Query Channel**: `ai-workflow`
-- **Message Filter**: Messages containing "today's winning" (case-insensitive)
-
-### Get Required Credentials
-
-Check for credentials in environment:
-
-```bash
-# Check SLACK_BOT_TOKEN
-if [ -z "$SLACK_BOT_TOKEN" ]; then
-  echo "SLACK_BOT_TOKEN not set"
-fi
-
-# Check SLACK_WEBHOOK_URL (or use $ARGUMENTS)
-WEBHOOK_URL="${ARGUMENTS:-$SLACK_WEBHOOK_URL}"
-if [ -z "$WEBHOOK_URL" ]; then
-  echo "SLACK_WEBHOOK_URL not set"
-fi
-```
-
-If `SLACK_BOT_TOKEN` is not set, use **AskUserQuestion** to ask:
-```
-Please provide your Slack Bot Token (xoxb-...):
-```
-
-If `WEBHOOK_URL` is not available, use **AskUserQuestion** to ask:
-```
-Please provide the Slack webhook URL for sending notifications:
-Example: https://hooks.slack.com/services/XXX/YYY/ZZZ
-```
+- **Query Channel**: `ai-workflow` (ONLY this channel is counted)
+- **Time Range**: Last 7 days
 
 ---
 
-## Step 1: Collect GitHub PR Statistics
+## Step 1: Collect GitHub Commit Statistics
 
-For EACH repository, collect PR data using `gh` CLI.
-
-### 1.1 Fetch Open PRs
+### 1.1 Fetch Recent Commits (Last 7 Days)
 
 ```bash
+SINCE_DATE=$(date -v-7d +%Y-%m-%dT00:00:00Z 2>/dev/null || date -d '7 days ago' +%Y-%m-%dT00:00:00Z)
+
 # For each repo
-gh pr list --repo potentialInc/claude-base --state open --json number,title,author,createdAt,updatedAt
-gh pr list --repo potentialInc/claude-nestjs --state open --json number,title,author,createdAt,updatedAt
-gh pr list --repo potentialInc/claude-react --state open --json number,title,author,createdAt,updatedAt
-gh pr list --repo potentialInc/claude-django --state open --json number,title,author,createdAt,updatedAt
+gh api repos/potentialInc/claude-base/commits -X GET -F since="$SINCE_DATE" --jq '.[] | {sha: .sha[0:7], author: .commit.author.name, date: .commit.author.date}'
+gh api repos/potentialInc/claude-nestjs/commits -X GET -F since="$SINCE_DATE" --jq '.[] | {sha: .sha[0:7], author: .commit.author.name, date: .commit.author.date}'
+gh api repos/potentialInc/claude-react/commits -X GET -F since="$SINCE_DATE" --jq '.[] | {sha: .sha[0:7], author: .commit.author.name, date: .commit.author.date}'
+gh api repos/potentialInc/claude-django/commits -X GET -F since="$SINCE_DATE" --jq '.[] | {sha: .sha[0:7], author: .commit.author.name, date: .commit.author.date}'
 ```
 
-### 1.2 Extract Metrics Per Repository
+### 1.2 Count Commits Per Person
 
-For each repository, calculate:
-
-| Metric | Description | Calculation |
-|--------|-------------|-------------|
-| Open Count | Total open PRs | `jq 'length'` |
-| Authors | Unique PR authors (display names) | `jq '[.[].author.name] \| unique'` |
-| Oldest Age | Days since oldest PR created | Calculate from `createdAt` |
-| Recent Activity | PRs updated in last 7 days | Filter by `updatedAt` |
-
-### 1.3 Build Summary Object
-
-Create a summary structure:
-
-```json
-{
-  "github": {
-    "repos": [
-      {
-        "name": "claude-base",
-        "openCount": 3,
-        "authors": ["alice", "bob"],
-        "oldestDays": 12,
-        "recentActivity": 2
-      }
-    ],
-    "totalOpen": 11,
-    "totalRepos": 4
-  }
-}
-```
-
-### 1.4 Handle Errors
-
-If a repository is not found or inaccessible:
-- Log a warning: `Warning: Could not access potentialInc/<repo>`
-- Continue with other repositories
-- Include error note in final report
+Aggregate commits by author name across all repos.
 
 ---
 
-## Step 2: Query Slack Channel Activity
-
-Use the Slack Web API to query messages from the `ai-workflow` channel.
+## Step 2: Query Slack #ai-workflow Channel
 
 ### 2.1 Get Channel ID
 
-First, find the channel ID for `ai-workflow`:
-
 ```bash
-curl -s -X GET "https://slack.com/api/conversations.list?types=public_channel&limit=1000" \
-  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
-  -H "Content-Type: application/json" | jq -r '.channels[] | select(.name=="ai-workflow") | .id'
+curl -s "https://slack.com/api/conversations.list?types=public_channel&limit=1000" \
+  -H "Authorization: Bearer $SLACK_BOT_TOKEN" | jq -r '.channels[] | select(.name=="ai-workflow") | .id'
 ```
 
-Store the result as `$CHANNEL_ID`.
+### 2.2 Fetch Messages (Last 7 Days)
 
-If channel not found, try with `exclude_archived=false`:
 ```bash
-curl -s -X GET "https://slack.com/api/conversations.list?types=public_channel&limit=1000&exclude_archived=false" \
+OLDEST=$(date -v-7d +%s 2>/dev/null || date -d '7 days ago' +%s)
+
+curl -s "https://slack.com/api/conversations.history?channel=$CHANNEL_ID&oldest=$OLDEST&limit=500" \
   -H "Authorization: Bearer $SLACK_BOT_TOKEN"
 ```
 
-### 2.2 Fetch Channel Messages
+### 2.3 Extract Message Data
 
-Query messages from the channel (last 100 messages or specify time range):
+For each message, extract:
+- `user_id` - Slack user ID
+- `text` - Message content
+- `char_count` - Character length
+- `reactions` - Array of reactions with counts
+- `total_reactions` - Sum of all reaction counts
 
-```bash
-# Get messages from the last 7 days
-OLDEST=$(date -v-7d +%s 2>/dev/null || date -d '7 days ago' +%s)
-
-curl -s -X GET "https://slack.com/api/conversations.history?channel=$CHANNEL_ID&oldest=$OLDEST&limit=100" \
-  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
-  -H "Content-Type: application/json"
-```
-
-### 2.3 Filter "Today's Winning" Messages
-
-From the API response, filter messages that contain "today's winning" (case-insensitive):
+### 2.4 Get All Workspace Members
 
 ```bash
-# Using jq to filter messages
-jq '[.messages[] | select(.text | ascii_downcase | contains("today'\''s winning"))]'
-```
-
-### 2.4 Get User Display Names and IDs
-
-For each unique user ID in the filtered messages, get their display name:
-
-```bash
-curl -s -X GET "https://slack.com/api/users.info?user=$USER_ID" \
-  -H "Authorization: Bearer $SLACK_BOT_TOKEN" | jq -r '{id: .user.id, name: .user.real_name // .user.name}'
-```
-
-### 2.5 Match GitHub Authors to Slack Users
-
-To enable Slack mentions, match GitHub author names to Slack user IDs:
-
-```bash
-# Get all Slack users
 curl -s "https://slack.com/api/users.list" \
-  -H "Authorization: Bearer $SLACK_BOT_TOKEN" | jq '.members[] | select(.deleted == false) | {id, real_name}'
-
-# Match by similar name (case-insensitive)
-# GitHub: "Talha Mahmud" -> Search Slack for "talha" -> ID: U08CY4947U2
-# Use fuzzy matching on first name or full name
+  -H "Authorization: Bearer $SLACK_BOT_TOKEN" | jq '.members[] | select(.deleted == false and .is_bot == false) | {id, name: .real_name}'
 ```
-
-For mentioning users in the report, use format: `<@USER_ID>`
-- Example: `<@U08CY4947U2>` will show as @talha in Slack
-
-### 2.6 Build Slack Summary
-
-Extract and structure the data:
-
-```json
-{
-  "slack": {
-    "channel": "ai-workflow",
-    "filter": "today's winning",
-    "messageCount": 5,
-    "authors": ["John Doe", "Jane Smith", "Bob Wilson"],
-    "latestMessage": {
-      "timestamp": "2025-01-13T09:30:00Z",
-      "author": "John Doe",
-      "excerpt": "today's winning feature: improved..."
-    },
-    "messages": [
-      {
-        "author": "John Doe",
-        "timestamp": "2025-01-13T09:30:00Z",
-        "excerpt": "today's winning feature: improved..."
-      }
-    ]
-  }
-}
-```
-
-### 2.7 Handle Slack Errors
-
-| Error Response | Cause | Action |
-|----------------|-------|--------|
-| `channel_not_found` | Channel doesn't exist or bot not in channel | Report 0 messages, note error |
-| `not_in_channel` | Bot needs to be added to channel | Instruct user to add bot |
-| `invalid_auth` | Token expired or invalid | Ask for new token |
-| `missing_scope` | Token lacks required permissions | List required scopes |
-
-If Slack query fails:
-- Log: `Warning: Could not query Slack channel ai-workflow`
-- Set `messageCount` to 0
-- Include error note in final report
 
 ---
 
-## Step 3: Format Report
+## Step 3: Calculate Weighted Scores
 
-Create a Slack Block Kit formatted message **grouped by person**.
+### 3.1 Scoring Formula
 
-### 3.1 Data Aggregation
+```
+Total Score = Commit Points + Communication Points + Bonus Points
 
-Combine GitHub PR authors and Slack message authors into a unified list of people. For each person, aggregate:
-- Their open PRs (count + details)
-- Their "Today's Winning" messages (count + summaries)
+Where:
+- Commit Points = commits × 3 (capped at 50 pts max)
+- Communication Points = Base + Length Bonus + Emoji Bonus (capped at 50 pts max)
+- Bonus Points = Manual recognition for special contributions
+```
 
-### 3.2 Message Structure (Per Person)
+### 3.2 Commit Points
+
+| Commits | Points | Note |
+|---------|--------|------|
+| 1 | 3 pts | |
+| 5 | 15 pts | |
+| 10 | 30 pts | |
+| 15 | 45 pts | |
+| 17+ | 50 pts | **CAPPED** |
+
+**Formula**: `min(50, commits × 3)`
+
+### 3.3 Communication Points (ai-workflow ONLY)
+
+For each message in #ai-workflow:
+
+```
+Message Score = Base + Length Bonus + Emoji Bonus
+
+Where:
+- Base = 2 pts per message
+- Length Bonus = min(3, floor(char_count / 200))
+  - < 200 chars: 0 bonus
+  - 200-399 chars: +1 bonus
+  - 400-599 chars: +2 bonus
+  - 600+ chars: +3 bonus (max)
+- Emoji Bonus = min(5, total_reactions)
+  - Each reaction = +1 point (max 5)
+```
+
+**Total Communication Cap**: 50 pts max per person
+
+### 3.4 Bonus Points (Manual Recognition)
+
+When a message contains special recognition like "Nicely done [achievement]", add:
+- +10 bonus points for the recognized person
+
+Look for patterns like:
+- "nicely done"
+- "great job"
+- "well done"
+- "kudos to"
+- "shoutout to"
+
+Extract the achievement description for the report.
+
+### 3.5 Example Calculations
+
+**High Performer (Siam)**:
+```
+Commits: 24 × 3 = 72 → capped to 50 pts
+Communication: 35 pts (under cap)
+Total: 50 + 35 = 85 pts → A+
+```
+
+**Good Communicator (Lukas)**:
+```
+Commits: 5 × 3 = 15 pts
+Communication: 55 → capped to 50 pts
+Total: 15 + 50 = 65 pts → A+
+```
+
+**Bonus Recipient (Nomaan)**:
+```
+Commits: 0 × 3 = 0 pts
+Communication: 8 pts
+Bonus: 10 pts (frontend-knowledge-session)
+Total: 0 + 8 + 10 = 18 pts → B
+```
+
+---
+
+## Step 4: Assign Letter Grades
+
+### 4.1 Grade Thresholds
+
+| Grade | Points Range | Description |
+|-------|--------------|-------------|
+| A+ | 50+ pts | Exceptional contributor |
+| A | 35-49 pts | Strong contributor |
+| B+ | 25-34 pts | Good contributor |
+| B | 15-24 pts | Solid contributor |
+| B- | 10-14 pts | Moderate contributor |
+| C+ | 7-9 pts | Light contributor |
+| C | 4-6 pts | Minimal contributor |
+| C- | 1-3 pts | Very light contributor |
+| D- | 0 pts | Inactive |
+
+### 4.2 Calculate Average Grade
+
+Convert grades to GPA and average:
+- A+ = 4.3, A = 4.0, B+ = 3.3, B = 3.0, B- = 2.7
+- C+ = 2.3, C = 2.0, C- = 1.7, D- = 0
+
+Report as letter grade equivalent.
+
+---
+
+## Step 5: Format Report
+
+### 5.1 Report Structure
+
+```
+Weekly Activity Report (Jan Week 3)
+
+Summary: {member_count} members | {total_commits} commits | {total_comm_pts} comm pts | Avg Grade: {avg_grade}
+
+@{name}  {grade}
+• Commits: {count} ({pts} pts{" capped to 50" if capped})
+• Communication: {comm_pts} pts{" (capped to 50)" if capped}
+{• Bonus: {bonus_pts} pts ({reason}) - if applicable}
+• Total: {total_pts} pts
+
+... (sorted by total points descending)
+
+---
+
+*Inactive Members (D-) - 0 pts*
+No commits or communication activity detected this week:
+@{name1}, @{name2}, @{name3}, ...
+
+:warning: Please reach out to inactive members to ensure they are engaged.
+```
+
+### 5.3 Inactive Members Detection
+
+To identify inactive members:
+1. Get all workspace members from Slack API (`users.list`)
+2. Filter out bots and deleted accounts
+3. Compare with members who have commits OR communication activity
+4. List all members with 0 total points as "Inactive (D-)"
+
+### 5.2 Slack Block Kit Format
 
 ```json
 {
   "blocks": [
     {
       "type": "header",
+      "text": {"type": "plain_text", "text": "Weekly Activity Report (Jan Week 3)"}
+    },
+    {
+      "type": "section",
       "text": {
-        "type": "plain_text",
-        "text": "Daily Activity Report (By Person)"
+        "type": "mrkdwn",
+        "text": "*Summary:* 30 members | 37 commits | 172 comm pts | Avg Grade: C+"
       }
     },
     {
@@ -306,67 +299,22 @@ Combine GitHub PR authors and Slack message authors into a unified list of peopl
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        "text": "*Person Name*"
+        "text": "<@U123ABC>  *A+*\n• Commits: 24 (72 pts capped to 45)\n• Communication: 18 pts\n• Total: 63 pts"
       }
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "*PR Count:* 2\n• `claude-react` #1: feat: Add new component\n• `claude-nestjs` #5: fix: Auth bug"
-      }
-    },
-    {
-      "type": "section",
-      "text": {
-        "type": "mrkdwn",
-        "text": "*Today's Winning:* 1\n• Created feature X - brief summary of the winning"
-      }
-    },
-    {
-      "type": "divider"
-    },
-    {
-      "type": "context",
-      "elements": [
-        {
-          "type": "mrkdwn",
-          "text": "Generated: 2025-01-13 10:00 AM UTC"
-        }
-      ]
     }
   ]
 }
 ```
 
-### 3.3 Simple Text Fallback
+### 5.3 User Mentions
 
-```
-*Daily Activity Report (By Person)*
-
----
-
-*Talha Mahmud*
-- PR Count: 1
-  • `claude-react` #1: docs: Update common and component patterns guides
-- Today's Winning: 0
+Use Slack user IDs for mentions: `<@USER_ID>`
+- Match GitHub author names to Slack users by name similarity
+- If no match, use display name without mention
 
 ---
 
-*Lukas*
-- PR Count: 0
-- Today's Winning: 1
-  • Created `generate-ppt` command - converts natural language to Presentation
-
----
-Generated: 2025-01-13 10:00 AM UTC
-```
-
----
-
-## Step 4: Send to Slack
-
-### 4.1 POST to Webhook
+## Step 6: Send to Slack
 
 ```bash
 curl -X POST "$WEBHOOK_URL" \
@@ -374,108 +322,115 @@ curl -X POST "$WEBHOOK_URL" \
   -d "$PAYLOAD"
 ```
 
-Use a HEREDOC for the payload to ensure proper formatting:
+---
+
+## Step 7: Write to Google Sheets (Historical Tracking)
+
+After sending the Slack report, write the data to Google Sheets for historical tracking.
+
+### 7.1 Spreadsheet Configuration
+
+- **Spreadsheet ID**: `1ru88-pKjJ8NbdG6uBAWpo7SAfWUagc6gq-92pRcK0tU`
+- **Spreadsheet Name**: AI Proficiency Evaluation
+- **Structure**: Each team member has their own sheet (tab)
+- **Credentials**: `.claude/config/google-service-account.json`
+
+### 7.2 Sheet Columns
+
+| Column | Description | Example |
+|--------|-------------|---------|
+| Name | Person's name | Siam Maruf |
+| Week | Week identifier | Jan W3 |
+| Date | Report date | 2026-01-19 |
+| Grade | Letter grade | A+ |
+| Commits | Commit count | 63 |
+| Comm Pts | Communication points | 25 |
+| Total | Total score | 70 |
+
+### 7.3 Write Data Using Helper Script
 
 ```bash
-curl -X POST "$WEBHOOK_URL" \
-  -H 'Content-Type: application/json' \
-  -d "$(cat <<'EOF'
-{
-  "blocks": [...]
-}
-EOF
-)"
+# From .claude directory
+node scripts/sheets-helper.js write-weekly '[
+  {"name":"Siam Maruf","grade":"A+","commits":63,"commPts":25,"total":70},
+  {"name":"Lukas","grade":"A+","commits":11,"commPts":25,"total":58},
+  {"name":"Jayden","grade":"A","commits":4,"commPts":25,"total":37}
+]'
 ```
 
-### 4.2 Check Response
+The script automatically:
+- Maps names to correct sheet tabs (e.g., "Md Siam Maruf" → "Siam" sheet)
+- Adds week label (e.g., "Jan W3")
+- Adds current date
+- Appends row to person's sheet
 
-- **Success (200)**: Continue to report
-- **Failure (4xx/5xx)**: Report error and suggest checking webhook URL
+### 7.4 Helper Script Commands
+
+```bash
+# Test connection
+node scripts/sheets-helper.js test
+
+# Write weekly report (array of all members)
+node scripts/sheets-helper.js write-weekly '[{...},...]'
+
+# Read person's historical data
+node scripts/sheets-helper.js read Siam
+
+# List all sheets
+node scripts/sheets-helper.js list-sheets
+
+# Get current week label
+node scripts/sheets-helper.js week-label
+```
 
 ---
 
-## Step 5: Report Results
+## Scoring Quick Reference
 
-### Success Report
+| Activity | Points | Cap |
+|----------|--------|-----|
+| 1 commit | 3 pts | 50 max |
+| 1 message (base) | 2 pts | 50 max total |
+| Long message (200+ chars) | +1-3 pts | included in 50 cap |
+| Each emoji reaction received | +1 pt | +5 max per msg |
+| Special recognition | +10 pts | no cap |
 
-```
-Notification sent successfully!
+### Why This Scoring?
 
-Summary:
-- Repositories checked: 4
-- Total open PRs: 11
-- Slack messages found: 5
-- Webhook response: 200 OK
-
-Report delivered to Slack webhook.
-```
-
-### Partial Success Report
-
-```
-Notification sent with warnings.
-
-Summary:
-- Repositories checked: 3/4 (claude-django not accessible)
-- Total open PRs: 10
-- Slack messages: Could not query (API error)
-- Webhook response: 200 OK
-
-Warnings:
-- Could not access potentialInc/claude-django
-- Slack API error: [error message]
-```
-
-### Failure Report
-
-```
-Notification failed.
-
-Error: Webhook POST failed
-Response: 404 Not Found
-
-Action Required: Verify your Slack webhook URL is correct.
-```
+- **Commit points (3×)**: Direct work contribution
+- **Communication cap (50)**: Equal weight to commits and communication
+- **Length bonus**: Rewards detailed, thoughtful updates
+- **Emoji bonus**: Content that others found valuable
+- **ai-workflow only**: Focuses on work-related communication
 
 ---
 
 ## Error Handling
 
-| Error | Cause | Resolution |
-|-------|-------|------------|
-| `gh auth` fails | Not authenticated | Run `gh auth login` |
-| Repository not found | Wrong name or no access | Skip with warning |
-| `invalid_auth` | Slack token invalid | Check/regenerate bot token |
-| `missing_scope` | Token lacks permissions | Add required OAuth scopes |
-| `channel_not_found` | Channel doesn't exist | Verify channel name |
-| `not_in_channel` | Bot not added to channel | Add bot to ai-workflow |
-| Webhook POST fails | Invalid URL | Check webhook URL |
-| Webhook 404/403 | URL expired or wrong | Regenerate webhook |
+| Error | Resolution |
+|-------|------------|
+| `gh auth` fails | Run `gh auth login` |
+| Repository not found | Skip with warning |
+| `not_authed` | Regenerate Slack bot token |
+| `missing_scope` | Add required OAuth scopes |
+| `channel_not_found` | Verify #ai-workflow exists |
 
 ---
 
 ## Example Usage
 
-### Using environment variables:
 ```bash
 export SLACK_BOT_TOKEN="xoxb-your-bot-token"
 export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXX/YYY/ZZZ"
 /notify-slack
 ```
 
-### Providing webhook URL directly:
-```bash
-export SLACK_BOT_TOKEN="xoxb-your-bot-token"
-/notify-slack "https://hooks.slack.com/services/XXX/YYY/ZZZ"
-```
-
 ---
 
 ## Important Notes
 
-- **Token security**: Never log or display the bot token or webhook URL in output
-- **Rate limits**: Slack API has rate limits; single channel query should not hit limits
-- **GitHub rate limits**: 4 repos with single calls should not hit limits
-- **Case insensitive**: "today's winning" filter matches messages containing "Today's Winning", "TODAY'S WINNING", etc. anywhere in the text
-- **Bot channel access**: The Slack bot must be added to `ai-workflow` channel to read messages
-- **Report timestamp**: Always include generation timestamp in UTC
+- **ai-workflow only**: Only #ai-workflow messages count for communication
+- **7-day window**: Both commits and messages from last 7 days
+- **Inactive tracking**: Members with 0 commits AND 0 communication = D-
+- **Capping displayed**: Show original calculation when capped (e.g., "72 pts capped to 45")
+- **Token security**: Never log tokens or webhook URLs
