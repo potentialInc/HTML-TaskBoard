@@ -1,4 +1,4 @@
-# Decision Log: $PROJECT_NAME
+# Decision Log: {PROJECT_NAME}
 
 This document tracks key technical and architectural decisions made during development.
 

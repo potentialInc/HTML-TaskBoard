@@ -1,9 +1,9 @@
-# API Reference: $PROJECT_NAME
+# API Reference: {PROJECT_NAME}
 
 ## Base URL
 
 - **Development**: `http://localhost:3000/api`
-- **Production**: `https://api.$PROJECT_NAME.com`
+- **Production**: `https://api.{PROJECT_NAME}.com`
 
 ## Authentication
 

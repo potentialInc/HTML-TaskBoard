@@ -1,6 +1,6 @@
-# API Implementation Status: $PROJECT_NAME
+# API Implementation Status: {PROJECT_NAME}
 
-> **Backend Framework:** $BACKEND
+> **Backend Framework:** {BACKEND}
 > **Last Updated:** YYYY-MM-DD
 
 ## Overview

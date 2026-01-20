@@ -1,4 +1,4 @@
-# Project Knowledge: $PROJECT_NAME
+# Project Knowledge: {PROJECT_NAME}
 
 ## Overview
 
@@ -6,15 +6,15 @@
 
 ## Tech Stack
 
-- **Backend**: $BACKEND
-- **Frontend**: $FRONTENDS
+- **Backend**: {BACKEND}
+- **Frontend**: {FRONTENDS}
 - **Database**: [PostgreSQL/MySQL/etc.]
 - **Deployment**: [Docker/Kubernetes/etc.]
 
 ## Architecture
 
 ```
-$PROJECT_NAME/
+{PROJECT_NAME}/
 ├── backend/           # API server
 ├── frontend/          # Web application
 ├── frontend-dashboard/ # Admin dashboard (if applicable)
