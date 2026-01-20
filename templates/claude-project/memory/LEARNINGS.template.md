@@ -1,4 +1,4 @@
-# Learnings: $PROJECT_NAME
+# Learnings: {PROJECT_NAME}
 
 This document captures experiential knowledge - patterns discovered, pitfalls encountered, and insights gained during development.
 

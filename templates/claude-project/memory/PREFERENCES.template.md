@@ -1,4 +1,4 @@
-# User Preferences: $PROJECT_NAME
+# User Preferences: {PROJECT_NAME}
 
 This document captures coding style preferences and patterns to maintain consistency.
 

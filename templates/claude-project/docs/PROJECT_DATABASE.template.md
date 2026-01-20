@@ -1,4 +1,4 @@
-# Database Schema: $PROJECT_NAME
+# Database Schema: {PROJECT_NAME}
 
 ## Overview
 

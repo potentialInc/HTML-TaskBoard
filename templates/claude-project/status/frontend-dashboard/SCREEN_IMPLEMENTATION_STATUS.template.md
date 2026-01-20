@@ -1,4 +1,4 @@
-# Dashboard Screen Implementation Status: $PROJECT_NAME
+# Dashboard Screen Implementation Status: {PROJECT_NAME}
 
 > **Framework:** React (Next.js)
 > **Last Updated:** YYYY-MM-DD
