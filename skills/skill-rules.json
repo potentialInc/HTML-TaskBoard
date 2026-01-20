@@ -58,15 +58,27 @@
     "fullstack": {
       "type": "domain",
       "enforcement": "suggest",
-      "priority": "medium",
+      "priority": "high",
+      "file": "fullstack/SKILL.md",
       "promptTriggers": {
-        "keywords": ["deployment", "project setup", "project init", "iteration manager", "fullstack project"],
+        "keywords": [
+          "fullstack",
+          "/fullstack",
+          "fullstack project",
+          "fullstack workflow",
+          "development pipeline",
+          "project setup",
+          "project init",
+          "iteration manager"
+        ],
         "intentPatterns": [
           "(deploy|setup|init|initialize).*?project",
-          "(start|create).*?fullstack",
+          "(start|create|build).*?fullstack",
+          "(run|execute).*?(pipeline|workflow)",
           "iteration.*?(manager|planning)"
         ]
-      }
+      },
+      "commands": ["fullstack"]
     },
     "git-workflow": {
       "type": "domain",
