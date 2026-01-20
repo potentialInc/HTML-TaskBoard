@@ -81,6 +81,42 @@
           "pull.*?request.*?dev"
         ]
       }
+    },
+    "project-doc-writer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "project-doc-writer/SKILL.md",
+      "promptTriggers": {
+        "keywords": [
+          "project documentation",
+          "update docs",
+          "generate docs",
+          "PROJECT_KNOWLEDGE",
+          "PROJECT_DATABASE",
+          "PROJECT_API",
+          "strategic plan",
+          "claude-project",
+          "prd to docs",
+          "sync documentation",
+          "documentation writer",
+          "project-doc-writer"
+        ],
+        "intentPatterns": [
+          "(generate|create|update|sync).*?(project|documentation|docs)",
+          "(write|build).*?(knowledge|database|api).*?doc",
+          "(from|using|based on).*?prd.*?(generate|create|update)",
+          "(update|refresh).*?claude-project",
+          "(sync|align).*?(docs|documentation).*?(prd|requirements)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          ".claude-project/docs/**/*.md",
+          ".claude-project/plans/**/*.md",
+          ".claude-project/prd/**/*"
+        ]
+      }
     }
   }
 }
