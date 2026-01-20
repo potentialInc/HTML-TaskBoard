@@ -1,4 +1,4 @@
-# Screen Implementation Status: $PROJECT_NAME
+# Screen Implementation Status: {PROJECT_NAME}
 
 > **Framework:** React Web (React Router 7)
 > **Last Updated:** YYYY-MM-DD

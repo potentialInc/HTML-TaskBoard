@@ -1,4 +1,4 @@
-# Admin Dashboard API Integration Status: $PROJECT_NAME
+# Admin Dashboard API Integration Status: {PROJECT_NAME}
 
 > **Framework:** React (Next.js)
 > **Dashboard Type:** Admin Dashboard

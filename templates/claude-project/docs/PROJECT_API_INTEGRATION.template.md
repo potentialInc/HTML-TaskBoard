@@ -1,4 +1,4 @@
-# API Integration Status: $PROJECT_NAME
+# API Integration Status: {PROJECT_NAME}
 
 ## Overview
 
