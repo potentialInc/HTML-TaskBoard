@@ -100,11 +100,11 @@ Store as: `$DASHBOARDS` = [] | ["admin"] | ["coach"] | ["admin", "coach"]
 
 ```bash
 # Create config repo on GitHub
-gh repo create potentialInc/{project}-claude --public
+gh repo create potentialInc/claude-workflow --public
 
 # Clone and set up submodules
-git clone https://github.com/potentialInc/{project}-claude.git /tmp/{project}-claude
-cd /tmp/{project}-claude
+git clone https://github.com/potentialInc/claude-workflow.git /tmp/claude-workflow
+cd /tmp/claude-workflow
 
 # Add base submodule (always)
 git submodule add https://github.com/potentialInc/claude-base.git base
@@ -146,7 +146,7 @@ git push -u origin main
 
 ```bash
 cd $PROJECT_DIR
-git submodule add https://github.com/potentialInc/{project}-claude.git .claude
+git submodule add https://github.com/potentialInc/claude-workflow.git .claude
 git submodule update --init --recursive
 ```
 
