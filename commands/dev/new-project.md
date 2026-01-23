@@ -148,6 +148,27 @@ Create root `docker-compose.yml` based on selected services:
 version: '3.8'
 
 services:
+  # PostgreSQL database (always included with backend)
+  postgres:
+    image: postgres:15-alpine
+    container_name: $PROJECT_NAME-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: $PROJECT_NAME
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - $PROJECT_NAME-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Backend service (if selected)
   backend:
     build:
@@ -160,6 +181,11 @@ services:
       # - '8000:8000'  # Django
     environment:
       - NODE_ENV=${NODE_ENV:-development}
+    env_file:
+      - ./backend/.env.docker
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - $PROJECT_NAME-network
 
@@ -172,6 +198,8 @@ services:
     restart: unless-stopped
     ports:
       - '5173:5173'
+    depends_on:
+      - backend
     networks:
       - $PROJECT_NAME-network
 
@@ -185,12 +213,17 @@ services:
     restart: unless-stopped
     ports:
       - '{5174 + index}:5173'
+    depends_on:
+      - backend
     networks:
       - $PROJECT_NAME-network
 
 networks:
   $PROJECT_NAME-network:
     driver: bridge
+
+volumes:
+  postgres_data:
 ```
 
 ## Step 7: Create Project Documentation Structure
