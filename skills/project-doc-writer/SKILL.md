@@ -1,8 +1,8 @@
 ---
 skill_name: project-doc-writer
 applies_to_local_project_only: false
-auto_trigger_regex: [project documentation, update docs, generate docs, PROJECT_KNOWLEDGE, PROJECT_DATABASE, PROJECT_API, strategic plan, claude-project, prd to docs, sync documentation, documentation writer]
-tags: [documentation, prd, project-knowledge, project-database, project-api, plans, claude-project]
+auto_trigger_regex: [project documentation, update docs, generate docs, PROJECT_KNOWLEDGE, PROJECT_DATABASE, PROJECT_API, claude.md, strategic plan, claude-project, prd to docs, sync documentation, documentation writer]
+tags: [documentation, prd, project-knowledge, project-database, project-api, claude-md, plans, claude-project]
 related_skills: [generate-prd, pdf-to-prd, init-workspace]
 ---
 
@@ -20,6 +20,7 @@ This skill helps you:
 2. **Generate documentation** for `docs/` and `plans/` folders
 3. **Keep docs in sync** with PRD changes
 4. **Create strategic plans** from project requirements
+5. **Generate claude.md** as project configuration summary
 
 ---
 
@@ -37,6 +38,7 @@ This skill helps you:
 /project-doc-writer --doc=PROJECT_KNOWLEDGE
 /project-doc-writer --doc=PROJECT_DATABASE
 /project-doc-writer --doc=PROJECT_API
+/project-doc-writer --doc=claude
 ```
 
 ### Incremental Update Mode
@@ -79,6 +81,9 @@ Extract key sections:
 | PROJECT_DATABASE.md | `.claude-project/docs/` |
 | PROJECT_API.md | `.claude-project/docs/` |
 | Strategic plans | `.claude-project/plans/` |
+| claude.md | Project root |
+
+**Note**: `claude.md` is generated **last** because it references/summarizes the other docs.
 
 ### Step 5: Validate & Report
 
@@ -161,6 +166,41 @@ Extract key sections:
 - Pagination Pattern
 - Error Format
 
+### claude.md (Project Root)
+
+**Source**: Aggregates from all generated docs + filesystem scan
+
+**Data Sources**:
+
+| Section | Source |
+|---------|--------|
+| Overview | PRD metadata |
+| Tech Stack | PRD + package.json |
+| Project Structure | Filesystem scan |
+| Key Documentation | Hardcoded paths (validated) |
+| User Roles | PROJECT_KNOWLEDGE.md |
+| Core Enums | PROJECT_DATABASE.md |
+| API Base URLs | PROJECT_API.md |
+| Commands | Scan .claude/commands/ |
+| MCP Servers | .mcp.json config |
+
+**Generated Sections**:
+
+- Overview (name, type, status, description)
+- Tech Stack (table format)
+- Project Structure (ASCII tree)
+- Key Documentation (links to .claude-project/)
+- User Roles & Permissions
+- Core Enums
+- Development Conventions
+- Available Commands
+- Enabled MCP Servers
+- Design System
+- API Base URLs
+- Quick Reference
+
+**Key Principle**: ~200 lines max, references detailed docs
+
 ---
 
 ## Update Modes
@@ -217,11 +257,13 @@ Uses AskUserQuestion tool to gather PRD source.
 
 | Argument | Description | Example |
 |----------|-------------|---------|
-| (none) | Full update all docs | `/project-doc-writer` |
+| (none) | Full update all docs + claude.md | `/project-doc-writer` |
 | `--doc=NAME` | Update specific doc | `--doc=PROJECT_API` |
+| `--doc=claude` | Update only claude.md | `--doc=claude` |
 | `--incremental` | Interactive mode | `--incremental` |
 | `--prd=PATH` | Specify PRD path | `--prd=/path/to/prd.pdf` |
 | `--plan=NAME` | Generate specific plan | `--plan=authentication` |
+| `--skip-claude` | Skip claude.md generation | `--skip-claude` |
 
 ---
 
@@ -253,8 +295,11 @@ Generating documentation...
 ✓ PROJECT_KNOWLEDGE.md (320 lines)
 ✓ PROJECT_DATABASE.md (280 lines)
 ✓ PROJECT_API.md (450 lines)
+✓ claude.md (180 lines)
 
-Files updated in .claude-project/docs/
+Files updated:
+- .claude-project/docs/ (3 files)
+- ./claude.md (project root)
 ```
 
 ---
@@ -268,6 +313,15 @@ After generation, the skill validates:
 - [ ] All features have related API endpoints
 - [ ] No orphan references between docs
 - [ ] Consistent terminology across all docs
+
+### claude.md Validation
+
+- [ ] All linked documentation files exist
+- [ ] Project structure matches actual filesystem
+- [ ] Tech stack matches package.json dependencies
+- [ ] Enums match PROJECT_DATABASE.md
+- [ ] Commands listed exist in .claude/commands/
+- [ ] Total length under 250 lines
 
 ---
 
@@ -287,15 +341,17 @@ For detailed instructions, see:
 - [prompts/generate-knowledge.md](prompts/generate-knowledge.md) - Knowledge doc generation
 - [prompts/generate-database.md](prompts/generate-database.md) - Database doc generation
 - [prompts/generate-api.md](prompts/generate-api.md) - API doc generation
+- [prompts/generate-claude.md](prompts/generate-claude.md) - claude.md generation rules
 - [prompts/update-incremental.md](prompts/update-incremental.md) - Incremental update flow
 
 ### Document Templates (shared)
 
-Templates are located in `.claude/base/templates/claude-project/docs/`:
+Templates are located in `.claude/base/templates/`:
 
-- `PROJECT_KNOWLEDGE.template.md`
-- `PROJECT_DATABASE.template.md`
-- `PROJECT_API.template.md`
+- `claude-project/docs/PROJECT_KNOWLEDGE.template.md`
+- `claude-project/docs/PROJECT_DATABASE.template.md`
+- `claude-project/docs/PROJECT_API.template.md`
+- `claude.template.md` - Project root claude.md template
 
 ---
 
