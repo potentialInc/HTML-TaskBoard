@@ -32,7 +32,7 @@ Skills are modular knowledge bases that Claude loads when needed. They provide:
 - Working with skill-rules.json
 - Debugging skill activation
 
-**[View Skill →](skill-developer/)**
+**[View Skill →](dev/skill-developer/)**
 
 ---
 
@@ -54,7 +54,7 @@ Skills are modular knowledge bases that Claude loads when needed. They provide:
 - Planning deployment strategies
 - Managing development iterations
 
-**[View Skill →](fullstack/)**
+**[View Skill →](operation/fullstack/)**
 
 ---
 
@@ -76,7 +76,7 @@ Skills are modular knowledge bases that Claude loads when needed. They provide:
 - Building slide decks
 - Generating townhall materials
 
-**[View Skill →](generate-ppt/)**
+**[View Skill →](design/generate-ppt/)**
 
 ---
 
@@ -99,7 +99,7 @@ Skills are modular knowledge bases that Claude loads when needed. They provide:
 - Fixing tickets from backlog
 - Updating ticket status
 
-**[View Skill →](notion-ticket-reviewer/)**
+**[View Skill →](operation/notion-ticket-reviewer/)**
 
 ---
 
@@ -146,7 +146,7 @@ Skills are modular knowledge bases that Claude loads when needed. They provide:
 - Pushing to dev branch
 - Completing bug fixes or features
 
-**[View Skill →](git-workflow/)**
+**[View Skill →](operation/git-workflow/)**
 
 ---
 
@@ -195,6 +195,301 @@ Skills are modular knowledge bases that Claude loads when needed. They provide:
 - Refactoring type structure
 
 **[View Skill →](code-quality/)**
+
+---
+
+## Marketing Skills
+
+A comprehensive collection of 23 marketing skills for conversion optimization, content creation, SEO, analytics, and growth strategies.
+
+### Conversion Optimization
+
+#### page-cro
+
+**Purpose:** Landing page and marketing page conversion rate optimization
+
+**Files:** 1 file (SKILL.md)
+
+**Covers:**
+
+- Value proposition clarity
+- Headline effectiveness
+- CTA placement and copy
+- Visual hierarchy
+- Trust signals and objection handling
+
+**Use when:**
+
+- Optimizing landing pages
+- Improving homepage conversion
+- Analyzing pricing page performance
+
+**[View Skill →](marketing/page-cro/)**
+
+---
+
+#### signup-flow-cro
+
+**Purpose:** Signup and registration flow optimization
+
+**Use when:** Optimizing user signup conversion rates
+
+**[View Skill →](marketing/signup-flow-cro/)**
+
+---
+
+#### onboarding-cro
+
+**Purpose:** User onboarding experience optimization
+
+**Use when:** Improving activation rates and first-time user experience
+
+**[View Skill →](marketing/onboarding-cro/)**
+
+---
+
+#### form-cro
+
+**Purpose:** Form conversion optimization
+
+**Use when:** Reducing form abandonment and improving completion rates
+
+**[View Skill →](marketing/form-cro/)**
+
+---
+
+#### popup-cro
+
+**Purpose:** Popup and modal conversion optimization
+
+**Use when:** Optimizing popup timing, targeting, and conversion
+
+**[View Skill →](marketing/popup-cro/)**
+
+---
+
+#### paywall-upgrade-cro
+
+**Purpose:** Paywall and upgrade flow optimization
+
+**Use when:** Improving subscription and upgrade conversion rates
+
+**[View Skill →](marketing/paywall-upgrade-cro/)**
+
+---
+
+### Content & Copy
+
+#### copywriting
+
+**Purpose:** Marketing copy creation for web pages
+
+**Covers:**
+
+- Homepage and landing page copy
+- Value proposition development
+- Benefit-focused messaging
+- Customer language integration
+
+**Use when:**
+
+- Writing landing page copy
+- Creating homepage content
+- Drafting pricing page messaging
+
+**[View Skill →](marketing/copywriting/)**
+
+---
+
+#### copy-editing
+
+**Purpose:** Copy editing and refinement
+
+**Use when:** Improving and polishing existing marketing copy
+
+**[View Skill →](marketing/copy-editing/)**
+
+---
+
+#### email-sequence
+
+**Purpose:** Email campaign and drip sequence creation
+
+**Use when:** Building email nurture sequences or marketing campaigns
+
+**[View Skill →](marketing/email-sequence/)**
+
+---
+
+#### social-content
+
+**Purpose:** Social media content creation
+
+**Use when:** Creating social media posts and content strategies
+
+**[View Skill →](marketing/social-content/)**
+
+---
+
+### SEO & Discovery
+
+#### seo-audit
+
+**Purpose:** Technical and on-page SEO audits
+
+**Covers:**
+
+- Crawlability and indexation
+- Technical SEO foundations
+- On-page optimization
+- Content quality assessment
+
+**Use when:**
+
+- Conducting SEO health checks
+- Diagnosing ranking issues
+- Performing technical SEO reviews
+
+**[View Skill →](marketing/seo-audit/)**
+
+---
+
+#### programmatic-seo
+
+**Purpose:** Programmatic SEO page generation
+
+**Use when:** Scaling SEO content creation with templates
+
+**[View Skill →](marketing/programmatic-seo/)**
+
+---
+
+#### competitor-alternatives
+
+**Purpose:** Competitor comparison and alternatives pages
+
+**Use when:** Creating "vs" or "alternatives to" comparison pages
+
+**[View Skill →](marketing/competitor-alternatives/)**
+
+---
+
+#### schema-markup
+
+**Purpose:** Structured data and schema markup implementation
+
+**Use when:** Adding rich snippets and structured data to pages
+
+**[View Skill →](marketing/schema-markup/)**
+
+---
+
+### Paid & Distribution
+
+#### paid-ads
+
+**Purpose:** Paid advertising campaign creation and optimization
+
+**Use when:** Setting up Google Ads, Facebook Ads, or other paid campaigns
+
+**[View Skill →](marketing/paid-ads/)**
+
+---
+
+### Measurement & Testing
+
+#### analytics-tracking
+
+**Purpose:** Analytics implementation and event tracking
+
+**Covers:**
+
+- Google Analytics setup
+- Event tracking implementation
+- Conversion tracking
+- Analytics strategy
+
+**Use when:**
+
+- Setting up analytics tracking
+- Implementing event tracking
+- Measuring conversion funnels
+
+**[View Skill →](marketing/analytics-tracking/)**
+
+---
+
+#### ab-test-setup
+
+**Purpose:** A/B testing setup and analysis
+
+**Use when:** Creating and running A/B tests or experiments
+
+**[View Skill →](marketing/ab-test-setup/)**
+
+---
+
+### Growth Engineering
+
+#### free-tool-strategy
+
+**Purpose:** Free tool creation for lead generation
+
+**Use when:** Building free tools or lead magnets for growth
+
+**[View Skill →](marketing/free-tool-strategy/)**
+
+---
+
+#### referral-program
+
+**Purpose:** Referral program design and implementation
+
+**Use when:** Creating viral growth or word-of-mouth programs
+
+**[View Skill →](marketing/referral-program/)**
+
+---
+
+### Strategy & Monetization
+
+#### marketing-ideas
+
+**Purpose:** Marketing strategy ideation and brainstorming
+
+**Use when:** Generating marketing ideas and growth tactics
+
+**[View Skill →](marketing/marketing-ideas/)**
+
+---
+
+#### marketing-psychology
+
+**Purpose:** Marketing psychology and persuasion principles
+
+**Use when:** Applying psychological principles to marketing
+
+**[View Skill →](marketing/marketing-psychology/)**
+
+---
+
+#### launch-strategy
+
+**Purpose:** Product launch planning and execution
+
+**Use when:** Planning product or feature launches
+
+**[View Skill →](marketing/launch-strategy/)**
+
+---
+
+#### pricing-strategy
+
+**Purpose:** Pricing model and monetization optimization
+
+**Use when:** Designing or optimizing pricing strategies
+
+**[View Skill →](marketing/pricing-strategy/)**
 
 ---
 

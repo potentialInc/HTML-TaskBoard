@@ -6,7 +6,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "medium",
-      "file": "skill-developer/SKILL.md",
+      "file": "dev/skill-developer/SKILL.md",
       "promptTriggers": {
         "keywords": ["create skill", "new skill", "skill development", "skill-rules", "build skill"],
         "intentPatterns": [
@@ -19,7 +19,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "medium",
-      "file": "generate-ppt/SKILL.md",
+      "file": "design/generate-ppt/SKILL.md",
       "promptTriggers": {
         "keywords": ["presentation", "ppt", "powerpoint", "slides", "reveal.js", "townhall", "deck", "generate-ppt"],
         "intentPatterns": [
@@ -40,7 +40,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "high",
-      "file": "notion-ticket-reviewer/SKILL.md",
+      "file": "operation/notion-ticket-reviewer/SKILL.md",
       "promptTriggers": {
         "keywords": ["notion ticket", "review ticket", "notion task", "ticket reviewer", "notion database", "notion review", "fix ticket"],
         "intentPatterns": [
@@ -72,7 +72,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "medium",
-      "file": "git-workflow/create-dev-pr.md",
+      "file": "operation/git-workflow/create-dev-pr.md",
       "promptTriggers": {
         "keywords": ["create pr", "pull request", "dev branch", "push to dev", "pr to dev"],
         "intentPatterns": [
@@ -86,7 +86,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "medium",
-      "file": "project-doc-writer/SKILL.md",
+      "file": "dev/project-doc-writer/SKILL.md",
       "promptTriggers": {
         "keywords": [
           "project documentation",
@@ -115,6 +115,306 @@
           ".claude-project/docs/**/*.md",
           ".claude-project/plans/**/*.md",
           ".claude-project/prd/**/*"
+        ]
+      }
+    },
+    "page-cro": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "file": "marketing/page-cro/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["conversion rate", "cro", "landing page optimization", "conversion optimization", "page cro", "optimize conversion"],
+        "intentPatterns": [
+          "(optimize|improve).*?(conversion|landing page)",
+          "cro.*?(audit|analysis|review)",
+          "(increase|boost).*?conversion"
+        ]
+      }
+    },
+    "signup-flow-cro": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/signup-flow-cro/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["signup flow", "registration optimization", "signup conversion", "onboarding flow", "signup cro"],
+        "intentPatterns": [
+          "(optimize|improve).*?(signup|registration)",
+          "signup.*?(flow|funnel|conversion)"
+        ]
+      }
+    },
+    "onboarding-cro": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/onboarding-cro/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["onboarding optimization", "user onboarding", "onboarding flow", "activation rate"],
+        "intentPatterns": [
+          "(optimize|improve).*?onboarding",
+          "onboarding.*?(flow|experience|conversion)"
+        ]
+      }
+    },
+    "form-cro": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/form-cro/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["form optimization", "form conversion", "form cro", "form fields"],
+        "intentPatterns": [
+          "(optimize|improve).*?form",
+          "form.*?(conversion|completion|abandonment)"
+        ]
+      }
+    },
+    "popup-cro": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/popup-cro/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["popup optimization", "modal optimization", "popup conversion", "exit intent"],
+        "intentPatterns": [
+          "(optimize|improve).*?(popup|modal)",
+          "popup.*?(conversion|timing|targeting)"
+        ]
+      }
+    },
+    "paywall-upgrade-cro": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/paywall-upgrade-cro/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["paywall optimization", "upgrade flow", "monetization", "subscription conversion"],
+        "intentPatterns": [
+          "(optimize|improve).*?(paywall|upgrade)",
+          "(paywall|upgrade).*?(conversion|flow)"
+        ]
+      }
+    },
+    "copywriting": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "file": "marketing/copywriting/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["copywriting", "marketing copy", "write copy", "landing page copy", "website copy"],
+        "intentPatterns": [
+          "(write|create|draft).*?(copy|marketing copy)",
+          "copywriting.*?(homepage|landing|pricing)"
+        ]
+      }
+    },
+    "copy-editing": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/copy-editing/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["copy editing", "edit copy", "improve copy", "refine copy"],
+        "intentPatterns": [
+          "(edit|improve|refine|polish).*?copy",
+          "copy.*?(editing|review|improvement)"
+        ]
+      }
+    },
+    "email-sequence": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/email-sequence/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["email sequence", "email campaign", "drip campaign", "email marketing", "nurture sequence"],
+        "intentPatterns": [
+          "(create|build|write).*?(email sequence|drip campaign)",
+          "email.*?(sequence|campaign|series)"
+        ]
+      }
+    },
+    "social-content": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/social-content/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["social media", "social content", "social posts", "twitter", "linkedin"],
+        "intentPatterns": [
+          "(create|write).*?(social content|social media)",
+          "social.*?(post|content|media)"
+        ]
+      }
+    },
+    "seo-audit": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "file": "marketing/seo-audit/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["seo audit", "technical seo", "seo analysis", "seo issues", "on-page seo"],
+        "intentPatterns": [
+          "(audit|analyze|review).*?seo",
+          "seo.*?(audit|analysis|issues|problems)"
+        ]
+      }
+    },
+    "programmatic-seo": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/programmatic-seo/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["programmatic seo", "seo pages", "seo templates", "scale seo"],
+        "intentPatterns": [
+          "(programmatic|scale).*?seo",
+          "seo.*?(template|generation|automation)"
+        ]
+      }
+    },
+    "competitor-alternatives": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/competitor-alternatives/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["competitor page", "alternatives page", "vs page", "comparison page"],
+        "intentPatterns": [
+          "(create|build).*?(competitor|alternatives|vs).*?page",
+          "(competitor|alternatives).*?(comparison|page)"
+        ]
+      }
+    },
+    "schema-markup": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/schema-markup/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["schema markup", "structured data", "rich snippets", "json-ld"],
+        "intentPatterns": [
+          "(add|implement|create).*?(schema|structured data)",
+          "schema.*?(markup|implementation)"
+        ]
+      }
+    },
+    "paid-ads": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/paid-ads/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["paid ads", "google ads", "facebook ads", "ad campaigns", "ppc"],
+        "intentPatterns": [
+          "(create|optimize).*?(paid ads|ad campaign)",
+          "(google|facebook).*?ads"
+        ]
+      }
+    },
+    "analytics-tracking": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "file": "marketing/analytics-tracking/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["analytics", "tracking", "google analytics", "event tracking", "conversion tracking"],
+        "intentPatterns": [
+          "(setup|implement|add).*?(analytics|tracking)",
+          "(track|measure).*?(events|conversions)"
+        ]
+      }
+    },
+    "ab-test-setup": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/ab-test-setup/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["a/b test", "ab test", "split test", "experiment", "testing"],
+        "intentPatterns": [
+          "(setup|create|run).*?(a/b test|ab test|experiment)",
+          "(test|experiment).*?(variation|hypothesis)"
+        ]
+      }
+    },
+    "free-tool-strategy": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/free-tool-strategy/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["free tool", "lead generation", "lead magnet", "free product"],
+        "intentPatterns": [
+          "(create|build).*?(free tool|lead magnet)",
+          "free.*?(tool|product).*?strategy"
+        ]
+      }
+    },
+    "referral-program": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/referral-program/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["referral program", "referral system", "word of mouth", "viral growth"],
+        "intentPatterns": [
+          "(create|build|design).*?referral.*?program",
+          "referral.*?(strategy|system|incentive)"
+        ]
+      }
+    },
+    "marketing-ideas": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/marketing-ideas/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["marketing ideas", "marketing strategy", "growth ideas", "marketing brainstorm"],
+        "intentPatterns": [
+          "(generate|brainstorm).*?marketing.*?ideas",
+          "marketing.*?(strategy|tactics|ideas)"
+        ]
+      }
+    },
+    "marketing-psychology": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "marketing/marketing-psychology/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["marketing psychology", "persuasion", "behavioral psychology", "cognitive bias"],
+        "intentPatterns": [
+          "marketing.*?psychology",
+          "(persuasion|psychology).*?principles"
+        ]
+      }
+    },
+    "launch-strategy": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "file": "marketing/launch-strategy/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["launch strategy", "product launch", "launch plan", "go to market"],
+        "intentPatterns": [
+          "(plan|create|design).*?launch.*?strategy",
+          "(product|feature).*?launch"
+        ]
+      }
+    },
+    "pricing-strategy": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "file": "marketing/pricing-strategy/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["pricing strategy", "pricing model", "monetization", "pricing optimization"],
+        "intentPatterns": [
+          "(design|create|optimize).*?pricing",
+          "pricing.*?(strategy|model|optimization)"
         ]
       }
     }
