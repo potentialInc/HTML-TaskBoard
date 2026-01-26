@@ -1,4 +1,4 @@
-# Mobile Screen Implementation Status: $PROJECT_NAME
+# Mobile Screen Implementation Status: {PROJECT_NAME}
 
 > **Framework:** React Native with NativeWind
 > **Last Updated:** YYYY-MM-DD

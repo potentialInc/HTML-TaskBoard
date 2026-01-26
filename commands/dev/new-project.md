@@ -148,6 +148,27 @@ Create root `docker-compose.yml` based on selected services:
 version: '3.8'
 
 services:
+  # PostgreSQL database (always included with backend)
+  postgres:
+    image: postgres:15-alpine
+    container_name: $PROJECT_NAME-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: $PROJECT_NAME
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - $PROJECT_NAME-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Backend service (if selected)
   backend:
     build:
@@ -160,6 +181,11 @@ services:
       # - '8000:8000'  # Django
     environment:
       - NODE_ENV=${NODE_ENV:-development}
+    env_file:
+      - ./backend/.env.docker
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - $PROJECT_NAME-network
 
@@ -172,6 +198,8 @@ services:
     restart: unless-stopped
     ports:
       - '5173:5173'
+    depends_on:
+      - backend
     networks:
       - $PROJECT_NAME-network
 
@@ -185,47 +213,78 @@ services:
     restart: unless-stopped
     ports:
       - '{5174 + index}:5173'
+    depends_on:
+      - backend
     networks:
       - $PROJECT_NAME-network
 
 networks:
   $PROJECT_NAME-network:
     driver: bridge
+
+volumes:
+  postgres_data:
 ```
 
 ## Step 7: Create Project Documentation Structure
 
 ```bash
+# Create .claude-project directory
+mkdir -p .claude-project
+
 # Copy templates from claude-base
 cp -r .claude/base/templates/claude-project/* .claude-project/
 
-# Rename template files (remove .template suffix)
-for f in .claude-project/docs/*.template.md; do
+# Rename ALL template files recursively (remove .template suffix)
+find .claude-project -name "*.template.md" | while read f; do
   mv "$f" "${f%.template.md}.md"
 done
 
-# Replace $PROJECT_NAME placeholder in all template files
-find .claude-project -name "*.md" -exec sed -i '' "s/\$PROJECT_NAME/$PROJECT_NAME/g" {} \;
+# Replace {PROJECT_NAME} placeholder in all markdown files
+find .claude-project -name "*.md" -exec sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" {} \;
 
-# Replace $BACKEND placeholder
-find .claude-project -name "*.md" -exec sed -i '' "s/\$BACKEND/$BACKEND/g" {} \;
+# Replace {BACKEND} placeholder
+find .claude-project -name "*.md" -exec sed -i '' "s/{BACKEND}/$BACKEND/g" {} \;
 
-# Replace $FRONTENDS placeholder
-find .claude-project -name "*.md" -exec sed -i '' "s/\$FRONTENDS/$FRONTENDS/g" {} \;
+# Replace {FRONTENDS} placeholder (join array with comma)
+FRONTENDS_STR=$(IFS=', '; echo "${FRONTENDS[*]}")
+find .claude-project -name "*.md" -exec sed -i '' "s/{FRONTENDS}/$FRONTENDS_STR/g" {} \;
 
-# Create dashboard-specific plan folders from generic template
+# Replace {DATE} placeholder
+find .claude-project -name "*.md" -exec sed -i '' "s/{DATE}/$(date +%Y-%m-%d)/g" {} \;
+
+# Create dashboard-specific status folders from generic template
 for dashboard in $DASHBOARDS; do
-  mkdir -p .claude-project/status/frontend-${dashboard}-dashboard/
-  cp .claude/base/templates/claude-project/status/frontend-dashboard/* \
-     .claude-project/status/frontend-${dashboard}-dashboard/
+  mkdir -p ".claude-project/status/frontend-${dashboard}-dashboard/"
+  if [ -d ".claude-project/status/frontend-dashboard" ]; then
+    cp .claude-project/status/frontend-dashboard/* \
+       ".claude-project/status/frontend-${dashboard}-dashboard/"
+  fi
 done
 
 # Remove generic template folder (already copied to specific dashboards)
 rm -rf .claude-project/status/frontend-dashboard/
 
-# Append gitignore rules from template
-cat .claude-project/gitignore.template >> .gitignore
-rm .claude-project/gitignore.template
+# Copy status templates to project-specific folders
+for folder in backend frontend mobile; do
+  if [ -d "$folder" ] && [ -d ".claude-project/status/$folder" ]; then
+    # Templates already copied, ensure directory exists
+    mkdir -p ".claude-project/status/$folder"
+  fi
+done
+
+# Handle gitignore template
+if [ -f ".claude-project/gitignore.template" ]; then
+  cat .claude-project/gitignore.template >> .gitignore
+  rm .claude-project/gitignore.template
+fi
+
+# Verify key files exist
+for file in ".claude-project/docs/PROJECT_KNOWLEDGE.md" ".claude-project/docs/PROJECT_API.md" ".claude-project/memory/DECISIONS.md"; do
+  if [ ! -s "$file" ]; then
+    echo "WARNING: $file is missing or empty"
+  fi
+done
 ```
 
 # Create initial README
@@ -355,7 +414,7 @@ $PROJECT_NAME/
 │   ├── react/                  → React web skills
 │   └── react-native/           → React Native mobile skills
 ├── .claude-project/            # Project docs
-│   ├── plans/
+│   ├── status/
 │   │   ├── backend/
 │   │   ├── frontend/
 │   │   ├── frontend-{name}-dashboard/  # For each dashboard

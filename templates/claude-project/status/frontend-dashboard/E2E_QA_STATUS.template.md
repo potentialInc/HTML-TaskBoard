@@ -1,4 +1,4 @@
-# E2E QA Status: $PROJECT_NAME (Admin Dashboard)
+# E2E QA Status: {PROJECT_NAME} (Admin Dashboard)
 
 ## Overview
 

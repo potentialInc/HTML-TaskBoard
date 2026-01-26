@@ -1,4 +1,4 @@
-# Mobile API Integration Status: $PROJECT_NAME
+# Mobile API Integration Status: {PROJECT_NAME}
 
 > **Framework:** React Native
 > **Last Updated:** YYYY-MM-DD

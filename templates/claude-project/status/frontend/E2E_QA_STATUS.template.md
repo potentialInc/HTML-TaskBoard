@@ -1,4 +1,4 @@
-# E2E QA Status: $PROJECT_NAME (Frontend)
+# E2E QA Status: {PROJECT_NAME} (Frontend)
 
 ## Overview
 
