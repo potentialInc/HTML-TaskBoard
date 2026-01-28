@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F8FAFC]"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance - Potential AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+fontFamily: {
+sans: ['Inter', 'sans-serif'],
+},
+colors: {
+primary: {
+50: '#eff6ff',
+100: '#dbeafe',
+200: '#bfdbfe',
+300: '#93c5fd',
+400: '#60a5fa',
+500: '#3b82f6',
+600: '#2563EB', // Specified Primary Blue
+700: '#1d4ed8', // Specified Secondary
+800: '#1e40af',
+900: '#1e3a8a',
+},
+slate: {
+850: '#1e293b',
+900: '#0F172A', // Sidebar Dark
+},
+success: {
+500: '#10B981',
+50: '#ecfdf5',
+700: '#047857'
+},
+warning: {
+500: '#F59E0B',
+50: '#fffbeb',
+700: '#b45309'
+},
+error: {
+500: '#EF4444'
+}
+}
+}
+}
+}
+</script>
+<style>
+body {
+font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+-webkit-font-smoothing: antialiased;
+}
+.no-scrollbar::-webkit-scrollbar {
+display: none;
+}
+.no-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+</style></head>
+<body class="h-full flex overflow-hidden text-slate-600 font-normal">
+
+    <!-- Sidebar -->
+    <aside class="w-[240px] bg-slate-900 h-full flex flex-col flex-shrink-0 transition-all duration-300 z-40 hidden md:flex">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <div class="flex items-center gap-2 text-white">
+                <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
+                    <span class="font-semibold text-lg tracking-tighter">P</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-medium tracking-tight text-lg leading-tight">POTENTIAL AI</span>
+                    <span class="text-xs text-slate-400">Employee</span>
+                </div>
+            </div>
+        </div>
+
+                <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto sidebar-scroll py-6 px-3 space-y-1">
+            <a href="./05-employee-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group ">
+                <iconify-icon icon="solar:widget-5-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Dashboard</span>
+            </a>
+
+            <a href="./06-attendance-main.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group ">
+                <iconify-icon icon="solar:user-check-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Attendance</span>
+            </a>
+
+            <a href="./09-leave-main.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group ">
+                <iconify-icon icon="solar:calendar-mark-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Leave</span>
+            </a>
+
+            <a href="./12-salary-main.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group ">
+                <iconify-icon icon="solar:wallet-money-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Salary</span>
+            </a>
+
+            <a href="./14-loans-main.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group ">
+                <iconify-icon icon="solar:hand-money-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Loans</span>
+            </a>
+
+            <a href="./16-performance.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-600 text-white group transition-colors">
+                <iconify-icon icon="solar:chart-square-linear" width="20" stroke-width="1.5" ></iconify-icon>
+                <span class="text-sm font-medium">Performance</span>
+            </a>
+
+            <a href="./17-policies.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group ">
+                <iconify-icon icon="solar:document-text-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Policies</span>
+            </a>
+
+            <div class="pt-4 mt-4 border-t border-slate-800">
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Account</p>
+                <a href="./18-profile.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group ">
+                    <iconify-icon icon="solar:user-circle-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                    <span class="text-sm font-medium">Profile</span>
+                </a>
+                <a href="../auth/02-login.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                    <iconify-icon icon="solar:logout-3-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                    <span class="text-sm font-medium">Logout</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="p-4 border-t border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white font-medium border border-slate-600">
+                    JD
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">John Doe</p>
+                    <p class="text-xs text-slate-400 truncate">Product Designer</p>
+                </div>
+                <button class="text-slate-400 hover:text-white">
+                    <iconify-icon icon="solar:settings-linear" width="18"></iconify-icon>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#F8FAFC]">
+        <div class="max-w-[1400px] mx-auto p-6 md:p-8 space-y-8">
+            
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <nav class="flex text-sm text-slate-500 mb-2">
+                        <span>Performance</span>
+                        <span class="mx-2 text-slate-400">/</span>
+                        <span class="text-slate-900 font-medium">Overview</span>
+                    </nav>
+                    <h1 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Performance</h1>
+                </div>
+                <div class="flex gap-3">
+                    <button class="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">
+                        <iconify-icon icon="solar:cloud-download-linear" width="18"></iconify-icon>
+                        Download Report
+                    </button>
+                    <a href="./51-goal-create-edit.html" class="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm shadow-primary-600/20 transition-all">
+                        <iconify-icon icon="solar:add-circle-linear" width="18"></iconify-icon>
+                        New Goal
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Current Goals Section (Left 2/3) -->
+                <div class="lg:col-span-2 space-y-5">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-semibold text-slate-900 tracking-tight">Current Goals</h2>
+                        <a href="./16-performance.html" class="text-sm font-medium text-primary-600 hover:text-primary-700">View All</a>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Goal Card 1 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col md:flex-row md:items-center gap-5 hover:border-slate-300 transition-colors">
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-semibold text-slate-900">Complete Q1 Sales Target</h3>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-success-50 text-success-700 border border-success-50">
+                                        On Track
+                                    </span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2 mb-3">
+                                    <div class="bg-primary-600 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-slate-500">
+                                    <span class="flex items-center gap-1.5">
+                                        <iconify-icon icon="solar:calendar-linear" width="14"></iconify-icon>
+                                        Due Jan 31, 2025
+                                    </span>
+                                    <span class="font-medium text-slate-700">75% Complete</span>
+                                </div>
+                            </div>
+                            <div class="flex md:flex-col justify-end">
+                                <button class="px-3 py-1.5 text-xs font-medium text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors border border-primary-100">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Goal Card 2 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col md:flex-row md:items-center gap-5 hover:border-slate-300 transition-colors">
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-semibold text-slate-900">Learn React Native</h3>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-warning-50 text-warning-700 border border-warning-50">
+                                        At Risk
+                                    </span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2 mb-3">
+                                    <div class="bg-warning-500 h-2 rounded-full" style="width: 40%"></div>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-slate-500">
+                                    <span class="flex items-center gap-1.5">
+                                        <iconify-icon icon="solar:calendar-linear" width="14"></iconify-icon>
+                                        Due Feb 15, 2025
+                                    </span>
+                                    <span class="font-medium text-slate-700">40% Complete</span>
+                                </div>
+                            </div>
+                            <div class="flex md:flex-col justify-end">
+                                <button class="px-3 py-1.5 text-xs font-medium text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors border border-primary-100">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Goal Card 3 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col md:flex-row md:items-center gap-5 hover:border-slate-300 transition-colors">
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h3 class="font-semibold text-slate-900">Improve Client Response Time</h3>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-success-50 text-success-700 border border-success-50">
+                                        On Track
+                                    </span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2 mb-3">
+                                    <div class="bg-primary-600 h-2 rounded-full" style="width: 90%"></div>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-slate-500">
+                                    <span class="flex items-center gap-1.5">
+                                        <iconify-icon icon="solar:calendar-linear" width="14"></iconify-icon>
+                                        Due Jan 20, 2025
+                                    </span>
+                                    <span class="font-medium text-slate-700">90% Complete</span>
+                                </div>
+                            </div>
+                            <div class="flex md:flex-col justify-end">
+                                <button class="px-3 py-1.5 text-xs font-medium text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors border border-primary-100">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Notes Summary (Right 1/3) -->
+                <div class="space-y-5">
+                    <h2 class="text-lg font-semibold text-slate-900 tracking-tight">Daily Activity</h2>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 relative overflow-hidden">
+                        <div class="flex items-start justify-between mb-6">
+                            <div>
+                                <h3 class="font-semibold text-slate-900 text-sm">Daily Notes This Week</h3>
+                                <p class="text-xs text-slate-500 mt-1">Track your daily progress</p>
+                            </div>
+                            <!-- Notion Badge -->
+                            <div class="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center">
+                                <iconify-icon icon="simple-icons:notion" width="16" class="text-slate-800"></iconify-icon>
+                            </div>
+                        </div>
+
+                        <!-- Week Grid -->
+                        <div class="flex justify-between items-center mb-6">
+                            <!-- Checked Days -->
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-success-50 border border-success-500 text-success-700 flex items-center justify-center">
+                                    <iconify-icon icon="solar:check-read-linear" width="16" stroke-width="2.5"></iconify-icon>
+                                </div>
+                                <span class="text-[10px] font-medium text-slate-400 uppercase">Mon</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-success-50 border border-success-500 text-success-700 flex items-center justify-center">
+                                    <iconify-icon icon="solar:check-read-linear" width="16" stroke-width="2.5"></iconify-icon>
+                                </div>
+                                <span class="text-[10px] font-medium text-slate-400 uppercase">Tue</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-success-50 border border-success-500 text-success-700 flex items-center justify-center">
+                                    <iconify-icon icon="solar:check-read-linear" width="16" stroke-width="2.5"></iconify-icon>
+                                </div>
+                                <span class="text-[10px] font-medium text-slate-400 uppercase">Wed</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-success-50 border border-success-500 text-success-700 flex items-center justify-center">
+                                    <iconify-icon icon="solar:check-read-linear" width="16" stroke-width="2.5"></iconify-icon>
+                                </div>
+                                <span class="text-[10px] font-medium text-slate-400 uppercase">Thu</span>
+                            </div>
+                            <!-- Unchecked Day -->
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-slate-50 border-2 border-dashed border-slate-300 text-slate-300 flex items-center justify-center">
+                                    <span class="block w-2 h-2 rounded-full bg-slate-200"></span>
+                                </div>
+                                <span class="text-[10px] font-medium text-slate-400 uppercase">Fri</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                            <div class="flex items-center gap-2 text-sm text-slate-900 font-medium">
+                                <span class="text-xl">🔥</span>
+                                4 day streak
+                            </div>
+                            <button class="text-xs font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1">
+                                View in Notion
+                                <iconify-icon icon="solar:arrow-right-linear" width="12"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Evaluations -->
+            <div class="space-y-5">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-slate-900 tracking-tight">Project Evaluations</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Eval Card 1 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="font-semibold text-slate-900">CRM Dashboard Redesign</h3>
+                                    <p class="text-xs text-slate-500 mt-1">Completed Dec 15, 2024</p>
+                                </div>
+                                <div class="flex gap-0.5 text-warning-500">
+                                    <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                                    <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                                    <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                                    <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                                    <div class="relative w-4 h-4 overflow-hidden">
+                                        <iconify-icon icon="solar:star-linear" width="16" class="text-warning-500 absolute top-0 left-0"></iconify-icon>
+                                        <div class="absolute top-0 left-0 w-1/2 h-full overflow-hidden">
+                                            <iconify-icon icon="solar:star-bold" width="16" class="text-warning-500"></iconify-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center text-[10px] font-bold text-pink-700">SC</div>
+                                <span class="text-sm text-slate-600">PM: Sarah Chen</span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-2.5 py-1 bg-slate-50 border border-slate-100 rounded-md text-xs text-slate-600">Quality: High</span>
+                                <span class="px-2.5 py-1 bg-slate-50 border border-slate-100 rounded-md text-xs text-slate-600">Timeliness: On Time</span>
+                            </div>
+                        </div>
+
+                        <a href="./53-feedback-detail.html" class="w-full py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center justify-center gap-2">
+                            View Feedback
+                            <iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>
+                        </a>
+                    </div>
+
+                    <!-- Eval Card 2 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="font-semibold text-slate-900">Mobile App MVP</h3>
+                                    <p class="text-xs text-slate-500 mt-1">Completed Nov 28, 2024</p>
+                                </div>
+                                <div class="flex gap-0.5 text-warning-500">
+                                    <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                                    <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                                    <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                                    <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                                    <iconify-icon icon="solar:star-linear" width="16"></iconify-icon>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-bold text-blue-700">JD</div>
+                                <span class="text-sm text-slate-600">PM: John Davis</span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-2.5 py-1 bg-slate-50 border border-slate-100 rounded-md text-xs text-slate-600">Collaboration: Excellent</span>
+                                <span class="px-2.5 py-1 bg-slate-50 border border-slate-100 rounded-md text-xs text-slate-600">Scope: Met</span>
+                            </div>
+                        </div>
+
+                        <a href="./53-feedback-detail.html" class="w-full py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center justify-center gap-2">
+                            View Feedback
+                            <iconify-icon icon="solar:alt-arrow-right-linear" width="14"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Reviews Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="px-6 py-5 border-b border-slate-200">
+                    <h2 class="text-lg font-semibold text-slate-900 tracking-tight">Performance Reviews</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500 font-medium">
+                                <th class="px-6 py-4">Period</th>
+                                <th class="px-6 py-4">Rating</th>
+                                <th class="px-6 py-4">Reviewer</th>
+                                <th class="px-6 py-4">Status</th>
+                                <th class="px-6 py-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-sm">
+                            <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="px-6 py-4 text-slate-900 font-medium">Q4 2024</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-semibold text-slate-900">4.2</span>
+                                        <span class="text-slate-400">/ 5.0</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">Alex Morgan</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-success-50 text-success-700 ring-1 ring-inset ring-success-600/20">
+                                        Completed
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="./52-review-detail.html" class="text-primary-600 hover:text-primary-800 font-medium text-xs border border-primary-200 bg-primary-50 px-3 py-1.5 rounded-md hover:bg-primary-100 transition-colors">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="px-6 py-4 text-slate-900 font-medium">Q3 2024</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-semibold text-slate-900">4.0</span>
+                                        <span class="text-slate-400">/ 5.0</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">Alex Morgan</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-success-50 text-success-700 ring-1 ring-inset ring-success-600/20">
+                                        Completed
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="./52-review-detail.html" class="text-slate-500 hover:text-slate-700 font-medium text-xs border border-slate-200 px-3 py-1.5 rounded-md hover:bg-slate-50 transition-colors">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="px-6 py-4 text-slate-900 font-medium">Q2 2024</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-semibold text-slate-900">3.8</span>
+                                        <span class="text-slate-400">/ 5.0</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">Sarah Chen</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-success-50 text-success-700 ring-1 ring-inset ring-success-600/20">
+                                        Completed
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="./52-review-detail.html" class="text-slate-500 hover:text-slate-700 font-medium text-xs border border-slate-200 px-3 py-1.5 rounded-md hover:bg-slate-50 transition-colors">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body></html>
