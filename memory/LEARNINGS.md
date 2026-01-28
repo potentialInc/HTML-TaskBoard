@@ -38,3 +38,42 @@ Key gotchas documented:
 - New users require `termsAndConditionsAccepted: true`
 
 ---
+
+### 2026-01-28: Use Dynamic Service Discovery for PM2 Configs
+
+**Type**: correction
+**Confidence**: HIGH
+**Source**: Session reflection - design-flow project
+
+**Description**: Don't hardcode dashboard services in PM2/Docker configs. Use dynamic discovery pattern instead because different projects have different dashboard combinations (admin, coach, owner, etc.).
+
+**Evidence**:
+- "there must be multiple dashboard so it shouldn't be hardcoded"
+- "some time there is frontend-admin-dashboard frontend-coach-dashboard frontend-owner-dashboard"
+
+**Pattern**: Auto-discover `frontend-*-dashboard/` folders at runtime rather than listing each explicitly. This makes configs portable across projects.
+
+---
+
+### 2026-01-28: Vite/React Router Requires Explicit --port Flag
+
+**Type**: technical-learning
+**Confidence**: HIGH
+**Source**: Session reflection - design-flow project
+
+**Description**: Vite dev server (used by React Router v7) does NOT respect the `PORT` environment variable. Must pass `--port` flag explicitly via CLI.
+
+**Correct approach**:
+```javascript
+// In PM2 ecosystem.config.js
+args: `run dev -- --port ${port}`,  // ✓ Works
+```
+
+**Incorrect approach**:
+```javascript
+env: {
+  PORT: 5173,  // ✗ Ignored by Vite
+}
+```
+
+---
