@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F8FAFC]"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Management - Potential HRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+fontFamily: {
+sans: ['Inter', 'sans-serif'],
+},
+colors: {
+primary: {
+50: '#eff6ff',
+100: '#dbeafe',
+200: '#bfdbfe',
+300: '#93c5fd',
+400: '#60a5fa',
+500: '#3b82f6',
+600: '#2563EB', // Brand Primary
+700: '#1d4ed8', // Brand Secondary
+800: '#1e40af',
+900: '#1e3a8a',
+},
+slate: {
+850: '#1e293b',
+900: '#0F172A', // Sidebar Dark
+}
+}
+}
+}
+}
+</script>
+<style>
+body {
+font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+-webkit-font-smoothing: antialiased;
+}
+.no-scrollbar::-webkit-scrollbar {
+display: none;
+}
+.no-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+</style></head>
+<body class="h-full flex overflow-hidden text-slate-600 font-normal">
+
+    <!-- Sidebar -->
+    <aside class="w-[240px] bg-slate-900 h-full flex flex-col flex-shrink-0 transition-all duration-300 z-40 hidden md:flex">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <div class="flex items-center gap-2 text-white">
+                <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
+                    <span class="font-semibold text-lg tracking-tighter">P</span>
+                </div>
+                <span class="font-medium tracking-tight text-lg">POTENTIAL AI</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-6 px-3 space-y-1">
+            <div class="px-3 pb-2">
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Admin Section</p>
+            </div>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:widget-5-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Dashboard</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:users-group-rounded-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Employees</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:wallet-money-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Salary Management</span>
+            </a>
+
+            <!-- Performance (Active) -->
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-600 text-white shadow-lg shadow-primary-600/20 group transition-all">
+                <iconify-icon icon="solar:medal-ribbon-bold" width="20"></iconify-icon>
+                <span class="text-sm font-medium">Performance</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:calendar-mark-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Leave</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:chart-square-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Reports</span>
+            </a>
+        </nav>
+
+        <!-- User Profile Footer -->
+        <div class="p-4 border-t border-slate-800 bg-slate-900">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white font-medium border border-slate-600 relative">
+                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User" class="w-full h-full rounded-full object-cover opacity-90">
+                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-slate-900 rounded-full"></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">Admin User</p>
+                    <p class="text-xs text-slate-400 truncate">HR Manager</p>
+                </div>
+                <button class="text-slate-400 hover:text-white transition-colors">
+                    <iconify-icon icon="solar:logout-2-linear" width="18"></iconify-icon>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#F8FAFC]">
+        <div class="max-w-7xl mx-auto p-6 md:p-8 space-y-8">
+            
+            <!-- Header & Actions -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div class="flex flex-col gap-1">
+                    <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Performance Management</h1>
+                    <p class="text-slate-500 text-sm">Manage review cycles, employee goals, and feedback.</p>
+                </div>
+                <button class="flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium shadow-sm shadow-primary-600/20 transition-all">
+                    <iconify-icon icon="solar:add-circle-linear" width="20"></iconify-icon>
+                    Create New Cycle
+                </button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="border-b border-slate-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <a href="#" class="border-primary-600 text-primary-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2">
+                        <iconify-icon icon="solar:refresh-circle-linear" width="18"></iconify-icon>
+                        Review Cycles
+                    </a>
+                    <a href="#" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors">
+                        <iconify-icon icon="solar:target-linear" width="18"></iconify-icon>
+                        Goals Overview
+                    </a>
+                    <a href="#" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors">
+                        <iconify-icon icon="solar:notebook-linear" width="18"></iconify-icon>
+                        Daily Notes
+                    </a>
+                    <a href="#" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors">
+                        <iconify-icon icon="solar:chart-2-linear" width="18"></iconify-icon>
+                        Reports
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Active Tab Content: Review Cycles -->
+            <div class="space-y-8">
+                
+                <!-- Current Cycle Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="flex h-3 w-3 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
+                            <h2 class="text-base font-semibold text-slate-900">Current Active Cycle</h2>
+                        </div>
+                        <button class="text-slate-400 hover:text-slate-600 transition-colors">
+                            <iconify-icon icon="solar:menu-dots-bold" width="20"></iconify-icon>
+                        </button>
+                    </div>
+                    
+                    <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Info Column -->
+                        <div class="lg:col-span-1 space-y-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 tracking-tight">Q4 2023 Performance Review</h3>
+                                <p class="text-sm text-slate-500 mt-1">Year-end evaluation and goal setting for 2024.</p>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3 text-sm">
+                                    <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                        <iconify-icon icon="solar:calendar-linear" width="20"></iconify-icon>
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-500 text-xs font-medium uppercase tracking-wide">Timeline</p>
+                                        <p class="font-medium text-slate-900">Oct 1 — Dec 31, 2023</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-3 text-sm">
+                                    <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                                        <iconify-icon icon="solar:users-group-rounded-linear" width="20"></iconify-icon>
+                                    </div>
+                                    <div>
+                                        <p class="text-slate-500 text-xs font-medium uppercase tracking-wide">Participants</p>
+                                        <p class="font-medium text-slate-900">124 Employees</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-medium">
+                                <iconify-icon icon="solar:clock-circle-linear" width="14"></iconify-icon>
+                                12 days remaining
+                            </div>
+                        </div>
+
+                        <!-- Progress Column -->
+                        <div class="lg:col-span-2 flex flex-col justify-center bg-slate-50 rounded-xl p-6 border border-slate-100">
+                            <div class="flex items-end justify-between mb-2">
+                                <span class="text-sm font-semibold text-slate-900">Overall Completion</span>
+                                <span class="text-2xl font-bold text-primary-600">68%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-2.5 mb-8">
+                                <div class="bg-primary-600 h-2.5 rounded-full transition-all duration-1000" style="width: 68%"></div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <!-- Self Review Stats -->
+                                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-medium text-slate-500 uppercase">Self Review</span>
+                                        <iconify-icon icon="solar:user-circle-linear" class="text-slate-400" width="16"></iconify-icon>
+                                    </div>
+                                    <div class="flex items-end gap-1">
+                                        <span class="text-lg font-bold text-slate-900">112</span>
+                                        <span class="text-xs text-slate-400 mb-1">/ 124</span>
+                                    </div>
+                                    <div class="mt-2 w-full bg-slate-100 rounded-full h-1.5">
+                                        <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 90%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Manager Review Stats -->
+                                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-medium text-slate-500 uppercase">Manager Review</span>
+                                        <iconify-icon icon="solar:user-id-linear" class="text-slate-400" width="16"></iconify-icon>
+                                    </div>
+                                    <div class="flex items-end gap-1">
+                                        <span class="text-lg font-bold text-slate-900">45</span>
+                                        <span class="text-xs text-slate-400 mb-1">/ 124</span>
+                                    </div>
+                                    <div class="mt-2 w-full bg-slate-100 rounded-full h-1.5">
+                                        <div class="bg-amber-500 h-1.5 rounded-full" style="width: 36%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Peer Review Stats -->
+                                <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-xs font-medium text-slate-500 uppercase">Peer Feedback</span>
+                                        <iconify-icon icon="solar:users-group-two-rounded-linear" class="text-slate-400" width="16"></iconify-icon>
+                                    </div>
+                                    <div class="flex items-end gap-1">
+                                        <span class="text-lg font-bold text-slate-900">320</span>
+                                        <span class="text-xs text-slate-400 mb-1">Submitted</span>
+                                    </div>
+                                    <div class="mt-2 w-full bg-slate-100 rounded-full h-1.5">
+                                        <div class="bg-primary-500 h-1.5 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Past Cycles Section -->
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-lg font-bold text-slate-900 tracking-tight px-1">Past Cycles</h3>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <!-- Filters -->
+                        <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="relative w-full sm:w-64">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <iconify-icon icon="solar:magnifer-linear" class="text-slate-400" width="16"></iconify-icon>
+                                </div>
+                                <input type="text" class="pl-9 pr-3 py-2 bg-white border border-slate-200 text-slate-600 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 shadow-sm w-full placeholder:text-slate-400" placeholder="Search cycles...">
+                            </div>
+                            <div class="flex items-center gap-2 w-full sm:w-auto">
+                                <button class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 text-slate-600 text-sm rounded-lg hover:bg-slate-50 shadow-sm transition-colors">
+                                    <iconify-icon icon="solar:filter-linear" width="16"></iconify-icon>
+                                    <span>Filter</span>
+                                </button>
+                                <button class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 text-slate-600 text-sm rounded-lg hover:bg-slate-50 shadow-sm transition-colors">
+                                    <iconify-icon icon="solar:sort-vertical-linear" width="16"></iconify-icon>
+                                    <span>Sort</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 border-b border-slate-100">
+                                        <th class="py-3 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500">Cycle Name</th>
+                                        <th class="py-3 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500">Period</th>
+                                        <th class="py-3 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500">Completion</th>
+                                        <th class="py-3 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500">Departments</th>
+                                        <th class="py-3 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500 text-center">Status</th>
+                                        <th class="py-3 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-sm">
+                                    <!-- Row 1 -->
+                                    <tr class="hover:bg-slate-50 transition-colors group">
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-slate-500">
+                                                    <span class="font-bold text-xs">Q3</span>
+                                                </div>
+                                                <span class="font-medium text-slate-900">Q3 2023 Review</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-6 text-slate-500">July 1 - Sep 30, 2023</td>
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs font-medium text-slate-700">98%</span>
+                                                <div class="w-16 h-1.5 bg-slate-100 rounded-full">
+                                                    <div class="bg-green-500 h-1.5 rounded-full" style="width: 98%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-6 text-slate-500">All Departments</td>
+                                        <td class="py-4 px-6 text-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                Completed
+                                            </span>
+                                        </td>
+                                        <td class="py-4 px-6 text-right">
+                                            <button class="text-primary-600 font-medium text-xs hover:underline">View Report</button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 2 -->
+                                    <tr class="hover:bg-slate-50 transition-colors group">
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-slate-500">
+                                                    <span class="font-bold text-xs">Q2</span>
+                                                </div>
+                                                <span class="font-medium text-slate-900">Q2 2023 Review</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-6 text-slate-500">Apr 1 - Jun 30, 2023</td>
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs font-medium text-slate-700">100%</span>
+                                                <div class="w-16 h-1.5 bg-slate-100 rounded-full">
+                                                    <div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-6 text-slate-500">All Departments</td>
+                                        <td class="py-4 px-6 text-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                Completed
+                                            </span>
+                                        </td>
+                                        <td class="py-4 px-6 text-right">
+                                            <button class="text-primary-600 font-medium text-xs hover:underline">View Report</button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 3 -->
+                                    <tr class="hover:bg-slate-50 transition-colors group">
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-slate-500">
+                                                    <span class="font-bold text-xs">Q1</span>
+                                                </div>
+                                                <span class="font-medium text-slate-900">Q1 2023 Review</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-6 text-slate-500">Jan 1 - Mar 31, 2023</td>
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs font-medium text-slate-700">95%</span>
+                                                <div class="w-16 h-1.5 bg-slate-100 rounded-full">
+                                                    <div class="bg-green-500 h-1.5 rounded-full" style="width: 95%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-6 text-slate-500">All Departments</td>
+                                        <td class="py-4 px-6 text-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                Completed
+                                            </span>
+                                        </td>
+                                        <td class="py-4 px-6 text-right">
+                                            <button class="text-primary-600 font-medium text-xs hover:underline">View Report</button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 4 -->
+                                    <tr class="hover:bg-slate-50 transition-colors group">
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded bg-primary-50 flex items-center justify-center text-primary-600">
+                                                    <iconify-icon icon="solar:code-circle-linear" width="16"></iconify-icon>
+                                                </div>
+                                                <span class="font-medium text-slate-900">Engineering Mid-Year</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-6 text-slate-500">Jun 1 - Jun 15, 2023</td>
+                                        <td class="py-4 px-6">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs font-medium text-slate-700">100%</span>
+                                                <div class="w-16 h-1.5 bg-slate-100 rounded-full">
+                                                    <div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-6 text-slate-500">Engineering Only</td>
+                                        <td class="py-4 px-6 text-center">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                Completed
+                                            </span>
+                                        </td>
+                                        <td class="py-4 px-6 text-right">
+                                            <button class="text-primary-600 font-medium text-xs hover:underline">View Report</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div class="p-4 border-t border-slate-100 flex items-center justify-center">
+                            <button class="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1">
+                                View all archived cycles
+                                <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+</body></html>

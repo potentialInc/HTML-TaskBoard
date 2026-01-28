@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F8FAFC]"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Leave - Potential HRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+fontFamily: {
+sans: ['Inter', 'sans-serif'],
+},
+colors: {
+primary: {
+50: '#eff6ff',
+100: '#dbeafe',
+200: '#bfdbfe',
+600: '#2563EB',
+700: '#1D4ED8',
+},
+slate: {
+850: '#1e293b',
+900: '#0F172A',
+}
+}
+}
+}
+}
+</script>
+<style>
+body {
+font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+-webkit-font-smoothing: antialiased;
+}
+.no-scrollbar::-webkit-scrollbar {
+display: none;
+}
+.no-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+/* Custom form inputs */
+select {
+appearance: none;
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+background-position: right 0.75rem center;
+background-repeat: no-repeat;
+background-size: 1.25em 1.25em;
+}
+/* Time Input Icon */
+input[type="time"]::-webkit-calendar-picker-indicator {
+filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(170deg) brightness(95%) contrast(80%);
+cursor: pointer;
+}
+</style></head>
+<body class="h-full flex overflow-hidden text-slate-600">
+
+    <!-- Sidebar -->
+    <aside class="w-[240px] bg-slate-900 h-full flex flex-col flex-shrink-0 transition-all duration-300 z-40 hidden md:flex">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <div class="flex items-center gap-2 text-white">
+                <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white">
+                    <span class="font-bold text-lg tracking-tighter">P</span>
+                </div>
+                <span class="font-semibold tracking-tight text-lg">POTENTIAL</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-6 px-3 space-y-1">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:widget-5-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Dashboard</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:user-check-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Attendance</span>
+            </a>
+
+            <!-- Active Item: Leave -->
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-600 text-white group transition-colors shadow-lg shadow-primary-600/20">
+                <iconify-icon icon="solar:calendar-mark-linear" width="20" stroke-width="1.5"></iconify-icon>
+                <span class="text-sm font-medium">Leave</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:wallet-money-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Salary</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:chart-square-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Performance</span>
+            </a>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="p-4 border-t border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white font-medium">
+                    JD
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">John Doe</p>
+                    <p class="text-xs text-slate-400 truncate">Product Designer</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#F8FAFC] relative flex items-center justify-center p-6">
+        
+        <!-- Emergency Form Card -->
+        <div class="w-full max-w-[560px] bg-white rounded-xl shadow-sm border-y border-r border-slate-200 border-l-4 border-l-red-500 p-8">
+            
+            <!-- Header -->
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600 flex-shrink-0">
+                    <iconify-icon icon="solar:shield-warning-linear" width="24" stroke-width="1.5"></iconify-icon>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-semibold text-red-700 tracking-tight">Emergency Leave</h2>
+                    <p class="text-sm text-slate-500">Request urgent time off due to unforeseen circumstances.</p>
+                </div>
+            </div>
+
+            <!-- Warning Banner -->
+            <div class="bg-[#FEF2F2] border border-red-100 rounded-lg p-4 mb-8 flex items-start gap-3">
+                <iconify-icon icon="solar:danger-triangle-linear" class="text-red-500 mt-0.5 flex-shrink-0" width="18"></iconify-icon>
+                <p class="text-sm font-medium text-red-800 leading-snug">
+                    Submitting will immediately notify your team via Slack. Please ensure your current tasks are handed off if possible.
+                </p>
+            </div>
+
+            <form class="space-y-6">
+                
+                <!-- Date(s) -->
+                <div>
+                    <label for="dates" class="block text-sm font-medium text-slate-700 mb-1.5">Leave Date(s) <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <iconify-icon icon="solar:calendar-linear" class="text-slate-400" width="18"></iconify-icon>
+                        </div>
+                        <input type="text" id="dates" class="block w-full h-11 pl-10 pr-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-all shadow-sm placeholder:text-slate-400" placeholder="Select start date" value="Today, Nov 15, 2023">
+                    </div>
+                </div>
+
+                <!-- Reason -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="reason" class="block text-sm font-medium text-slate-700">Reason for Emergency <span class="text-red-500">*</span></label>
+                    </div>
+                    <textarea id="reason" class="block w-full h-[150px] p-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-all shadow-sm resize-none placeholder:text-slate-400" placeholder="Please describe the emergency situation..."></textarea>
+                </div>
+
+                <!-- Estimated Return -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Estimated Return Time <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <iconify-icon icon="solar:calendar-date-linear" class="text-slate-400" width="18"></iconify-icon>
+                            </div>
+                            <input type="text" class="block w-full h-11 pl-10 pr-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-all shadow-sm" placeholder="Return Date">
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <iconify-icon icon="solar:clock-circle-linear" class="text-slate-400" width="18"></iconify-icon>
+                            </div>
+                            <input type="time" class="block w-full h-11 pl-10 pr-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-all shadow-sm text-slate-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Availability -->
+                <div>
+                    <label for="contact" class="block text-sm font-medium text-slate-700 mb-1.5">Contact Availability <span class="text-slate-400 font-normal">(Optional)</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <iconify-icon icon="solar:phone-linear" class="text-slate-400" width="18"></iconify-icon>
+                        </div>
+                        <input type="text" id="contact" class="block w-full h-11 pl-10 pr-3 text-sm text-slate-900 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition-all shadow-sm placeholder:text-slate-400" placeholder="Phone number or best way to reach you">
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-4 flex items-center justify-end gap-3">
+                    <button type="button" class="h-11 px-6 rounded-lg text-sm font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-900 transition-all focus:outline-none focus:ring-2 focus:ring-slate-200">
+                        Cancel
+                    </button>
+                    <button type="button" class="h-11 px-6 rounded-lg text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-all shadow-sm shadow-red-600/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600 flex items-center gap-2">
+                        <iconify-icon icon="solar:bell-linear" width="18"></iconify-icon>
+                        Submit Emergency Leave
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+</body></html>

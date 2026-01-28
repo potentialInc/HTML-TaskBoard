@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F8FAFC]"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency Leave Dashboard - Potential HRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+fontFamily: {
+sans: ['Inter', 'sans-serif'],
+},
+colors: {
+primary: {
+50: '#eff6ff',
+100: '#dbeafe',
+200: '#bfdbfe',
+300: '#93c5fd',
+400: '#60a5fa',
+500: '#3b82f6',
+600: '#2563EB', // Brand Primary
+700: '#1d4ed8', // Brand Secondary
+800: '#1e40af',
+900: '#1e3a8a',
+},
+slate: {
+850: '#1e293b',
+900: '#0F172A', // Sidebar Dark
+},
+success: {
+500: '#10B981',
+50: '#ecfdf5',
+700: '#047857'
+},
+warning: {
+500: '#F59E0B',
+50: '#fffbeb',
+700: '#b45309'
+},
+error: {
+500: '#EF4444',
+50: '#fef2f2',
+600: '#DC2626',
+700: '#b91c1c'
+}
+}
+}
+}
+}
+</script>
+<style>
+body {
+font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+-webkit-font-smoothing: antialiased;
+}
+.no-scrollbar::-webkit-scrollbar {
+display: none;
+}
+.no-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+</style></head>
+<body class="h-full flex overflow-hidden text-slate-600 font-normal">
+
+    <!-- Sidebar -->
+    <aside class="w-[240px] bg-slate-900 h-full flex flex-col flex-shrink-0 transition-all duration-300 z-40 hidden md:flex">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <div class="flex items-center gap-2 text-white">
+                <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
+                    <span class="font-semibold text-lg tracking-tighter">P</span>
+                </div>
+                <span class="font-medium tracking-tight text-lg">POTENTIAL AI</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-6 px-3 space-y-1">
+            <div class="px-3 pb-2">
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Admin Section</p>
+            </div>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:widget-5-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Dashboard</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:users-group-rounded-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Employees</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:user-check-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Attendance</span>
+            </a>
+
+            <!-- Leave Management (Active) -->
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-600 text-white shadow-lg shadow-primary-600/20 group transition-all">
+                <iconify-icon icon="solar:calendar-mark-bold" width="20"></iconify-icon>
+                <span class="text-sm font-medium">Leave Management</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:wallet-money-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Salary</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:hand-money-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Loans</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:chart-square-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Reports</span>
+            </a>
+
+            <div class="pt-4 mt-4 border-t border-slate-800">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                    <iconify-icon icon="solar:settings-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                    <span class="text-sm">Settings</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- User Profile Footer -->
+        <div class="p-4 border-t border-slate-800 bg-slate-900">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white font-medium border border-slate-600 relative">
+                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User" class="w-full h-full rounded-full object-cover opacity-90">
+                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-success-500 border-2 border-slate-900 rounded-full"></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">Admin User</p>
+                    <p class="text-xs text-slate-400 truncate">HR Manager</p>
+                </div>
+                <button class="text-slate-400 hover:text-white transition-colors">
+                    <iconify-icon icon="solar:logout-2-linear" width="18"></iconify-icon>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#F8FAFC]">
+        <div class="max-w-4xl mx-auto p-6 md:p-8 space-y-8">
+            
+            <!-- Header -->
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <h1 class="text-3xl font-semibold text-slate-900 tracking-tight">Active Emergency Leaves</h1>
+                        <span class="flex items-center justify-center min-w-[1.5rem] h-6 px-2 rounded-full bg-error-50 text-error-600 text-xs font-semibold border border-error-100">
+                            3
+                        </span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-lg text-sm font-medium transition-colors shadow-sm">
+                            <iconify-icon icon="solar:history-linear" width="18"></iconify-icon>
+                            History
+                        </button>
+                    </div>
+                </div>
+                <p class="text-slate-500 text-sm max-w-2xl">
+                    Emergency leaves require immediate attention. Review employee status, approve pending requests, and track return dates.
+                </p>
+            </div>
+
+            <!-- Emergency Leave Cards List -->
+            <div class="space-y-4">
+
+                <!-- Card 1: Rachel Zane -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 border-l-[4px] border-l-error-500 overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="p-6 flex flex-col gap-5">
+                        <!-- Top Row: Employee -->
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-4">
+                                <img src="https://i.pravatar.cc/150?u=5" alt="Rachel Zane" class="w-10 h-10 rounded-full bg-slate-100 object-cover ring-2 ring-white shadow-sm">
+                                <div>
+                                    <h3 class="text-base font-semibold text-slate-900">Rachel Zane</h3>
+                                    <p class="text-sm text-slate-500">Paralegal • Legal Dept</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-error-50 text-error-700 border border-error-100 uppercase tracking-wide">
+                                <iconify-icon icon="solar:bell-bing-bold" width="12"></iconify-icon>
+                                Urgent
+                            </span>
+                        </div>
+
+                        <!-- Reason -->
+                        <div class="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                <span class="font-medium text-slate-900">Reason:</span> Family medical emergency, grandmother hospitalized. Need to travel immediately to attend to family matters.
+                            </p>
+                        </div>
+
+                        <!-- Info Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-slate-100 pt-4">
+                            <!-- Date Range -->
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Date Range</span>
+                                <div class="flex items-center gap-2 text-slate-700">
+                                    <iconify-icon icon="solar:calendar-linear" width="16" class="text-slate-400"></iconify-icon>
+                                    <span class="text-sm font-medium">Oct 24 - Oct 26</span>
+                                </div>
+                            </div>
+
+                            <!-- Return Estimate -->
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Estimated Return</span>
+                                <div class="inline-flex items-center gap-2 bg-warning-50 px-3 py-1 -ml-1 rounded-md w-fit">
+                                    <iconify-icon icon="solar:clock-circle-linear" width="16" class="text-warning-700"></iconify-icon>
+                                    <span class="text-base font-medium text-warning-700">Oct 27, 2023</span>
+                                </div>
+                            </div>
+
+                            <!-- Slack Status -->
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Slack Status</span>
+                                <div class="flex items-center gap-2 text-success-700">
+                                    <iconify-icon icon="solar:chat-round-check-linear" width="18"></iconify-icon>
+                                    <span class="text-sm font-medium">Notified</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <button class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-success-500 hover:bg-success-700 text-white rounded-lg text-sm font-medium transition-all shadow-sm shadow-success-500/20">
+                                <iconify-icon icon="solar:check-circle-linear" width="18"></iconify-icon>
+                                Approve Request
+                            </button>
+                            <button class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 hover:text-primary-600 rounded-lg text-sm font-medium transition-all">
+                                <iconify-icon icon="solar:user-check-linear" width="18"></iconify-icon>
+                                Mark Returned
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Mike Ross -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 border-l-[4px] border-l-error-500 overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="p-6 flex flex-col gap-5">
+                        <!-- Top Row: Employee -->
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-4">
+                                <img src="https://i.pravatar.cc/150?u=2" alt="Mike Ross" class="w-10 h-10 rounded-full bg-slate-100 object-cover ring-2 ring-white shadow-sm">
+                                <div>
+                                    <h3 class="text-base font-semibold text-slate-900">Mike Ross</h3>
+                                    <p class="text-sm text-slate-500">Associate • Legal Dept</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-error-50 text-error-700 border border-error-100 uppercase tracking-wide">
+                                <iconify-icon icon="solar:bell-bing-bold" width="12"></iconify-icon>
+                                Urgent
+                            </span>
+                        </div>
+
+                        <!-- Reason -->
+                        <div class="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                <span class="font-medium text-slate-900">Reason:</span> Personal emergency, urgent family matter requiring immediate absence from the office.
+                            </p>
+                        </div>
+
+                        <!-- Info Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-slate-100 pt-4">
+                            <!-- Date Range -->
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Date Range</span>
+                                <div class="flex items-center gap-2 text-slate-700">
+                                    <iconify-icon icon="solar:calendar-linear" width="16" class="text-slate-400"></iconify-icon>
+                                    <span class="text-sm font-medium">Oct 25 - Oct 27</span>
+                                </div>
+                            </div>
+
+                            <!-- Return Estimate -->
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Estimated Return</span>
+                                <div class="inline-flex items-center gap-2 bg-warning-50 px-3 py-1 -ml-1 rounded-md w-fit">
+                                    <iconify-icon icon="solar:clock-circle-linear" width="16" class="text-warning-700"></iconify-icon>
+                                    <span class="text-base font-medium text-warning-700">Oct 28, 2023</span>
+                                </div>
+                            </div>
+
+                            <!-- Slack Status (Failed) -->
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Slack Status</span>
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2 text-error-600">
+                                        <iconify-icon icon="solar:close-circle-linear" width="18"></iconify-icon>
+                                        <span class="text-sm font-medium">Failed</span>
+                                    </div>
+                                    <button class="text-xs font-medium text-primary-600 hover:text-primary-700 hover:underline flex items-center gap-1">
+                                        <iconify-icon icon="solar:restart-linear" width="12"></iconify-icon> Retry
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <button class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-success-500 hover:bg-success-700 text-white rounded-lg text-sm font-medium transition-all shadow-sm shadow-success-500/20">
+                                <iconify-icon icon="solar:check-circle-linear" width="18"></iconify-icon>
+                                Approve Request
+                            </button>
+                            <button class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 hover:text-primary-600 rounded-lg text-sm font-medium transition-all">
+                                <iconify-icon icon="solar:user-check-linear" width="18"></iconify-icon>
+                                Mark Returned
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Sarah Chen -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 border-l-[4px] border-l-error-500 overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="p-6 flex flex-col gap-5">
+                        <!-- Top Row: Employee -->
+                        <div class="flex items-start justify-between">
+                            <div class="flex items-center gap-4">
+                                <img src="https://i.pravatar.cc/150?u=8" alt="Sarah Chen" class="w-10 h-10 rounded-full bg-slate-100 object-cover ring-2 ring-white shadow-sm">
+                                <div>
+                                    <h3 class="text-base font-semibold text-slate-900">Sarah Chen</h3>
+                                    <p class="text-sm text-slate-500">Developer • Engineering</p>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-error-50 text-error-700 border border-error-100 uppercase tracking-wide">
+                                <iconify-icon icon="solar:bell-bing-bold" width="12"></iconify-icon>
+                                Urgent
+                            </span>
+                        </div>
+
+                        <!-- Reason -->
+                        <div class="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                <span class="font-medium text-slate-900">Reason:</span> Medical emergency.
+                            </p>
+                        </div>
+
+                        <!-- Info Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-slate-100 pt-4">
+                            <!-- Date Range -->
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Date Range</span>
+                                <div class="flex items-center gap-2 text-slate-700">
+                                    <iconify-icon icon="solar:calendar-linear" width="16" class="text-slate-400"></iconify-icon>
+                                    <span class="text-sm font-medium">Oct 26 - Oct 28</span>
+                                </div>
+                            </div>
+
+                            <!-- Return Estimate -->
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Estimated Return</span>
+                                <div class="inline-flex items-center gap-2 bg-warning-50 px-3 py-1 -ml-1 rounded-md w-fit">
+                                    <iconify-icon icon="solar:clock-circle-linear" width="16" class="text-warning-700"></iconify-icon>
+                                    <span class="text-base font-medium text-warning-700">Oct 29, 2023</span>
+                                </div>
+                            </div>
+
+                            <!-- Slack Status -->
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Slack Status</span>
+                                <div class="flex items-center gap-2 text-success-700">
+                                    <iconify-icon icon="solar:chat-round-check-linear" width="18"></iconify-icon>
+                                    <span class="text-sm font-medium">Notified</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <button class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-success-500 hover:bg-success-700 text-white rounded-lg text-sm font-medium transition-all shadow-sm shadow-success-500/20">
+                                <iconify-icon icon="solar:check-circle-linear" width="18"></iconify-icon>
+                                Approve Request
+                            </button>
+                            <button class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 hover:text-primary-600 rounded-lg text-sm font-medium transition-all">
+                                <iconify-icon icon="solar:user-check-linear" width="18"></iconify-icon>
+                                Mark Returned
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+</body></html>

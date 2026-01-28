@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F8FAFC]"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Late Attendance Request - Potential HRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+fontFamily: {
+sans: ['Inter', 'sans-serif'],
+},
+colors: {
+primary: {
+50: '#eff6ff',
+100: '#dbeafe',
+200: '#bfdbfe',
+600: '#2563EB',
+700: '#1D4ED8',
+},
+slate: {
+850: '#1e293b',
+900: '#0F172A',
+}
+}
+}
+}
+}
+</script>
+<style>
+body {
+font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+-webkit-font-smoothing: antialiased;
+}
+/* Hide scrollbar for sidebar but allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+display: none;
+}
+.no-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-calendar-picker-indicator {
+background: transparent;
+bottom: 0;
+color: transparent;
+cursor: pointer;
+height: auto;
+left: 0;
+position: absolute;
+right: 0;
+top: 0;
+width: auto;
+}
+</style></head>
+<body class="h-full flex overflow-hidden text-slate-600">
+
+    <!-- Sidebar -->
+    <aside class="w-[240px] bg-slate-900 h-full flex flex-col flex-shrink-0 transition-all duration-300 z-40 hidden md:flex">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <div class="flex items-center gap-2 text-white">
+                <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white">
+                    <span class="font-bold text-lg tracking-tighter">P</span>
+                </div>
+                <span class="font-semibold tracking-tight text-lg">POTENTIAL</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-6 px-3 space-y-1">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:widget-5-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Dashboard</span>
+            </a>
+
+            <!-- Active Item: Attendance -->
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-600 text-white group transition-colors shadow-lg shadow-primary-600/20">
+                <iconify-icon icon="solar:user-check-linear" width="20" stroke-width="1.5"></iconify-icon>
+                <span class="text-sm font-medium">Attendance</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:calendar-mark-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Leave</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:wallet-money-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Salary</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:chart-square-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm font-medium">Performance</span>
+            </a>
+        </nav>
+
+        <!-- User Profile (Bottom Sidebar) -->
+        <div class="p-4 border-t border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white font-medium">
+                    JD
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">John Doe</p>
+                    <p class="text-xs text-slate-400 truncate">Product Designer</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content (Blurred Background Context) -->
+    <main class="flex-1 overflow-hidden bg-[#F8FAFC] relative flex flex-col">
+        <!-- Dummy Header for visual context -->
+        <header class="flex items-center justify-between px-8 py-6 border-b border-slate-200 bg-white/50 blur-[2px] opacity-60">
+            <div>
+                <h1 class="text-2xl font-semibold text-slate-900 tracking-tight">Attendance</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-full bg-slate-200"></div>
+            </div>
+        </header>
+
+        <!-- Dummy Body Content for visual context -->
+        <div class="flex-1 p-8 blur-[2px] opacity-60 pointer-events-none">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-xl h-32 p-6 border border-slate-100"></div>
+                <div class="bg-white rounded-xl h-32 p-6 border border-slate-100"></div>
+                <div class="bg-white rounded-xl h-32 p-6 border border-slate-100"></div>
+            </div>
+            <div class="bg-white rounded-xl h-96 border border-slate-100"></div>
+        </div>
+
+        <!-- Modal Overlay -->
+        <div class="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+            
+            <!-- Modal Container -->
+            <div class="w-full max-w-[500px] bg-white rounded-xl shadow-2xl flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+                
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+                    <h3 class="text-lg font-semibold text-slate-900 tracking-tight">Apply Late Attendance</h3>
+                    <button class="text-slate-400 hover:text-slate-600 transition-colors rounded-full p-1 hover:bg-slate-50">
+                        <iconify-icon icon="solar:close-circle-linear" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                </div>
+
+                <!-- Modal Body (Form) -->
+                <div class="p-6 overflow-y-auto">
+                    <form class="space-y-5">
+                        
+                        <!-- Date Picker -->
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700 block">Date</label>
+                            <div class="relative group">
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none group-focus-within:text-primary-600 transition-colors">
+                                    <iconify-icon icon="solar:calendar-date-linear" width="20"></iconify-icon>
+                                </div>
+                                <input type="date" class="w-full h-11 pl-10 pr-3 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary-600 focus:ring-1 focus:ring-primary-600 transition-all shadow-sm appearance-none" value="2023-10-25">
+                            </div>
+                        </div>
+
+                        <!-- Clock In Time -->
+                        <div class="space-y-1.5">
+                            <label class="text-sm font-medium text-slate-700 block">Actual Clock-In Time</label>
+                            <div class="relative group">
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none group-focus-within:text-primary-600 transition-colors">
+                                    <iconify-icon icon="solar:clock-circle-linear" width="20"></iconify-icon>
+                                </div>
+                                <input type="time" class="w-full h-11 pl-10 pr-3 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary-600 focus:ring-1 focus:ring-primary-600 transition-all shadow-sm appearance-none" value="09:15">
+                            </div>
+                        </div>
+
+                        <!-- Reason Textarea -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <label class="text-sm font-medium text-slate-700 block">
+                                    Reason <span class="text-red-500">*</span>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <textarea class="w-full h-[120px] p-3 bg-white border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary-600 focus:ring-1 focus:ring-primary-600 transition-all shadow-sm resize-none" placeholder="Please explain why you were late. For example: traffic congestion, medical emergency, etc."></textarea>
+                            </div>
+                            <div class="flex justify-end">
+                                <span class="text-xs text-slate-400 font-medium">0/500</span>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="px-6 py-5 bg-slate-50 border-t border-slate-100 rounded-b-xl flex justify-end items-center gap-3">
+                    <button class="px-4 py-2.5 rounded-lg text-sm font-medium text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-900 transition-all shadow-sm">
+                        Cancel
+                    </button>
+                    <button class="px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 border border-transparent shadow-sm shadow-primary-600/20 transition-all flex items-center gap-2">
+                        <span>Submit Request</span>
+                        <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+</body></html>

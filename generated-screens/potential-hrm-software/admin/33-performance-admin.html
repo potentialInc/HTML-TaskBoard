@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F8FAFC]"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonus Management - Potential HRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+fontFamily: {
+sans: ['Inter', 'sans-serif'],
+},
+colors: {
+primary: {
+50: '#eff6ff',
+100: '#dbeafe',
+200: '#bfdbfe',
+300: '#93c5fd',
+400: '#60a5fa',
+500: '#3b82f6',
+600: '#2563EB', // Brand Primary
+700: '#1d4ed8', // Brand Secondary
+800: '#1e40af',
+900: '#1e3a8a',
+},
+slate: {
+850: '#1e293b',
+900: '#0F172A', // Sidebar Dark
+}
+}
+}
+}
+}
+</script>
+<style>
+body {
+font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+-webkit-font-smoothing: antialiased;
+}
+.no-scrollbar::-webkit-scrollbar {
+display: none;
+}
+.no-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+/* Custom Checkbox */
+.custom-checkbox {
+appearance: none;
+background-color: #fff;
+margin: 0;
+font: inherit;
+color: currentColor;
+width: 1.15em;
+height: 1.15em;
+border: 1px solid #cbd5e1;
+border-radius: 0.25em;
+display: grid;
+place-content: center;
+transition: all 0.2s;
+}
+.custom-checkbox::before {
+content: "";
+width: 0.65em;
+height: 0.65em;
+transform: scale(0);
+transition: 120ms transform ease-in-out;
+box-shadow: inset 1em 1em white;
+transform-origin: center;
+clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+.custom-checkbox:checked {
+background-color: #2563EB;
+border-color: #2563EB;
+}
+.custom-checkbox:checked::before {
+transform: scale(1);
+}
+</style></head>
+<body class="h-full flex overflow-hidden text-slate-600 font-normal">
+
+    <!-- Sidebar -->
+    <aside class="w-[240px] bg-slate-900 h-full flex flex-col flex-shrink-0 transition-all duration-300 z-40 hidden md:flex">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <div class="flex items-center gap-2 text-white">
+                <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
+                    <span class="font-semibold text-lg tracking-tighter">P</span>
+                </div>
+                <span class="font-medium tracking-tight text-lg">POTENTIAL AI</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-6 px-3 space-y-1">
+            <div class="px-3 pb-2">
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Admin Section</p>
+            </div>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:widget-5-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Dashboard</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:users-group-rounded-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Employees</span>
+            </a>
+
+            <!-- Salary Management (Active Parent) -->
+            <div class="space-y-1">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-600 text-white shadow-lg shadow-primary-600/20 group transition-all">
+                    <iconify-icon icon="solar:wallet-money-bold" width="20"></iconify-icon>
+                    <span class="text-sm font-medium">Salary Management</span>
+                </a>
+                <!-- Sub Menu -->
+                <div class="pl-10 pr-2 space-y-1 mt-1">
+                    <a href="#" class="block px-3 py-2 rounded-md text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">Configuration</a>
+                    <a href="#" class="block px-3 py-2 rounded-md text-sm text-white bg-slate-800 font-medium">Bonus Management</a>
+                    <a href="#" class="block px-3 py-2 rounded-md text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">Deductions</a>
+                </div>
+            </div>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:calendar-mark-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Leave</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:chart-square-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Reports</span>
+            </a>
+        </nav>
+
+        <!-- User Profile Footer -->
+        <div class="p-4 border-t border-slate-800 bg-slate-900">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white font-medium border border-slate-600 relative">
+                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User" class="w-full h-full rounded-full object-cover opacity-90">
+                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-slate-900 rounded-full"></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">Admin User</p>
+                    <p class="text-xs text-slate-400 truncate">HR Manager</p>
+                </div>
+                <button class="text-slate-400 hover:text-white transition-colors">
+                    <iconify-icon icon="solar:logout-2-linear" width="18"></iconify-icon>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#F8FAFC]">
+        <div class="max-w-7xl mx-auto p-6 md:p-8 space-y-8">
+            
+            <!-- Header -->
+            <div class="flex flex-col gap-1">
+                <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Bonus Management</h1>
+                <p class="text-slate-500 text-sm">Process project-based and festival bonuses for employees.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="border-b border-slate-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <a href="#" class="border-primary-600 text-primary-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2">
+                        <iconify-icon icon="solar:case-minimalistic-linear" width="18"></iconify-icon>
+                        Project-Based
+                    </a>
+                    <a href="#" class="border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors">
+                        <iconify-icon icon="solar:gift-linear" width="18"></iconify-icon>
+                        Festival Bonuses
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Process Bonus Form -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                    <h2 class="text-base font-semibold text-slate-900">Process New Bonus</h2>
+                    <button class="text-slate-400 hover:text-slate-600">
+                        <iconify-icon icon="solar:settings-linear" width="20"></iconify-icon>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <form onsubmit="event.preventDefault();" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        
+                        <!-- Left Column: Inputs -->
+                        <div class="lg:col-span-8 space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Bonus Type -->
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Bonus Type</label>
+                                    <div class="relative">
+                                        <select class="w-full appearance-none bg-white border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5 pr-8 shadow-sm">
+                                            <option>Project Completion</option>
+                                            <option>Performance Based</option>
+                                            <option>Festival / Holiday</option>
+                                            <option>Signing Bonus</option>
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+                                            <iconify-icon icon="solar:alt-arrow-down-linear" width="16"></iconify-icon>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Amount -->
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Amount per Employee</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-slate-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input type="text" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block pl-7 p-2.5 shadow-sm" placeholder="0.00">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project Name (Conditional) -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Project Name / Reference</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <iconify-icon icon="solar:folder-linear" class="text-slate-400" width="18"></iconify-icon>
+                                    </div>
+                                    <input type="text" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block pl-10 p-2.5 shadow-sm" placeholder="e.g. Q3 Mobile App Redesign">
+                                </div>
+                            </div>
+
+                            <!-- Employee Selection -->
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Select Employees</label>
+                                <div class="w-full min-h-[44px] bg-white border border-slate-300 rounded-lg p-2 shadow-sm focus-within:ring-1 focus-within:ring-primary-500 focus-within:border-primary-500 flex flex-wrap gap-2 cursor-pointer">
+                                    <!-- Selected Chip 1 -->
+                                    <div class="inline-flex items-center bg-primary-50 border border-primary-100 rounded-md px-2 py-1">
+                                        <img class="w-5 h-5 rounded-full mr-2" src="https://i.pravatar.cc/150?u=1" alt="">
+                                        <span class="text-xs font-medium text-primary-700">Sarah Jenkins</span>
+                                        <button class="ml-1.5 text-primary-400 hover:text-primary-600 flex items-center justify-center">
+                                            <iconify-icon icon="solar:close-circle-linear" width="14"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <!-- Selected Chip 2 -->
+                                    <div class="inline-flex items-center bg-primary-50 border border-primary-100 rounded-md px-2 py-1">
+                                        <img class="w-5 h-5 rounded-full mr-2" src="https://i.pravatar.cc/150?u=2" alt="">
+                                        <span class="text-xs font-medium text-primary-700">Mike Chen</span>
+                                        <button class="ml-1.5 text-primary-400 hover:text-primary-600 flex items-center justify-center">
+                                            <iconify-icon icon="solar:close-circle-linear" width="14"></iconify-icon>
+                                        </button>
+                                    </div>
+                                    <input type="text" class="flex-1 bg-transparent border-none outline-none text-sm min-w-[120px] placeholder:text-slate-400" placeholder="Search employees...">
+                                </div>
+                                <p class="text-xs text-slate-500">2 employees selected</p>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Disbursement & Action -->
+                        <div class="lg:col-span-4 flex flex-col gap-6 lg:border-l lg:border-slate-100 lg:pl-8">
+                            <div class="space-y-3">
+                                <label class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Disbursement Method</label>
+                                
+                                <!-- Option 1 -->
+                                <label class="relative flex p-3 cursor-pointer rounded-lg border border-primary-200 bg-primary-50/50 hover:bg-primary-50 transition-colors">
+                                    <input type="radio" name="disbursement" class="peer sr-only" checked="">
+                                    <div class="flex items-start gap-3 w-full">
+                                        <div class="text-primary-600 mt-0.5">
+                                            <iconify-icon icon="solar:calendar-add-linear" width="20"></iconify-icon>
+                                        </div>
+                                        <div class="flex-1">
+                                            <span class="block text-sm font-medium text-slate-900">Next Payroll</span>
+                                            <span class="block text-xs text-slate-500 mt-0.5">Include in upcoming salary slip</span>
+                                        </div>
+                                        <div class="w-4 h-4 rounded-full border border-slate-300 peer-checked:border-primary-600 peer-checked:border-[5px] transition-all bg-white mt-1"></div>
+                                    </div>
+                                    <div class="absolute inset-0 border-2 border-primary-600 rounded-lg opacity-100 pointer-events-none hidden peer-checked:block"></div>
+                                </label>
+
+                                <!-- Option 2 -->
+                                <label class="relative flex p-3 cursor-pointer rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
+                                    <input type="radio" name="disbursement" class="peer sr-only">
+                                    <div class="flex items-start gap-3 w-full">
+                                        <div class="text-slate-400 mt-0.5 peer-checked:text-primary-600">
+                                            <iconify-icon icon="solar:bolt-linear" width="20"></iconify-icon>
+                                        </div>
+                                        <div class="flex-1">
+                                            <span class="block text-sm font-medium text-slate-900">Immediate</span>
+                                            <span class="block text-xs text-slate-500 mt-0.5">Process separate payment now</span>
+                                        </div>
+                                        <div class="w-4 h-4 rounded-full border border-slate-300 peer-checked:border-primary-600 peer-checked:border-[5px] transition-all bg-white mt-1"></div>
+                                    </div>
+                                    <div class="absolute inset-0 border-2 border-primary-600 rounded-lg opacity-100 pointer-events-none hidden peer-checked:block"></div>
+                                </label>
+                            </div>
+
+                            <div class="mt-auto pt-6 border-t border-slate-100">
+                                <div class="flex items-center justify-between text-sm mb-4">
+                                    <span class="text-slate-500">Total Payout</span>
+                                    <span class="font-bold text-slate-900 text-lg">$1,000.00</span>
+                                </div>
+                                <button class="w-full py-2.5 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium shadow-md shadow-primary-600/20 transition-all flex items-center justify-center gap-2">
+                                    <iconify-icon icon="solar:check-circle-linear" width="18"></iconify-icon>
+                                    Process Bonus
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bonus History Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col">
+                <!-- Filters -->
+                <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h2 class="text-base font-semibold text-slate-900">Bonus History</h2>
+                    
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <!-- Search -->
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <iconify-icon icon="solar:magnifer-linear" class="text-slate-400" width="16"></iconify-icon>
+                            </div>
+                            <input type="text" class="pl-9 pr-3 py-2 bg-white border border-slate-200 text-slate-600 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 shadow-sm w-full sm:w-48 placeholder:text-slate-400" placeholder="Search employee...">
+                        </div>
+
+                        <!-- Filter Type -->
+                        <div class="relative">
+                            <select class="appearance-none pl-3 pr-8 py-2 bg-white border border-slate-200 text-slate-600 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 shadow-sm cursor-pointer hover:bg-slate-50">
+                                <option>All Types</option>
+                                <option>Project</option>
+                                <option>Festival</option>
+                                <option>Performance</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                                <iconify-icon icon="solar:filter-linear" width="16"></iconify-icon>
+                            </div>
+                        </div>
+
+                        <!-- Date Range -->
+                        <button class="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 text-slate-600 text-sm rounded-lg hover:bg-slate-50 hover:text-slate-900 shadow-sm transition-colors">
+                            <iconify-icon icon="solar:calendar-date-linear" width="16"></iconify-icon>
+                            <span>Oct 2023</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-100">
+                                <th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-slate-500">Date</th>
+                                <th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-slate-500">Employee</th>
+                                <th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-slate-500">Type</th>
+                                <th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-slate-500">Reference / Project</th>
+                                <th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-slate-500 text-right">Amount</th>
+                                <th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-slate-500 text-center">Status</th>
+                                <th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-slate-500"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-sm">
+                            
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="py-4 px-5 whitespace-nowrap text-slate-500">Oct 24, 2023</td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <div class="flex items-center gap-3">
+                                        <img class="h-8 w-8 rounded-full object-cover border border-slate-200" src="https://i.pravatar.cc/150?u=1" alt="">
+                                        <div class="font-medium text-slate-900">Sarah Jenkins</div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                                        Project
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-slate-600 max-w-[200px] truncate">Mobile App Redesign</td>
+                                <td class="py-4 px-5 text-slate-900 font-mono text-right font-medium">$500.00</td>
+                                <td class="py-4 px-5 text-center">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Paid
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-right">
+                                    <button class="text-slate-400 hover:text-primary-600 opacity-0 group-hover:opacity-100 transition-all">
+                                        <iconify-icon icon="solar:menu-dots-bold" width="20"></iconify-icon>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="py-4 px-5 whitespace-nowrap text-slate-500">Oct 22, 2023</td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <div class="flex items-center gap-3">
+                                        <img class="h-8 w-8 rounded-full object-cover border border-slate-200" src="https://i.pravatar.cc/150?u=2" alt="">
+                                        <div class="font-medium text-slate-900">Mike Chen</div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100">
+                                        Performance
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-slate-600 max-w-[200px] truncate">Q3 Top Performer</td>
+                                <td class="py-4 px-5 text-slate-900 font-mono text-right font-medium">$1,000.00</td>
+                                <td class="py-4 px-5 text-center">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                        Pending
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-right">
+                                    <button class="text-slate-400 hover:text-primary-600 opacity-0 group-hover:opacity-100 transition-all">
+                                        <iconify-icon icon="solar:menu-dots-bold" width="20"></iconify-icon>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3 -->
+                            <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="py-4 px-5 whitespace-nowrap text-slate-500">Oct 20, 2023</td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <div class="flex items-center gap-3">
+                                        <img class="h-8 w-8 rounded-full object-cover border border-slate-200" src="https://i.pravatar.cc/150?u=3" alt="">
+                                        <div class="font-medium text-slate-900">Alex Morgan</div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                                        Festival
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-slate-600 max-w-[200px] truncate">Annual Holiday Bonus</td>
+                                <td class="py-4 px-5 text-slate-900 font-mono text-right font-medium">$250.00</td>
+                                <td class="py-4 px-5 text-center">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Paid
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-right">
+                                    <button class="text-slate-400 hover:text-primary-600 opacity-0 group-hover:opacity-100 transition-all">
+                                        <iconify-icon icon="solar:menu-dots-bold" width="20"></iconify-icon>
+                                    </button>
+                                </td>
+                            </tr>
+
+                             <!-- Row 4 -->
+                             <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="py-4 px-5 whitespace-nowrap text-slate-500">Oct 18, 2023</td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <div class="flex items-center gap-3">
+                                        <img class="h-8 w-8 rounded-full object-cover border border-slate-200" src="https://i.pravatar.cc/150?u=4" alt="">
+                                        <div class="font-medium text-slate-900">David Kim</div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                                        Project
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-slate-600 max-w-[200px] truncate">Backend Migration</td>
+                                <td class="py-4 px-5 text-slate-900 font-mono text-right font-medium">$600.00</td>
+                                <td class="py-4 px-5 text-center">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                        Pending
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-right">
+                                    <button class="text-slate-400 hover:text-primary-600 opacity-0 group-hover:opacity-100 transition-all">
+                                        <iconify-icon icon="solar:menu-dots-bold" width="20"></iconify-icon>
+                                    </button>
+                                </td>
+                            </tr>
+
+                             <!-- Row 5 -->
+                             <tr class="hover:bg-slate-50 transition-colors group">
+                                <td class="py-4 px-5 whitespace-nowrap text-slate-500">Oct 15, 2023</td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <div class="flex items-center gap-3">
+                                        <img class="h-8 w-8 rounded-full object-cover border border-slate-200" src="https://i.pravatar.cc/150?u=5" alt="">
+                                        <div class="font-medium text-slate-900">Emily Davis</div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-5 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                                        Project
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-slate-600 max-w-[200px] truncate">Backend Migration</td>
+                                <td class="py-4 px-5 text-slate-900 font-mono text-right font-medium">$600.00</td>
+                                <td class="py-4 px-5 text-center">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Paid
+                                    </span>
+                                </td>
+                                <td class="py-4 px-5 text-right">
+                                    <button class="text-slate-400 hover:text-primary-600 opacity-0 group-hover:opacity-100 transition-all">
+                                        <iconify-icon icon="solar:menu-dots-bold" width="20"></iconify-icon>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="p-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs text-slate-500">Showing <span class="font-medium">1-5</span> of <span class="font-medium">24</span> records</span>
+                    <div class="flex items-center gap-1">
+                        <button class="px-3 py-1 border border-slate-200 rounded text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50" disabled="">Previous</button>
+                        <button class="px-3 py-1 bg-primary-50 border border-primary-200 rounded text-xs font-medium text-primary-700">1</button>
+                        <button class="px-3 py-1 border border-slate-200 rounded text-xs font-medium text-slate-600 hover:bg-slate-50">2</button>
+                        <button class="px-3 py-1 border border-slate-200 rounded text-xs font-medium text-slate-600 hover:bg-slate-50">3</button>
+                        <button class="px-3 py-1 border border-slate-200 rounded text-xs font-medium text-slate-600 hover:bg-slate-50">Next</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body></html>

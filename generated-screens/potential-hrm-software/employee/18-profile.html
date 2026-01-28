@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F8FAFC]"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile - Potential AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+theme: {
+extend: {
+fontFamily: {
+sans: ['Inter', 'sans-serif'],
+},
+colors: {
+primary: {
+50: '#eff6ff',
+100: '#dbeafe',
+200: '#bfdbfe',
+300: '#93c5fd',
+400: '#60a5fa',
+500: '#3b82f6',
+600: '#2563EB', // Primary Blue
+700: '#1d4ed8', // Secondary
+800: '#1e40af',
+900: '#1e3a8a',
+},
+slate: {
+850: '#1e293b',
+900: '#0F172A', // Sidebar Dark
+},
+success: {
+500: '#10B981',
+50: '#ecfdf5',
+700: '#047857'
+},
+warning: {
+500: '#F59E0B',
+50: '#fffbeb',
+700: '#b45309'
+},
+error: {
+500: '#EF4444',
+50: '#fef2f2',
+700: '#b91c1c'
+}
+}
+}
+}
+}
+</script>
+<style>
+body {
+font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+-webkit-font-smoothing: antialiased;
+}
+.no-scrollbar::-webkit-scrollbar {
+display: none;
+}
+.no-scrollbar {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}
+</style></head>
+<body class="h-full flex overflow-hidden text-slate-600 font-normal">
+
+    <!-- Sidebar -->
+    <aside class="w-[240px] bg-slate-900 h-full flex flex-col flex-shrink-0 transition-all duration-300 z-40 hidden md:flex">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-slate-800">
+            <div class="flex items-center gap-2 text-white">
+                <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
+                    <span class="font-semibold text-lg tracking-tighter">P</span>
+                </div>
+                <span class="font-medium tracking-tight text-lg">POTENTIAL AI</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto no-scrollbar py-6 px-3 space-y-1">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:widget-5-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Dashboard</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:user-check-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Attendance</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:calendar-mark-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Leave</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:wallet-money-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Salary &amp; Loans</span>
+            </a>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:chart-square-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Performance</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors group">
+                <iconify-icon icon="solar:document-text-linear" width="20" stroke-width="1.5" class="group-hover:text-white transition-colors"></iconify-icon>
+                <span class="text-sm">Policies</span>
+            </a>
+
+            <!-- Active Item: Profile -->
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-600 text-white group transition-colors shadow-lg shadow-primary-600/20">
+                <iconify-icon icon="solar:user-circle-bold" width="20"></iconify-icon>
+                <span class="text-sm font-medium">Profile</span>
+            </a>
+        </nav>
+
+        <!-- User Profile Footer -->
+        <div class="p-4 border-t border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs text-white font-medium border border-slate-600">
+                    JD
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate">John Doe</p>
+                    <p class="text-xs text-slate-400 truncate">Product Designer</p>
+                </div>
+                <button class="text-slate-400 hover:text-white">
+                    <iconify-icon icon="solar:settings-linear" width="18"></iconify-icon>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-[#F8FAFC]">
+        <div class="max-w-7xl mx-auto p-6 md:p-8 space-y-6">
+            
+            <!-- Header -->
+            <header class="flex flex-col gap-1">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">My Profile</h1>
+                <p class="text-sm text-slate-500">Manage your personal information and account settings.</p>
+            </header>
+
+            <!-- Profile Header Card -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 relative overflow-hidden">
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                    <!-- Avatar -->
+                    <div class="relative group">
+                        <div class="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center text-2xl font-semibold text-slate-600 border-2 border-white shadow-md">
+                            JD
+                        </div>
+                        <button class="absolute inset-0 bg-slate-900/50 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <iconify-icon icon="solar:camera-linear" width="24"></iconify-icon>
+                        </button>
+                    </div>
+
+                    <!-- Info -->
+                    <div class="flex-1 space-y-2">
+                        <div class="flex flex-col md:flex-row md:items-center gap-3">
+                            <h2 class="text-xl font-semibold text-slate-900 tracking-tight">John Doe</h2>
+                            <div class="flex gap-2">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-50 text-primary-700 border border-primary-100">
+                                    Product Designer
+                                </span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                    Design Team
+                                </span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-500 flex items-center gap-2">
+                            <iconify-icon icon="solar:map-point-linear" width="16"></iconify-icon>
+                            San Francisco, CA
+                        </p>
+                    </div>
+
+                    <!-- Action -->
+                    <button class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-sm flex items-center gap-2">
+                        <iconify-icon icon="solar:pen-linear" width="16"></iconify-icon>
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Left Column (2/3) -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <!-- Personal Information -->
+                    <section class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                            <h3 class="text-sm font-semibold text-slate-900">Personal Information</h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                <div class="space-y-1">
+                                    <label class="text-xs font-medium text-slate-500 uppercase tracking-wide">Email Address</label>
+                                    <div class="flex items-center gap-2 text-sm text-slate-900">
+                                        <iconify-icon icon="solar:letter-linear" width="16" class="text-slate-400"></iconify-icon>
+                                        john.doe@potentialai.com
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-xs font-medium text-slate-500 uppercase tracking-wide">Phone Number</label>
+                                    <div class="flex items-center gap-2 text-sm text-slate-900">
+                                        <iconify-icon icon="solar:phone-linear" width="16" class="text-slate-400"></iconify-icon>
+                                        +1 (555) 123-4567
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-xs font-medium text-slate-500 uppercase tracking-wide">Employee ID</label>
+                                    <div class="flex items-center gap-2 text-sm text-slate-900">
+                                        <iconify-icon icon="solar:card-linear" width="16" class="text-slate-400"></iconify-icon>
+                                        EMP-2024-001
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-xs font-medium text-slate-500 uppercase tracking-wide">Joining Date</label>
+                                    <div class="flex items-center gap-2 text-sm text-slate-900">
+                                        <iconify-icon icon="solar:calendar-date-linear" width="16" class="text-slate-400"></iconify-icon>
+                                        March 15, 2024
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Integrations -->
+                    <section class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                            <h3 class="text-sm font-semibold text-slate-900">Connected Services</h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Gather Town -->
+                                <div class="p-4 rounded-xl border border-slate-200 bg-white flex items-center justify-between group hover:border-primary-200 hover:shadow-sm transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-[#2b2d42] flex items-center justify-center shrink-0">
+                                            <!-- Gather Logo Placeholder using Iconify -->
+                                            <iconify-icon icon="solar:gamepad-linear" class="text-white" width="24"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-slate-900">Gather Town</p>
+                                            <span class="inline-flex items-center gap-1 text-[10px] text-success-700 font-medium bg-success-50 px-1.5 py-0.5 rounded border border-success-100/50">
+                                                <iconify-icon icon="solar:check-circle-bold" width="10"></iconify-icon>
+                                                Connected
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <button class="p-2 text-slate-400 hover:text-error-500 hover:bg-error-50 rounded-lg transition-colors border border-transparent hover:border-error-100" title="Disconnect">
+                                        <iconify-icon icon="solar:link-broken-linear" width="18"></iconify-icon>
+                                    </button>
+                                </div>
+
+                                <!-- Notion -->
+                                <div class="p-4 rounded-xl border border-slate-200 bg-white flex items-center justify-between group hover:border-primary-200 hover:shadow-sm transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-white border border-slate-100 flex items-center justify-center shrink-0 shadow-sm">
+                                            <!-- Notion Logo using Iconify -->
+                                            <iconify-icon icon="logos:notion-icon" width="20"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-slate-900">Notion</p>
+                                            <span class="inline-flex items-center gap-1 text-[10px] text-success-700 font-medium bg-success-50 px-1.5 py-0.5 rounded border border-success-100/50">
+                                                <iconify-icon icon="solar:check-circle-bold" width="10"></iconify-icon>
+                                                Connected
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <button class="p-2 text-slate-400 hover:text-error-500 hover:bg-error-50 rounded-lg transition-colors border border-transparent hover:border-error-100" title="Disconnect">
+                                        <iconify-icon icon="solar:link-broken-linear" width="18"></iconify-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- Right Column (1/3) -->
+                <div class="lg:col-span-1 space-y-6">
+                    
+                    <!-- Work Shift -->
+                    <section class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                            <h3 class="text-sm font-semibold text-slate-900">Work Day Shift</h3>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <div class="mb-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <iconify-icon icon="solar:clock-circle-linear" class="text-slate-400" width="18"></iconify-icon>
+                                    <span class="text-sm text-slate-500">Current Schedule</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-success-50 text-success-700 border border-success-100">
+                                        Monday - Friday
+                                    </span>
+                                    <span class="text-xs text-slate-400 font-medium">09:00 - 18:00</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-2">Standard Schedule</p>
+                            </div>
+                            
+                            <div class="mt-auto pt-4 border-t border-slate-100">
+                                <button class="w-full py-2 px-4 bg-white border border-slate-200 hover:border-primary-200 hover:bg-slate-50 text-slate-700 hover:text-primary-600 rounded-lg text-xs font-medium transition-all shadow-sm flex items-center justify-center gap-2 group">
+                                    Apply for Friday-Sunday
+                                    <iconify-icon icon="solar:arrow-right-linear" width="14" class="group-hover:translate-x-0.5 transition-transform"></iconify-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Settings -->
+                    <section class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                            <h3 class="text-sm font-semibold text-slate-900">Account Settings</h3>
+                        </div>
+                        <div class="p-2">
+                            <nav class="flex flex-col">
+                                <a href="#" class="flex items-center justify-between px-4 py-3 rounded-lg text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors group">
+                                    <div class="flex items-center gap-3">
+                                        <iconify-icon icon="solar:lock-keyhole-linear" width="18" class="text-slate-400 group-hover:text-primary-500 transition-colors"></iconify-icon>
+                                        Change Password
+                                    </div>
+                                    <iconify-icon icon="solar:alt-arrow-right-linear" width="16" class="text-slate-300 group-hover:text-slate-500"></iconify-icon>
+                                </a>
+                                <a href="#" class="flex items-center justify-between px-4 py-3 rounded-lg text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors group">
+                                    <div class="flex items-center gap-3">
+                                        <iconify-icon icon="solar:bell-linear" width="18" class="text-slate-400 group-hover:text-primary-500 transition-colors"></iconify-icon>
+                                        Notifications
+                                    </div>
+                                    <iconify-icon icon="solar:alt-arrow-right-linear" width="16" class="text-slate-300 group-hover:text-slate-500"></iconify-icon>
+                                </a>
+                                <div class="my-2 border-t border-slate-100"></div>
+                                <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-error-700 bg-error-50 hover:bg-error-500 hover:text-white transition-all">
+                                    <iconify-icon icon="solar:logout-2-linear" width="18"></iconify-icon>
+                                    Log Out
+                                </button>
+                            </nav>
+                        </div>
+                    </section>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+</body></html>

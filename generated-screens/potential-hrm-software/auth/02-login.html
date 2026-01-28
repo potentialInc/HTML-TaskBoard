@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Potential HRM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+        }
+    </style>
+</head>
+<body class="h-full w-full flex items-center justify-center p-4 antialiased text-slate-900">
+
+    <!-- Login Card -->
+    <div class="w-full max-w-[420px] bg-white rounded-2xl p-8 shadow-[0_1px_3px_rgba(0,0,0,0.1)]">
+
+        <!-- Header -->
+        <div class="flex flex-col items-center mb-8">
+            <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-sm mb-3">
+                P
+            </div>
+            <p class="text-base text-slate-500 font-normal">Potential AI</p>
+            <h2 class="text-2xl font-semibold text-slate-900 mt-2 tracking-tight">Sign In</h2>
+        </div>
+
+        <!-- Form -->
+        <form class="space-y-4" onsubmit="event.preventDefault()">
+
+            <!-- Email Input -->
+            <div class="space-y-1.5">
+                <label for="email" class="block text-[13px] font-medium text-gray-700">Email Address</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <iconify-icon icon="solar:letter-linear" class="text-gray-400 group-focus-within:text-blue-600 transition-colors" width="20" stroke-width="1.5"></iconify-icon>
+                    </div>
+                    <input type="email" id="email"
+                        class="block w-full pl-10 pr-3 h-[44px] rounded-lg border border-slate-200 text-sm placeholder:text-gray-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all"
+                        placeholder="name@company.com">
+                </div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="space-y-1.5">
+                <label for="password" class="block text-[13px] font-medium text-gray-700">Password</label>
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <iconify-icon icon="solar:lock-password-linear" class="text-gray-400 group-focus-within:text-blue-600 transition-colors" width="20" stroke-width="1.5"></iconify-icon>
+                    </div>
+                    <input type="password" id="password"
+                        class="block w-full pl-10 pr-10 h-[44px] rounded-lg border border-slate-200 text-sm placeholder:text-gray-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all"
+                        placeholder="Enter your password">
+                    <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-gray-400 hover:text-gray-600 transition-colors">
+                        <iconify-icon icon="solar:eye-linear" width="20" stroke-width="1.5"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="pt-2">
+                <button type="submit" class="w-full h-[44px] flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
+                    Sign In
+                </button>
+
+                <div class="text-center mt-4">
+                    <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+                        Forgot your password?
+                    </a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+</html>
