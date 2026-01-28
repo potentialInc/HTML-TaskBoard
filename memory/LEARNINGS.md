@@ -29,7 +29,7 @@ For personal preferences, use `~/.claude/memory/LEARNINGS.md`
 
 **Description**: Full Google OAuth integration guide created.
 
-**See**: [guidelines/google-oauth.md](../guidelines/google-oauth.md)
+**See**: [guides/google-oauth.md](../guides/google-oauth.md)
 
 Key gotchas documented:
 - Use localStorage for OAuth state (not sessionStorage)
