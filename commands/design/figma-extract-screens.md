@@ -89,7 +89,7 @@ for child in sorted(children, key=lambda x: x.get('name', '')):
 
 ## Step 4: Update the Status File
 
-Edit `.claude-project/plans/FRONTEND_SCREEN_IMPLEMENTATION_STATUS.md`:
+Edit `.claude-project/status/FRONTEND_SCREEN_IMPLEMENTATION_STATUS.md`:
 
 1. Find the "### All Figma Sections" table
 2. Add new sections or update existing ones

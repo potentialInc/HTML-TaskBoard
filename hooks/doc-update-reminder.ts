@@ -35,37 +35,37 @@ interface DocMapping {
 const DOC_MAPPINGS: DocMapping[] = [
     {
         pattern: /backend\/src\/.*\.controller\.ts$/,
-        docFile: '.claude-project/plans/backend/API_IMPLEMENTATION_STATUS.md',
+        docFile: '.claude-project/status/backend/API_IMPLEMENTATION_STATUS.md',
         category: 'backend-api',
         description: 'Backend API controller',
     },
     {
         pattern: /backend\/src\/.*\.entity\.ts$/,
-        docFile: '.claude-project/plans/backend/API_IMPLEMENTATION_STATUS.md',
+        docFile: '.claude-project/status/backend/API_IMPLEMENTATION_STATUS.md',
         category: 'backend-entity',
         description: 'Backend entity',
     },
     {
         pattern: /frontend\/app\/pages\/.*\.tsx$/,
-        docFile: '.claude-project/plans/frontend/SCREEN_IMPLEMENTATION_STATUS.md',
+        docFile: '.claude-project/status/frontend/SCREEN_IMPLEMENTATION_STATUS.md',
         category: 'frontend-screen',
         description: 'Frontend screen/page',
     },
     {
         pattern: /frontend\/app\/services\/.*\.ts$/,
-        docFile: '.claude-project/plans/frontend/API_INTEGRATION_STATUS.md',
+        docFile: '.claude-project/status/frontend/API_INTEGRATION_STATUS.md',
         category: 'frontend-api',
         description: 'Frontend API service',
     },
     {
         pattern: /frontend-dashboard\/app\/pages\/.*\.tsx$/,
-        docFile: '.claude-project/plans/frontend-dashboard/SCREEN_IMPLEMENTATION_STATUS.md',
+        docFile: '.claude-project/status/frontend-dashboard/SCREEN_IMPLEMENTATION_STATUS.md',
         category: 'dashboard-screen',
         description: 'Dashboard screen/page',
     },
     {
         pattern: /frontend-dashboard\/app\/services\/.*\.ts$/,
-        docFile: '.claude-project/plans/frontend-dashboard/API_INTEGRATION_STATUS.md',
+        docFile: '.claude-project/status/frontend-dashboard/API_INTEGRATION_STATUS.md',
         category: 'dashboard-api',
         description: 'Dashboard API service',
     },

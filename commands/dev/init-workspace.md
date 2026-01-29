@@ -106,21 +106,21 @@ Create the folder structure:
 # Create main directories
 mkdir -p .claude-project/docs
 mkdir -p .claude-project/memory
-mkdir -p .claude-project/plans/backend
-mkdir -p .claude-project/plans/frontend
-mkdir -p .claude-project/plans/temp
+mkdir -p .claude-project/status/backend
+mkdir -p .claude-project/status/frontend
+mkdir -p .claude-project/status/temp
 mkdir -p .claude-project/prd
 mkdir -p .claude-project/secrets
 ```
 
 If `$HAS_DASHBOARD` is true:
 ```bash
-mkdir -p .claude-project/plans/frontend-dashboard
+mkdir -p .claude-project/status/frontend-dashboard
 ```
 
 Create .gitkeep files:
 ```bash
-touch .claude-project/plans/temp/.gitkeep
+touch .claude-project/status/temp/.gitkeep
 touch .claude-project/prd/.gitkeep
 touch .claude-project/secrets/.gitkeep
 ```
@@ -147,13 +147,13 @@ For each template file in `.claude/base/templates/claude-project/`:
 | `memory/DECISIONS.template.md` | `.claude-project/memory/DECISIONS.md` |
 | `memory/LEARNINGS.template.md` | `.claude-project/memory/LEARNINGS.md` |
 | `memory/PREFERENCES.template.md` | `.claude-project/memory/PREFERENCES.md` |
-| `plans/backend/API_IMPLEMENTATION_STATUS.template.md` | `.claude-project/plans/backend/API_IMPLEMENTATION_STATUS.md` |
-| `plans/frontend/SCREEN_IMPLEMENTATION_STATUS.template.md` | `.claude-project/plans/frontend/SCREEN_IMPLEMENTATION_STATUS.md` |
-| `plans/frontend/API_INTEGRATION_STATUS.template.md` | `.claude-project/plans/frontend/API_INTEGRATION_STATUS.md` |
+| `status/backend/API_IMPLEMENTATION_STATUS.template.md` | `.claude-project/status/backend/API_IMPLEMENTATION_STATUS.md` |
+| `status/frontend/SCREEN_IMPLEMENTATION_STATUS.template.md` | `.claude-project/status/frontend/SCREEN_IMPLEMENTATION_STATUS.md` |
+| `status/frontend/API_INTEGRATION_STATUS.template.md` | `.claude-project/status/frontend/API_INTEGRATION_STATUS.md` |
 
 If `$HAS_DASHBOARD` is true, also copy:
-| `plans/frontend-dashboard/SCREEN_IMPLEMENTATION_STATUS.template.md` | `.claude-project/plans/frontend-dashboard/SCREEN_IMPLEMENTATION_STATUS.md` |
-| `plans/frontend-dashboard/API_INTEGRATION_STATUS.template.md` | `.claude-project/plans/frontend-dashboard/API_INTEGRATION_STATUS.md` |
+| `status/frontend-dashboard/SCREEN_IMPLEMENTATION_STATUS.template.md` | `.claude-project/status/frontend-dashboard/SCREEN_IMPLEMENTATION_STATUS.md` |
+| `status/frontend-dashboard/API_INTEGRATION_STATUS.template.md` | `.claude-project/status/frontend-dashboard/API_INTEGRATION_STATUS.md` |
 
 **For merge mode**: Skip files that already exist.
 
@@ -171,8 +171,8 @@ If not present, append to `.gitignore`:
 # Claude Code project documentation
 .claude-project/secrets/*
 !.claude-project/secrets/.gitkeep
-.claude-project/plans/temp/*
-!.claude-project/plans/temp/.gitkeep
+.claude-project/status/temp/*
+!.claude-project/status/temp/.gitkeep
 ```
 
 ## Step 6: Report Results
@@ -188,7 +188,7 @@ Tech Stack:
 Created directories:
   - .claude-project/docs/         (API, Database, Knowledge docs)
   - .claude-project/memory/       (Decisions, Learnings, Preferences)
-  - .claude-project/plans/        (Implementation status tracking)
+  - .claude-project/status/        (Implementation status tracking)
   - .claude-project/prd/          (Product requirements)
   - .claude-project/secrets/      (Sensitive config - gitignored)
 

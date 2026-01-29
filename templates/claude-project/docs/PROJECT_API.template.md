@@ -1,17 +1,16 @@
-# API Reference: $PROJECT_NAME
+# API Reference: {PROJECT_NAME}
 
 ## Base URL
 
 - **Development**: `http://localhost:3000/api`
-- **Production**: `https://api.$PROJECT_NAME.com`
+- **Production**: `https://api.{PROJECT_NAME}.com`
 
 ## Authentication
 
-All protected endpoints require JWT Bearer token:
+All protected endpoints use httpOnly cookie authentication.
 
-```
-Authorization: Bearer <token>
-```
+Authentication cookies are automatically included in requests by the browser.
+Backend sets secure, httpOnly cookies on successful login.
 
 ## Endpoints
 
@@ -49,15 +48,18 @@ POST /auth/login
 **Response:**
 ```json
 {
-  "accessToken": "eyJhbGciOiJIUzI1NiIs...",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
   "user": {
     "id": 1,
     "email": "user@example.com",
-    "name": "John Doe"
+    "name": "John Doe",
+    "role": "Business User"
   }
 }
 ```
+
+**Note:** Authentication is handled via httpOnly cookies set in the response headers. The cookies include:
+- `access_token` - Secure, httpOnly cookie for API authentication
+- `refresh_token` - Secure, httpOnly cookie for token refresh
 
 ## Error Responses
 
