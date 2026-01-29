@@ -77,3 +77,35 @@ env: {
 ```
 
 ---
+
+### 2026-01-28: Always Create Symlinks When Adding Commands to base/commands
+
+**Type**: correction
+**Confidence**: HIGH
+**Source**: Session reflection - design-flow project
+
+**Description**: When creating new commands in `.claude/base/commands/`, you must also create a corresponding symlink in `.claude/commands/` for the command to be accessible.
+
+**Evidence**:
+- "I think you forgot symlink. I'm not sure how you create a command, whenever you create a command can you check symlink?"
+
+**Pattern**:
+```bash
+# After creating .claude/base/commands/dev/start.md
+cd .claude/commands/dev
+ln -s ../../base/commands/dev/start.md start.md
+```
+
+**Structure**:
+```
+.claude/
+├── base/commands/dev/start.md     # Actual command file
+└── commands/dev/start.md          # Symlink → ../../base/commands/dev/start.md
+```
+
+**Checklist for new commands**:
+1. Create command file in `.claude/base/commands/<category>/<name>.md`
+2. Create symlink in `.claude/commands/<category>/<name>.md`
+3. Verify with `ls -la .claude/commands/<category>/<name>.md`
+
+---
