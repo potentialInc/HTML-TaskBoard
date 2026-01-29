@@ -111,6 +111,11 @@ mkdir -p .claude-project/status/frontend
 mkdir -p .claude-project/status/temp
 mkdir -p .claude-project/prd
 mkdir -p .claude-project/secrets
+
+# Create project-specific Claude config directories
+mkdir -p .claude-project/hooks
+mkdir -p .claude-project/agents
+mkdir -p .claude-project/skills
 ```
 
 If `$HAS_DASHBOARD` is true:
@@ -150,6 +155,10 @@ For each template file in `.claude/base/templates/claude-project/`:
 | `status/backend/API_IMPLEMENTATION_STATUS.template.md` | `.claude-project/status/backend/API_IMPLEMENTATION_STATUS.md` |
 | `status/frontend/SCREEN_IMPLEMENTATION_STATUS.template.md` | `.claude-project/status/frontend/SCREEN_IMPLEMENTATION_STATUS.md` |
 | `status/frontend/API_INTEGRATION_STATUS.template.md` | `.claude-project/status/frontend/API_INTEGRATION_STATUS.md` |
+| `hooks/README.template.md` | `.claude-project/hooks/README.md` |
+| `agents/README.template.md` | `.claude-project/agents/README.md` |
+| `skills/README.template.md` | `.claude-project/skills/README.md` |
+| `skills/skill-rules.template.json` | `.claude-project/skills/skill-rules.json` |
 
 If `$HAS_DASHBOARD` is true, also copy:
 | `status/frontend-dashboard/SCREEN_IMPLEMENTATION_STATUS.template.md` | `.claude-project/status/frontend-dashboard/SCREEN_IMPLEMENTATION_STATUS.md` |
@@ -188,9 +197,12 @@ Tech Stack:
 Created directories:
   - .claude-project/docs/         (API, Database, Knowledge docs)
   - .claude-project/memory/       (Decisions, Learnings, Preferences)
-  - .claude-project/status/        (Implementation status tracking)
+  - .claude-project/status/       (Implementation status tracking)
   - .claude-project/prd/          (Product requirements)
   - .claude-project/secrets/      (Sensitive config - gitignored)
+  - .claude-project/hooks/        (Project-specific Claude hooks)
+  - .claude-project/agents/       (Project-specific Claude agents)
+  - .claude-project/skills/       (Project-specific Claude skills)
 
 Files created:
   - docs/PROJECT_API.md
@@ -200,9 +212,13 @@ Files created:
   - memory/DECISIONS.md
   - memory/LEARNINGS.md
   - memory/PREFERENCES.md
-  - plans/backend/API_IMPLEMENTATION_STATUS.md
-  - plans/frontend/SCREEN_IMPLEMENTATION_STATUS.md
-  - plans/frontend/API_INTEGRATION_STATUS.md
+  - status/backend/API_IMPLEMENTATION_STATUS.md
+  - status/frontend/SCREEN_IMPLEMENTATION_STATUS.md
+  - status/frontend/API_INTEGRATION_STATUS.md
+  - hooks/README.md
+  - agents/README.md
+  - skills/README.md
+  - skills/skill-rules.json
   [+ dashboard files if applicable]
 
 Next steps:

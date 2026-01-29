@@ -240,8 +240,14 @@ find .claude-project -name "*.template.md" | while read f; do
   mv "$f" "${f%.template.md}.md"
 done
 
-# Replace {PROJECT_NAME} placeholder in all markdown files
+# Rename .template.json files
+find .claude-project -name "*.template.json" | while read f; do
+  mv "$f" "${f%.template.json}.json"
+done
+
+# Replace {PROJECT_NAME} placeholder in all markdown and json files
 find .claude-project -name "*.md" -exec sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" {} \;
+find .claude-project -name "*.json" -exec sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" {} \;
 
 # Replace {BACKEND} placeholder
 find .claude-project -name "*.md" -exec sed -i '' "s/{BACKEND}/$BACKEND/g" {} \;

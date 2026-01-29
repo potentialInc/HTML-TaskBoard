@@ -73,7 +73,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "high",
-      "file": "operation/notion-ticket-reviewer/SKILL.md",
+      "file": "dev/notion-ticket-reviewer/SKILL.md",
       "promptTriggers": {
         "keywords": ["notion ticket", "review ticket", "notion task", "ticket reviewer", "notion database", "notion review", "fix ticket"],
         "intentPatterns": [
