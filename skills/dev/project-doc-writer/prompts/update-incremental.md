@@ -95,6 +95,22 @@ Update documents in this order:
    - Admin Endpoints
    - Enum Reference
 
+4. **claude.md** (Project Root)
+   - Overview
+   - Tech Stack
+   - Project Structure
+   - Key Documentation
+   - User Roles
+   - Core Enums
+   - Development Conventions
+   - Available Commands
+   - MCP Servers
+   - Design System
+   - API Base URLs
+   - Quick Reference
+
+**Note**: claude.md is processed last as it aggregates from other docs.
+
 ---
 
 ## Section Identification Rules
@@ -164,6 +180,51 @@ strategy: prefer_new
 strategy: replace
 - Code blocks are replaced entirely
 - Show diff to user before replacing
+```
+
+### For claude.md Sections
+
+```yaml
+# Overview, Tech Stack, API Base URLs
+strategy: prefer_new
+- Use values from generated docs
+- PRD metadata takes precedence
+
+# Project Structure
+strategy: filesystem_scan
+- Always regenerate from actual folder structure
+- Ignore existing content
+
+# Key Documentation, Memory Files
+strategy: validate_paths
+- Keep hardcoded paths
+- Only update if files exist/don't exist
+- Remove links to missing files
+
+# User Roles, Core Enums
+strategy: sync_from_docs
+- Extract from PROJECT_KNOWLEDGE.md / PROJECT_DATABASE.md
+- Replace entirely with source doc values
+
+# Development Conventions
+strategy: preserve_custom
+- Keep existing conventions unless PRD specifies
+- Only add new conventions from PRD
+
+# Available Commands
+strategy: scan_and_merge
+- Scan .claude/commands/ for actual commands
+- Keep custom commands added manually
+
+# MCP Servers
+strategy: config_scan
+- Read from .mcp.json or config files
+- Replace with detected servers
+
+# Design System, Quick Reference
+strategy: selective_merge
+- Update colors/values from PRD
+- Keep custom additions marked with [custom]
 ```
 
 ---
@@ -258,10 +319,16 @@ After all sections processed, generate summary:
 - Entity "Report" in PRD not found in DATABASE doc
 - API endpoint POST /ideas missing in API doc
 
+### claude.md Status
+- ✓ Generated from updated docs
+- Links validated: 8/8 exist
+- Line count: 185 (under 250 limit)
+
 ### Next Steps
 - [ ] Review merged sections for accuracy
 - [ ] Add missing Report entity to DATABASE
 - [ ] Document POST /ideas endpoint
+- [ ] Verify claude.md links work correctly
 ```
 
 ---
