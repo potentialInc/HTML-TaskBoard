@@ -1,324 +1,317 @@
 ---
-description: Analyze conversation for learnings and update skill/memory files
-argument-hint: [optional: focus area like "backend", "frontend", "testing"]
+description: Session analysis with multi-agent pipeline - docs, automation, learnings, follow-ups
+argument-hint: [optional: "quick" for single-pass, or focus area like "backend", "frontend"]
+allowed-tools: Bash(git *), Read, Write, Edit, Glob, Grep, Task, AskUserQuestion
 ---
 
-# Reflect Command
+# Reflect Command (Enhanced)
 
-Analyze the current conversation session to extract learnings from corrections, approvals, and successful patterns. Propose updates to memory files with user approval.
-
----
-
-## What This Command Does
-
-1. **Scans Conversation** - Looks for correction signals, explicit preferences, successful patterns
-2. **Categorizes Learnings** - Assigns confidence levels (HIGH/MEDIUM/LOW)
-3. **Proposes Updates** - Shows proposed changes to memory files
-4. **Requires Approval** - User must confirm before changes are applied
-5. **Commits Changes** - Version-controls all updates in git
+Comprehensive session wrap-up with multi-agent analysis. Proposes documentation updates, automation opportunities, learnings for memory, and follow-up tasks.
 
 ---
 
-## Signal Detection
+## Mode Selection
 
-### HIGH Confidence (Propose for immediate update)
+Check `$ARGUMENTS`:
 
-| Signal Type | Examples |
-|-------------|----------|
-| Explicit correction | "No, don't do X, do Y instead", "Wrong, use X" |
-| Direct preference | "I prefer X over Y", "Always use X" |
-| Explicit instruction | "Never use X in this project" |
-
-### MEDIUM Confidence (Suggest for review)
-
-| Signal Type | Examples |
-|-------------|----------|
-| Partial correction | "That's mostly right, but..." |
-| Implied preference | "We usually do it this way" |
-| Repeated pattern | Same approach accepted multiple times |
-
-### LOW Confidence (Log for observation)
-
-| Signal Type | Examples |
-|-------------|----------|
-| One-time adjustment | Single instance of different approach |
-| Contextual decision | Project-specific choice |
-| Unclear feedback | Ambiguous or mixed signals |
+- **"quick"** → Run Quick Mode (original single-pass analysis)
+- **Empty or other** → Run Full Mode (multi-agent pipeline)
 
 ---
 
-## Step 1: Analyze Current Conversation
+## Quick Mode (Single-Pass)
 
-Review the conversation from the beginning and identify:
+For short sessions or when you want fast learning capture only.
 
-### Corrections (look for these signals):
-- User saying "no", "don't", "wrong", "instead", "actually", "not what I"
-- User providing alternative code/approach after your suggestion
-- User asking you to redo or fix something
-- Phrases like "should be X not Y", "never do X"
+### Step 1: Analyze Conversation
 
-### Preferences (look for these signals):
-- "I prefer...", "I like to...", "Always use..."
-- "We always...", "We never...", "Our convention is..."
-- "Make sure to...", "Don't forget to..."
+Scan for correction signals, preferences, and patterns:
 
-### Approvals (look for these signals):
-- "Yes", "Perfect", "Exactly", "That's right"
-- "Great", "Good", "Nice", "Well done"
-- User accepting and building on your suggestion
+| Signal Type | Examples | Confidence |
+|-------------|----------|------------|
+| Explicit correction | "No, don't do X" | HIGH |
+| Direct preference | "I prefer X over Y" | HIGH |
+| Partial correction | "That's mostly right, but..." | MEDIUM |
+| One-time adjustment | Single instance change | LOW |
+
+### Step 2: Present Summary
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ REFLECTION ANALYSIS (Quick Mode)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HIGH CONFIDENCE:
+1. [Learning title]
+   Signal: "[user message]"
+   Proposed: Add to [LEARNINGS/PREFERENCES/CORRECTIONS].md
+
+MEDIUM CONFIDENCE:
+1. [Learning title]
+   Note: Consider if pattern repeats
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### Step 3: Ask Memory Level and Save
+
+Use AskUserQuestion for memory level selection, then save to appropriate tier.
 
 ---
 
-## Step 2: Categorize Each Learning
+## Full Mode (Multi-Agent Pipeline)
 
-For each identified signal, create a learning entry:
+For substantial sessions. Runs 5 specialized agents in 2 phases.
+
+```
+┌─────────────────────────────────────────────────────┐
+│  1. Git Status Check                                │
+├─────────────────────────────────────────────────────┤
+│  2. Phase 1: 4 Analysis Agents (PARALLEL)           │
+│     ┌─────────────────┬─────────────────┐           │
+│     │  doc-updater    │  automation-    │           │
+│     │  (docs update)  │  scout          │           │
+│     ├─────────────────┼─────────────────┤           │
+│     │  learning-      │  followup-      │           │
+│     │  extractor      │  suggester      │           │
+│     └─────────────────┴─────────────────┘           │
+├─────────────────────────────────────────────────────┤
+│  3. Phase 2: Validation (SEQUENTIAL)                │
+│     ┌───────────────────────────────────┐           │
+│     │       duplicate-checker           │           │
+│     └───────────────────────────────────┘           │
+├─────────────────────────────────────────────────────┤
+│  4. Integrate Results & Present Options             │
+├─────────────────────────────────────────────────────┤
+│  5. Execute Selected Actions                        │
+└─────────────────────────────────────────────────────┘
+```
+
+### Step 1: Git Status Check
+
+```bash
+git status --short
+git diff --stat HEAD~3 2>/dev/null || git diff --stat
+```
+
+### Step 2: Create Session Summary
+
+Before launching agents, create a summary to share:
 
 ```markdown
-### Learning: [Brief descriptive title]
+## Session Summary
 
-**Signal Type**: correction | preference | pattern | approval
-**Confidence**: HIGH | MEDIUM | LOW
-**Category**: code-style | architecture | naming | process | testing | communication
+**Work Performed:**
+- [Main tasks completed]
+- [Files created/modified]
+- [Key decisions made]
 
-**What was said/done**:
-[The actual user message or action]
-
-**What this means**:
-[Your interpretation of the learning]
-
-**Proposed action**:
-[What should be remembered/updated]
+**Session Context:**
+- Duration: [approximate]
+- Focus area: [if specified in $ARGUMENTS]
 ```
 
----
+### Step 3: Phase 1 - Launch 4 Agents in PARALLEL
 
-## Step 3: Present Summary to User
+**CRITICAL: Launch all 4 agents in a SINGLE message with 4 Task tool calls.**
 
-Output a summary in this format:
+```
+Task(
+    subagent_type="general-purpose",
+    description="Documentation analysis",
+    prompt="You are the doc-updater agent. [Session Summary]\n\nAnalyze this session and propose specific updates to CLAUDE.md and context.md. Follow the instructions in .claude/base/agents/doc-updater.md"
+)
+
+Task(
+    subagent_type="general-purpose",
+    description="Automation detection",
+    prompt="You are the automation-scout agent. [Session Summary]\n\nAnalyze this session for repetitive patterns worth automating. Follow the instructions in .claude/base/agents/automation-scout.md"
+)
+
+Task(
+    subagent_type="general-purpose",
+    description="Learning extraction",
+    prompt="You are the learning-extractor agent. [Session Summary]\n\nExtract learnings, mistakes, and discoveries from this session. Follow the instructions in .claude/base/agents/learning-extractor.md"
+)
+
+Task(
+    subagent_type="general-purpose",
+    description="Follow-up suggestions",
+    prompt="You are the followup-suggester agent. [Session Summary]\n\nIdentify incomplete work and prioritize follow-up tasks. Follow the instructions in .claude/base/agents/followup-suggester.md"
+)
+```
+
+### Step 4: Phase 2 - Validation (Sequential)
+
+After Phase 1 completes, run duplicate-checker with the results:
+
+```
+Task(
+    subagent_type="general-purpose",
+    model="haiku",
+    description="Duplicate validation",
+    prompt="You are the duplicate-checker agent. Validate these Phase 1 proposals for duplicates.\n\n## doc-updater proposals:\n[results]\n\n## automation-scout proposals:\n[results]\n\nFollow the instructions in .claude/base/agents/duplicate-checker.md"
+)
+```
+
+### Step 5: Integrate and Present Results
+
+Combine all agent outputs into a unified summary:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- REFLECTION ANALYSIS
+ REFLECTION ANALYSIS (Full Mode)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Session Summary:
-- Messages analyzed: [count]
-- Corrections detected: [count]
-- Preferences detected: [count]
-- Approvals detected: [count]
+## Documentation Updates
+[doc-updater summary]
+Validation: [duplicate-checker feedback]
 
----
+## Automation Opportunities
+[automation-scout summary]
+Validation: [duplicate-checker feedback]
 
-HIGH CONFIDENCE (will propose updates):
+## Learnings Captured
+[learning-extractor summary]
+- HIGH confidence: [X]
+- MEDIUM confidence: [X]
 
-1. [Title]
-   Signal: "[quoted user message]"
-   Proposed: Add to LEARNINGS.md
-
-2. [Title]
-   Signal: "[quoted user message]"
-   Proposed: Add to PREFERENCES.md
-
----
-
-MEDIUM CONFIDENCE (suggestions to review):
-
-1. [Title]
-   Signal: "[quoted user message]"
-   Note: Consider adding if pattern repeats
-
----
-
-LOW CONFIDENCE (logged for observation):
-
-1. [Title]
-   Signal: "[quoted user message]"
-   Note: May be context-specific
+## Follow-up Tasks
+[followup-suggester summary]
+- P0 (Urgent): [X]
+- P1 (High): [X]
+- P2 (Medium): [X]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
----
+### Step 6: Action Selection
 
-## Step 4: Ask for Memory Level
+Use AskUserQuestion with multiSelect:
 
-After presenting the summary, ask the user which memory level to save to:
+```
+AskUserQuestion(
+    questions=[{
+        "question": "Which actions would you like to perform?",
+        "header": "Actions",
+        "multiSelect": true,
+        "options": [
+            {"label": "Save learnings to memory", "description": "Add HIGH confidence learnings to memory files"},
+            {"label": "Update documentation", "description": "Apply approved doc updates to CLAUDE.md/context.md"},
+            {"label": "Create automation", "description": "Generate skill/command/agent files"},
+            {"label": "Create follow-up tasks", "description": "Save task list for next session"}
+        ]
+    }, {
+        "question": "Which memory level for learnings?",
+        "header": "Memory Level",
+        "multiSelect": false,
+        "options": [
+            {"label": "Project (Recommended)", "description": ".claude-project/memory/ - this project only"},
+            {"label": "Team", "description": ".claude/base/memory/ - shared via submodule"},
+            {"label": "Personal", "description": "~/.claude/memory/ - follows you everywhere"}
+        ]
+    }]
+)
+```
 
-**Use the AskUserQuestion tool with these options:**
+### Step 7: Execute Selected Actions
 
-Question: "Which memory level should these learnings be saved to?"
+Based on user selection:
 
-| Level | Location | When to Use |
-|-------|----------|-------------|
-| **Personal** | `~/.claude/memory/` | Your individual preferences (follows you everywhere) |
-| **Team** | `.claude/base/memory/` | Team conventions (shared via submodule) |
-| **Project** | `.claude-project/memory/` | Project-specific details (default) |
+#### Save Learnings
+Append to appropriate memory file based on level:
+- `LEARNINGS.md` - General learnings
+- `PREFERENCES.md` - Explicit preferences
+- `CORRECTIONS.md` - Mistakes to avoid
 
-**Guidelines for suggesting level:**
-- "I prefer..." → Personal (unless they say "we")
-- "We always...", "Our team..." → Team
-- "In this project...", "This codebase..." → Project
-- When unclear, default to Project (safest)
-
----
-
-## Step 5: Ask for Approval
-
-After level selection, ask:
-
-"Would you like me to save these learnings?"
-
-Options:
-- **Yes** - Save all HIGH confidence learnings to selected level
-- **Select specific** - Let user choose which ones to save
-- **Skip** - Don't save anything this time
-
----
-
-## Step 6: Apply Changes (if approved)
-
-### For each approved learning:
-
-1. **Read** the target file based on selected level (create if doesn't exist):
-
-   **Personal level** (`~/.claude/memory/`):
-   - `LEARNINGS.md` - Personal learnings
-   - `PREFERENCES.md` - Personal preferences
-   - `CORRECTIONS.md` - Personal corrections
-
-   **Team level** (`.claude/base/memory/`):
-   - `LEARNINGS.md` - Team-wide learnings
-   - `PREFERENCES.md` - Team conventions
-   - `CORRECTIONS.md` - Team anti-patterns
-
-   **Project level** (`.claude-project/memory/`):
-   - `LEARNINGS.md` - Project-specific learnings
-   - `PREFERENCES.md` - Project preferences
-   - `CORRECTIONS.md` - Project-specific mistakes to avoid
-
-2. **Append** the new learning entry:
-
+Format each entry:
 ```markdown
 ### [Date]: [Learning Title]
 
-**Type**: [correction|preference|pattern]
-**Confidence**: [HIGH|MEDIUM|LOW]
+**Type**: [correction|preference|pattern|discovery]
+**Confidence**: [HIGH|MEDIUM]
 **Source**: Session reflection
 
 **Description**: [What was learned]
 
 **Evidence**:
-- "[Quoted user message]"
+- "[Quoted signal]"
 
 ---
 ```
 
-3. **Commit** the changes:
+#### Update Documentation
+Apply approved updates from doc-updater (respecting duplicate-checker validation).
+
+#### Create Automation
+Generate files for approved automations from automation-scout.
+
+#### Create Follow-up Tasks
+Save task list to `.claude-project/status/followup-tasks.md`.
+
+### Step 8: Commit Changes
+
+If changes were made:
 
 ```bash
-git add .claude-project/memory/
-git commit -m "reflect: [brief summary of learnings]
+git add .claude-project/memory/ .claude-project/status/
+git commit -m "reflect: Session wrap-up
 
-Captured from session:
-- [Learning 1 title]
-- [Learning 2 title]
+Captured:
+- [X] learnings
+- [X] documentation updates
+- [X] follow-up tasks
 
 Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
 ```
 
 ---
 
-## Step 6: Confirm Completion
+## Focus Area Filtering
 
-Output:
-
-```
-Reflection complete.
-
-Saved [N] learning(s) to:
-- .claude-project/memory/LEARNINGS.md
-
-Changes committed: [commit hash]
-
-Use /reflect-status to see all captured learnings.
-```
-
----
-
-## Focus Area: $ARGUMENTS
-
-If a focus area is provided, filter analysis to that domain:
+If `$ARGUMENTS` contains a focus area (not "quick"), pass it to agents:
 
 | Focus | Filter to |
 |-------|-----------|
-| `backend` | NestJS, API, database, service patterns |
-| `frontend` | React, UI, component, styling patterns |
-| `testing` | Test patterns, fixtures, assertions |
+| `backend` | NestJS, API, database, services |
+| `frontend` | React, UI, components, styling |
+| `testing` | Tests, fixtures, assertions |
 | `git` | Commit, PR, branch conventions |
-| `all` (default) | All categories |
 
 ---
 
-## Memory File Locations (Three-Tier System)
+## Memory File Locations (3-Tier System)
 
-Memory files exist at three levels (priority: personal < team < project):
+| Level | Location | Use Case |
+|-------|----------|----------|
+| Personal | `~/.claude/memory/` | Individual preferences |
+| Team | `.claude/base/memory/` | Shared conventions |
+| Project | `.claude-project/memory/` | Project-specific |
 
-### Personal Level (`~/.claude/memory/`)
-- Follows you across ALL projects
-- Your individual coding preferences
-- Personal communication style
-
-### Team Level (`.claude/base/memory/`)
-- Shared with team via git submodule
-- Team coding conventions
-- Shared library preferences
-
-### Project Level (`.claude-project/memory/`)
-- Project-specific learnings
-- Codebase-specific patterns
-- Business logic details
-
-**Each level contains:**
-- `LEARNINGS.md` - General learnings and corrections
-- `PREFERENCES.md` - Explicit preferences
-- `CORRECTIONS.md` - Mistakes to avoid
+Each contains: `LEARNINGS.md`, `PREFERENCES.md`, `CORRECTIONS.md`
 
 ---
 
-## Example Output
+## Error Handling
 
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- REFLECTION ANALYSIS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Session Summary:
-- Messages analyzed: 24
-- Corrections detected: 2
-- Preferences detected: 1
-- Approvals detected: 8
+- If an agent fails, continue with others and note the failure
+- If duplicate-checker fails, default to "Approved" for all proposals
+- If no learnings found, report "No significant learnings detected"
 
 ---
 
-HIGH CONFIDENCE (will propose updates):
+## Example Usage
 
-1. Use Tailwind instead of styled-components
-   Signal: "No, don't use styled-components. We use Tailwind for all styling."
-   Proposed: Add to CORRECTIONS.md
+```bash
+# Full multi-agent analysis (default)
+/reflect
 
-2. Group imports by type
-   Signal: "Always group imports: React first, then external libs, then internal."
-   Proposed: Add to PREFERENCES.md
+# Quick single-pass mode
+/reflect quick
 
----
+# Focus on backend patterns
+/reflect backend
 
-MEDIUM CONFIDENCE (suggestions to review):
-
-1. Prefer async/await over .then()
-   Signal: User converted promise chain to async/await
-   Note: Implicit preference, consider if it repeats
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Would you like me to save the HIGH confidence learnings?
+# Focus on frontend patterns
+/reflect frontend
 ```
