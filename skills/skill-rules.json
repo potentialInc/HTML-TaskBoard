@@ -88,45 +88,6 @@
         "fix-ticket"
       ]
     },
-    "fullstack": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "high",
-      "file": "fullstack/SKILL.md",
-      "promptTriggers": {
-        "keywords": [
-          "fullstack",
-          "/fullstack",
-          "fullstack project",
-          "fullstack workflow",
-          "development pipeline",
-          "project setup",
-          "project init",
-          "iteration manager"
-        ],
-        "intentPatterns": [
-          "(deploy|setup|init|initialize).*?project",
-          "(start|create|build).*?fullstack",
-          "(run|execute).*?(pipeline|workflow)",
-          "iteration.*?(manager|planning)"
-        ]
-      },
-      "commands": ["fullstack"]
-    },
-    "git-workflow": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "medium",
-      "file": "operation/git-workflow/create-dev-pr.md",
-      "promptTriggers": {
-        "keywords": ["create pr", "pull request", "dev branch", "push to dev", "pr to dev"],
-        "intentPatterns": [
-          "(create|make|open).*?pr",
-          "(push|submit).*?dev",
-          "pull.*?request.*?dev"
-        ]
-      }
-    },
     "project-doc-writer": {
       "type": "domain",
       "enforcement": "suggest",
