@@ -109,3 +109,122 @@ ln -s ../../base/commands/dev/start.md start.md
 3. Verify with `ls -la .claude/commands/<category>/<name>.md`
 
 ---
+
+### 2026-02-01: System Prompt Token Cost Dominates .claude Directory Impact
+
+**Type**: discovery
+**Confidence**: HIGH
+**Source**: Session reflection - design-flow project
+
+**Description**: The primary performance cost of a large `.claude` directory is NOT disk space or startup time, but the skills list rendered in the system prompt. This consumes tokens on every turn of conversation.
+
+**Key insight**: With 87 skills, each conversation starts with ~2-3K tokens just for the skills list. Reducing unused skills has immediate context savings.
+
+**Optimization target**: Minimize skills enumerated in system prompt, not file count.
+
+---
+
+### 2026-02-01: Hybrid Architecture for .claude - Domain-Specific Submodules
+
+**Type**: pattern
+**Confidence**: HIGH
+**Source**: Session reflection - design-flow project (claude-marketing extraction)
+
+**Description**: Splitting a monolithic skills repository into core base + functional domain repos (as git submodules) effectively reduces context bloat while maintaining cohesion.
+
+**Architecture**:
+```
+.claude/
+├── base/           ← Core skills only (Tier 1)
+├── react/          ← Framework-specific (Tier 2)
+├── nestjs/         ← Framework-specific (Tier 2)
+├── marketing/      ← Domain-specific (Tier 2, optional)
+└── operations/     ← Domain-specific (Tier 2, future)
+```
+
+**Benefits**:
+- Dev projects don't load marketing skills
+- Marketing projects can add the submodule when needed
+- Each domain evolves independently
+
+**Evidence**: Extracted 23 marketing skills (12,694 lines) to separate repo, reducing base complexity.
+
+---
+
+### 2026-02-01: Follow Existing Patterns When Refactoring Architecture
+
+**Type**: pattern
+**Confidence**: HIGH
+**Source**: Session reflection - design-flow project
+
+**Description**: When refactoring architecture, adhering to existing patterns in the codebase makes transitions smoother. The marketing extraction followed the same submodule pattern used for react/nestjs/django.
+
+**Evidence**: "Following existing patterns (tech stack submodules) made the refactor smooth"
+
+**Application**: Before creating new architecture, check if similar patterns exist and follow them.
+
+---
+
+### 2026-02-01: HTTPS Git Clone as SSH Fallback
+
+**Type**: technical-learning
+**Confidence**: HIGH
+**Source**: Session reflection - design-flow project
+
+**Description**: When SSH authentication fails due to permissions issues, git clone via HTTPS provides a reliable alternative.
+
+```bash
+# If this fails with "Permission denied (publickey)"
+git clone git@github.com:org/repo.git
+
+# Use HTTPS instead
+git clone https://github.com/org/repo.git
+```
+
+**Note**: HTTPS may prompt for credentials or use credential helper.
+
+---
+
+### 2026-02-01: Measurable Impact of Domain Skill Extraction
+
+**Type**: pattern
+**Confidence**: HIGH
+**Source**: Session reflection - design-flow project
+
+**Description**: Extracting domain-specific skills to separate repos has quantifiable benefits:
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Marketing skills in base | 23 | 0 |
+| Lines removed from base | - | 12,694 |
+| Base skill count | 30 | 7 |
+
+**Implication**: Similar extractions (operations, dev tools) can yield comparable reductions.
+
+---
+
+### 2026-02-01: Submodule Integration Preserves Accessibility
+
+**Type**: discovery
+**Confidence**: HIGH
+**Source**: Session reflection - design-flow project
+
+**Description**: Adding extracted domain repos as git submodules (rather than separate npm packages or dependencies) maintains seamless access within the project context.
+
+**Advantages**:
+- Skills appear in same `.claude/` folder structure
+- No version management complexity
+- Easy to add/remove based on project needs
+- Changes sync via normal git submodule commands
+
+**Pattern**:
+```bash
+# Add domain skills when needed
+git submodule add https://github.com/org/claude-marketing.git .claude/marketing
+
+# Remove when not needed
+git submodule deinit -f .claude/marketing
+git rm -r .claude/marketing
+```
+
+---
