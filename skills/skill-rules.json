@@ -73,7 +73,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "high",
-      "file": "operation/notion-ticket-reviewer/SKILL.md",
+      "file": "dev/notion-ticket-reviewer/SKILL.md",
       "promptTriggers": {
         "keywords": ["notion ticket", "review ticket", "notion task", "ticket reviewer", "notion database", "notion review", "fix ticket"],
         "intentPatterns": [
@@ -87,45 +87,6 @@
       "commands": [
         "fix-ticket"
       ]
-    },
-    "fullstack": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "high",
-      "file": "fullstack/SKILL.md",
-      "promptTriggers": {
-        "keywords": [
-          "fullstack",
-          "/fullstack",
-          "fullstack project",
-          "fullstack workflow",
-          "development pipeline",
-          "project setup",
-          "project init",
-          "iteration manager"
-        ],
-        "intentPatterns": [
-          "(deploy|setup|init|initialize).*?project",
-          "(start|create|build).*?fullstack",
-          "(run|execute).*?(pipeline|workflow)",
-          "iteration.*?(manager|planning)"
-        ]
-      },
-      "commands": ["fullstack"]
-    },
-    "git-workflow": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "medium",
-      "file": "operation/git-workflow/create-dev-pr.md",
-      "promptTriggers": {
-        "keywords": ["create pr", "pull request", "dev branch", "push to dev", "pr to dev"],
-        "intentPatterns": [
-          "(create|make|open).*?pr",
-          "(push|submit).*?dev",
-          "pull.*?request.*?dev"
-        ]
-      }
     },
     "project-doc-writer": {
       "type": "domain",
@@ -462,6 +423,24 @@
           "pricing.*?(strategy|model|optimization)"
         ]
       }
+    },
+    "test-workflow": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "file": "test/run.md",
+      "promptTriggers": {
+        "keywords": ["run test", "test frontend", "test backend", "e2e test", "playwright test", "run e2e", "테스트"],
+        "intentPatterns": [
+          "(run|execute|start).*?test",
+          "test.*?(frontend|backend|dashboard|all)",
+          "(e2e|end.?to.?end).*?test",
+          "(playwright|jest).*?(run|test)"
+        ]
+      },
+      "commands": [
+        "test"
+      ]
     }
   }
 }

@@ -294,25 +294,34 @@ The `.claude/` configuration uses a **3-tier inheritance model** via Git submodu
 │   ┌─────────────────────────────────────────────────────────────────┐   │
 │   │              TIER 3: Project-Specific (Highest Priority)         │   │
 │   │                                                                   │   │
-│   │   .claude/agents/          Your project's custom agents          │   │
-│   │   .claude/skills/          Your project's custom skills          │   │
-│   │   .claude/hooks/           Your project's custom hooks           │   │
-│   │   .claude/settings.json    Project configuration                 │   │
+│   │   .claude-project/agents/  Your project's custom agents          │   │
+│   │   .claude-project/skills/  Your project's custom skills          │   │
+│   │   .claude-project/hooks/   Your project's custom hooks           │   │
+│   │   .claude/stack-config.json  Selective stack loading             │   │
+│   │   .claude/settings.json    Claude configuration                  │   │
 │   │                                                                   │   │
 │   │   ► Overrides lower tiers                                        │   │
-│   │   ► Project-specific customizations                              │   │
+│   │   ► Project-specific customizations live in .claude-project/     │   │
+│   │   ► Configuration lives in .claude/                              │   │
 │   └─────────────────────────────────────────────────────────────────┘   │
 │                                    │                                     │
 │                                    ▼                                     │
 │   ┌─────────────────────────────────────────────────────────────────┐   │
-│   │            TIER 2: Framework-Specific (Medium Priority)          │   │
+│   │          TIER 2: Stack & Team-Specific (Medium Priority)         │   │
 │   │                                                                   │   │
+│   │   TECHNOLOGY STACKS:                                             │   │
 │   │   .claude/nestjs/          NestJS patterns, agents, skills       │   │
 │   │   .claude/react/           React patterns, agents, skills        │   │
 │   │   .claude/django/          Django patterns (if applicable)       │   │
+│   │   .claude/react-native/    React Native mobile patterns          │   │
 │   │                                                                   │   │
-│   │   ► Framework best practices                                     │   │
-│   │   ► Tech-stack specific knowledge                                │   │
+│   │   TEAM-SPECIFIC:                                                 │   │
+│   │   .claude/content/         Content writing & marketing skills    │   │
+│   │   .claude/marketing/       Marketing campaigns & SEO (future)    │   │
+│   │   .claude/operation/       Operations & workflows (future)       │   │
+│   │                                                                   │   │
+│   │   ► Framework & domain best practices                            │   │
+│   │   ► Tech-stack AND team-specific knowledge                       │   │
 │   └─────────────────────────────────────────────────────────────────┘   │
 │                                    │                                     │
 │                                    ▼                                     │
@@ -346,11 +355,23 @@ The `.claude/` configuration uses a **3-tier inheritance model** via Git submodu
 .claude/
 ├── .gitmodules           # Defines submodule URLs
 ├── base/                 → github.com/potentialInc/claude-base (Tier 1)
-├── nestjs/               → github.com/potentialInc/claude-nestjs (Tier 2)
-├── react/                → github.com/potentialInc/claude-react (Tier 2)
-├── agents/               # Project-specific (Tier 3)
-├── skills/               # Project-specific (Tier 3)
-├── hooks/                # Project-specific (Tier 3)
+│
+├── Technology Stacks (Tier 2):
+├── nestjs/               → github.com/potentialInc/claude-nestjs
+├── react/                → github.com/potentialInc/claude-react
+├── django/               → github.com/potentialInc/claude-django
+├── react-native/         → github.com/potentialInc/claude-react-native
+│
+├── Team-Specific (Tier 2):
+├── content/              → github.com/potentialInc/claude-content
+├── marketing/            → (future)
+├── operation/            → (future)
+│
+├── Project-Specific (Tier 3):
+├── agents/               # Project-specific overrides
+├── skills/               # Project-specific customization
+├── hooks/                # Project-specific automation
+├── stack-config.json     # Selective stack loading config
 └── settings.json         # Project configuration
 ```
 
@@ -433,20 +454,22 @@ Complete annotated structure of the `.claude/` system:
 │       ├── convert-figma-to-react.md
 │       └── e2e-test-generator.md
 │
-├── agents/                         # TIER 3: Project-specific agents
-│   ├── backend-developer.md        # Customized for this project
-│   └── README.md
+├── content/                        # TIER 2: Content Team (git submodule)
+│   └── skills/
+│       ├── creation/               # Content creation skills
+│       │   ├── remotion-best-practices.md
+│       │   ├── blog-post-writing.md
+│       │   └── technical-documentation.md
+│       └── strategy/               # Content strategy skills
+│           ├── brand-voice.md
+│           ├── content-calendar.md
+│           └── seo-audit.md
 │
-├── skills/                         # TIER 3: Project-specific skills
-│   ├── skill-rules.json            # Trigger configuration
-│   └── README.md
-│
-├── hooks/                          # TIER 3: Project-specific hooks
-│   ├── tsc-check.sh                # TypeScript validation
-│   └── README.md
-│
+├── stack-config.json               # Selective stack loading configuration
 ├── settings.json                   # Main configuration
 └── settings.local.json             # Local overrides (gitignored)
+
+NOTE: Project-specific agents/skills/hooks are in .claude-project/ (see below)
 ```
 
 ---
@@ -521,7 +544,7 @@ When you run `/new-project`, templates from `.claude/base/templates/claude-proje
 
 ### `.claude-project/` Folder Structure
 
-Project documentation lives in `.claude-project/` (separate from `.claude/`):
+Project-specific content lives in `.claude-project/` (separate from `.claude/`):
 
 ```
 .claude-project/
@@ -545,8 +568,13 @@ Project documentation lives in `.claude-project/` (separate from `.claude/`):
 ├── prd/                            # Product requirements
 │   └── prd.md                      # Converted from PDF
 │
-└── secrets/                        # Credentials (gitignored)
-    └── .env.local
+├── secrets/                        # Credentials (gitignored)
+│   └── .env.local
+│
+└── (Optional) Project-Specific Customization:
+    ├── agents/                     # Custom agents for this project
+    ├── skills/                     # Custom skills for this project
+    └── hooks/                      # Custom hooks for this project
 ```
 
 ### Purpose of Each Folder
@@ -1225,13 +1253,25 @@ claude-base/
 
 #### Claude Config Repos (Submodules)
 
+**Foundation:**
 | Repo | Purpose |
 |------|---------|
 | [claude-base](https://github.com/potentialInc/claude-base) | Shared base (this repo) |
-| [claude-nestjs](https://github.com/potentialInc/claude-nestjs) | NestJS patterns |
-| [claude-django](https://github.com/potentialInc/claude-django) | Django patterns |
-| [claude-react](https://github.com/potentialInc/claude-react) | React patterns |
-| [claude-react-native](https://github.com/potentialInc/claude-react-native) | React Native patterns |
+
+**Technology Stacks:**
+| Repo | Purpose |
+|------|---------|
+| [claude-nestjs](https://github.com/potentialInc/claude-nestjs) | NestJS backend patterns |
+| [claude-django](https://github.com/potentialInc/claude-django) | Django backend patterns |
+| [claude-react](https://github.com/potentialInc/claude-react) | React web patterns |
+| [claude-react-native](https://github.com/potentialInc/claude-react-native) | React Native mobile patterns |
+
+**Team-Specific:**
+| Repo | Purpose |
+|------|---------|
+| [claude-content](https://github.com/potentialInc/claude-content) | Content writing & Remotion video creation |
+| claude-marketing | Marketing campaigns & SEO (future) |
+| claude-operation | Operations & workflow automation (future) |
 
 #### Boilerplate Repos (Cloned by /new-project)
 
