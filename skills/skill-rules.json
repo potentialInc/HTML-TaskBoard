@@ -2,6 +2,39 @@
   "version": "1.0",
   "description": "Base skill triggers - shared across all projects using this as .claude submodule",
   "skills": {
+    "reflect": {
+      "type": "meta",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "meta/reflect/SKILL.md",
+      "promptTriggers": {
+        "keywords": [
+          "reflect",
+          "reflection",
+          "learning",
+          "learnings",
+          "remember this",
+          "don't forget",
+          "preferences",
+          "corrections",
+          "what did you learn",
+          "capture learning"
+        ],
+        "intentPatterns": [
+          "(capture|save|remember|store).*?(learning|preference|correction)",
+          "(reflect|analyze).*?(session|conversation)",
+          "(improve|update).*?(memory|skill)",
+          "what.*?(learn|remember)",
+          "(enable|disable).*?reflection"
+        ]
+      },
+      "commands": [
+        "reflect",
+        "reflect-on",
+        "reflect-off",
+        "reflect-status"
+      ]
+    },
     "skill-developer": {
       "type": "domain",
       "enforcement": "suggest",
@@ -429,6 +462,24 @@
           "pricing.*?(strategy|model|optimization)"
         ]
       }
+    },
+    "test-workflow": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "file": "test/run.md",
+      "promptTriggers": {
+        "keywords": ["run test", "test frontend", "test backend", "e2e test", "playwright test", "run e2e", "테스트"],
+        "intentPatterns": [
+          "(run|execute|start).*?test",
+          "test.*?(frontend|backend|dashboard|all)",
+          "(e2e|end.?to.?end).*?test",
+          "(playwright|jest).*?(run|test)"
+        ]
+      },
+      "commands": [
+        "test"
+      ]
     }
   }
 }
