@@ -880,8 +880,8 @@ fi
 # Create .claude-project directory
 mkdir -p .claude-project
 
-# Copy all templates from .claude/templates
-cp -r .claude/templates/claude-project/* .claude-project/
+# Copy all templates from .claude/base/templates
+cp -r .claude/base/templates/claude-project/* .claude-project/
 ```
 
 ### 7.3 Rename template files (remove .template suffix)
@@ -1478,7 +1478,7 @@ EOF
 
 ```bash
 # Copy README template to root
-cp .claude/templates/README.template.md README.md
+cp .claude/base/templates/README.template.md README.md
 
 # Replace placeholders in README.md
 sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" README.md
