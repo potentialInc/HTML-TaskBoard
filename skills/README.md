@@ -99,7 +99,7 @@ Skills are modular knowledge bases that Claude loads when needed. They provide:
 - Fixing tickets from backlog
 - Updating ticket status
 
-**[View Skill →](operation/notion-ticket-reviewer/)**
+**[View Skill →](dev/notion-ticket-reviewer/)**
 
 ---
 

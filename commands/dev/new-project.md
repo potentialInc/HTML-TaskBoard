@@ -893,13 +893,19 @@ find .claude-project -name "*.template.md" | while read f; do
 done
 ```
 
-### 7.4 Replace placeholders in all markdown files
+### 7.4 Replace placeholders in all markdown and json files
 
 Templates use `{PLACEHOLDER}` format (curly braces).
 
 ```bash
-# Replace {PROJECT_NAME} placeholder
+# Rename .template.json files
+find .claude-project -name "*.template.json" | while read f; do
+  mv "$f" "${f%.template.json}.json"
+done
+
+# Replace {PROJECT_NAME} placeholder in all markdown and json files
 find .claude-project -name "*.md" -exec sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" {} \;
+find .claude-project -name "*.json" -exec sed -i '' "s/{PROJECT_NAME}/$PROJECT_NAME/g" {} \;
 
 # Replace {BACKEND} placeholder
 find .claude-project -name "*.md" -exec sed -i '' "s/{BACKEND}/$BACKEND/g" {} \;
