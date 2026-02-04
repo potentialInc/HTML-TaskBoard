@@ -441,6 +441,30 @@
       "commands": [
         "test"
       ]
+    },
+    "generate-invoice": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "file": "operation/generate-invoice/SKILL.md",
+      "promptTriggers": {
+        "keywords": ["invoice", "견적서", "인보이스", "청구서", "quotation", "billing", "generate-invoice"],
+        "intentPatterns": [
+          "(create|generate|make).*?(invoice|견적서|청구서)",
+          "(견적|청구|인보이스).*?(생성|작성|만들기)",
+          "software.*?development.*?(invoice|quote)",
+          "(프론트엔드|백엔드|디자인).*?(견적|비용)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "invoices/**/*.html",
+          "invoices/**/*.pdf"
+        ]
+      },
+      "commands": [
+        "generate-invoice"
+      ]
     }
   }
 }

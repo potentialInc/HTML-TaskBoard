@@ -56,7 +56,7 @@ This document tracks end-to-end test coverage for the admin dashboard frontend.
 ### Directory Structure
 
 ```
-$PROJECT_FOLDER/
+{PROJECT_FOLDER}/
 ├── playwright.config.ts              # Playwright configuration
 └── test/
     ├── tests/                        # Test files by category
@@ -90,13 +90,13 @@ cd backend && npm run start:dev
 
 2. **Start Frontend Dev Server**
 ```bash
-cd $PROJECT_FOLDER && npm run dev
+cd {PROJECT_FOLDER} && npm run dev
 ```
 
 ### Commands
 
 ```bash
-cd $PROJECT_FOLDER
+cd {PROJECT_FOLDER}
 
 # Install Playwright browsers (first time only)
 npx playwright install
