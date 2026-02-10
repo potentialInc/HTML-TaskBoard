@@ -13,10 +13,9 @@ font-family: 'Inter', sans-serif;
 -webkit-font-smoothing: antialiased;
 }
 /* Hide scrollbar for clean UI */
-::-webkit-scrollbar {
-width: 0px;
-background: transparent;
-}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+* { -webkit-tap-highlight-color: transparent; }
 /* Custom styles for charts */
 .donut-chart {
 background: conic-gradient(
@@ -30,118 +29,121 @@ background: conic-gradient(
 background: conic-gradient(#4A90D9 66%, #F1F5F9 0);
 }
 </style></head>
-<body class="bg-[#F9FAFB] text-[#1E293B] min-h-screen w-full flex justify-center py-6 px-4">
+<body class="bg-[#F9FAFB] text-[#1E293B] flex justify-center min-h-screen w-full">
 
-    <!-- Main Container -->
-    <main class="w-full max-w-[402px] flex flex-col gap-6 pb-12">
-        
+    <!-- Mobile App Container -->
+    <div class="w-full max-w-[402px] bg-[#F9FAFB] relative flex flex-col h-screen md:h-[90vh] md:my-auto md:border md:border-[#E5E7EB] md:rounded-[24px] md:shadow-2xl overflow-hidden">
+
         <!-- Header -->
-        <header class="flex items-center gap-3">
-            <button onclick="window.location.href='08-board-view.html'" class="w-10 h-10 flex items-center justify-center rounded-md hover:bg-[#E5E7EB]/50 text-[#64748B] transition-colors -ml-2">
-                <iconify-icon icon="solar:arrow-left-linear" width="24"></iconify-icon>
+        <header class="h-[56px] bg-white border-b border-[#E5E7EB] flex items-center gap-2 px-3 shrink-0 z-30">
+            <button onclick="window.location.href='08-board-view.html'" class="flex items-center justify-center text-[#64748B] hover:text-[#1E293B] transition-colors shrink-0">
+                <iconify-icon icon="solar:arrow-left-linear" width="22" height="22"></iconify-icon>
             </button>
-            <h3 class="text-2xl font-semibold tracking-tight text-[#1E293B]">Dashboard</h3>
+            <h4 class="text-lg font-semibold tracking-tight text-[#1E293B]">Dashboard</h4>
         </header>
 
+        <!-- Scrollable Content -->
+        <main class="flex-1 overflow-y-auto hide-scrollbar p-3 pb-6 flex flex-col gap-3">
+
         <!-- Filter Bar -->
-        <section class="flex flex-col gap-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <section class="flex flex-col gap-2.5">
+            <div class="grid grid-cols-2 gap-2.5">
                 <!-- Date Range -->
-                <div class="flex items-center gap-2 h-12 bg-white border border-[#E5E7EB] rounded-md px-3 w-full">
-                    <iconify-icon icon="solar:calendar-linear" class="text-[#64748B]" width="20"></iconify-icon>
-                    <input type="text" placeholder="Jan 1" class="w-full bg-transparent text-sm focus:outline-none text-[#1E293B]">
-                    <span class="text-[#94A3B8]">-</span>
-                    <input type="text" placeholder="Feb 1, 2026" class="w-full bg-transparent text-sm focus:outline-none text-[#1E293B] text-right">
+                <div class="flex items-center gap-1.5 h-9 bg-white border border-[#E5E7EB] rounded-md px-2.5 w-full">
+                    <iconify-icon icon="solar:calendar-linear" class="text-[#64748B] shrink-0" width="16"></iconify-icon>
+                    <input type="text" placeholder="Jan 1" class="w-full bg-transparent text-xs focus:outline-none text-[#1E293B]">
+                    <span class="text-[#94A3B8] text-xs">-</span>
+                    <input type="text" placeholder="Feb 1" class="w-full bg-transparent text-xs focus:outline-none text-[#1E293B] text-right">
                 </div>
-                
+
                 <!-- Assignee -->
-                <div class="relative h-12">
-                    <select class="w-full h-full bg-white border border-[#E5E7EB] rounded-md px-4 text-sm text-[#1E293B] appearance-none focus:outline-none focus:border-[#4A90D9]">
+                <div class="relative h-9">
+                    <select class="w-full h-full bg-white border border-[#E5E7EB] rounded-md px-2.5 text-xs text-[#1E293B] appearance-none focus:outline-none focus:border-[#4A90D9]">
                         <option>All members</option>
                         <option>Sarah Miller</option>
                         <option>Alex Chen</option>
                     </select>
-                    <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-4 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none" width="16"></iconify-icon>
+                    <iconify-icon icon="solar:alt-arrow-down-linear" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#64748B] pointer-events-none" width="14"></iconify-icon>
                 </div>
             </div>
 
             <!-- Priority Chips -->
-            <div class="flex flex-wrap gap-2">
-                <button class="px-4 py-1.5 rounded-full text-xs font-medium bg-[#4A90D9] text-white transition-colors">All Priorities</button>
-                <button class="px-4 py-1.5 rounded-full text-xs font-medium bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0] transition-colors">Low</button>
-                <button class="px-4 py-1.5 rounded-full text-xs font-medium bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0] transition-colors">Medium</button>
-                <button class="px-4 py-1.5 rounded-full text-xs font-medium bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0] transition-colors">High</button>
-                <button class="px-4 py-1.5 rounded-full text-xs font-medium bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0] transition-colors">Urgent</button>
+            <div class="flex flex-wrap gap-1.5">
+                <button class="px-3 py-1 rounded-full text-[10px] font-medium bg-[#4A90D9] text-white transition-colors">All Priorities</button>
+                <button class="px-3 py-1 rounded-full text-[10px] font-medium bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0] transition-colors">Low</button>
+                <button class="px-3 py-1 rounded-full text-[10px] font-medium bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0] transition-colors">Medium</button>
+                <button class="px-3 py-1 rounded-full text-[10px] font-medium bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0] transition-colors">High</button>
+                <button class="px-3 py-1 rounded-full text-[10px] font-medium bg-[#F1F5F9] text-[#64748B] hover:bg-[#E2E8F0] transition-colors">Urgent</button>
             </div>
         </section>
 
         <!-- Summary Cards -->
-        <section class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <section class="grid grid-cols-2 gap-2.5">
             <!-- Card 1: Total -->
-            <div class="bg-white border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between h-36 relative overflow-hidden shadow-sm">
+            <div class="bg-white border border-[#E5E7EB] rounded-lg p-3 flex flex-col justify-between h-[104px] relative shadow-sm">
                 <div class="flex justify-between items-start">
-                    <div class="flex flex-col gap-1">
-                        <span class="text-xs font-medium text-[#64748B]">Total Tasks</span>
-                        <span class="text-3xl font-bold tracking-tight text-[#1E293B]">47</span>
+                    <div class="flex flex-col gap-0.5">
+                        <span class="text-[10px] font-medium text-[#64748B]">Total Tasks</span>
+                        <span class="text-2xl font-bold tracking-tight text-[#1E293B]">47</span>
                     </div>
-                    <div class="w-10 h-10 rounded-full bg-[#4A90D9]/10 flex items-center justify-center text-[#4A90D9]">
-                        <iconify-icon icon="solar:clipboard-list-linear" width="20"></iconify-icon>
+                    <div class="w-8 h-8 rounded-full bg-[#4A90D9]/10 flex items-center justify-center text-[#4A90D9]">
+                        <iconify-icon icon="solar:clipboard-list-linear" width="16"></iconify-icon>
                     </div>
                 </div>
-                <div class="text-xs text-[#10B981] flex items-center gap-1">
-                    <iconify-icon icon="solar:trend-up-linear" width="14"></iconify-icon>
+                <div class="text-[10px] text-[#10B981] flex items-center gap-1">
+                    <iconify-icon icon="solar:trend-up-linear" width="12"></iconify-icon>
                     <span>+12% vs last month</span>
                 </div>
             </div>
 
             <!-- Card 2: Completed -->
-            <div class="bg-white border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between h-36 shadow-sm">
+            <div class="bg-white border border-[#E5E7EB] rounded-lg p-3 flex flex-col justify-between h-[104px] shadow-sm">
                 <div class="flex justify-between items-start">
-                    <div class="flex flex-col gap-1">
-                        <span class="text-xs font-medium text-[#64748B]">Completed</span>
-                        <span class="text-3xl font-bold tracking-tight text-[#10B981]">31</span>
+                    <div class="flex flex-col gap-0.5">
+                        <span class="text-[10px] font-medium text-[#64748B]">Completed</span>
+                        <span class="text-2xl font-bold tracking-tight text-[#10B981]">31</span>
                     </div>
-                    <div class="w-10 h-10 rounded-full bg-[#10B981]/10 flex items-center justify-center text-[#10B981]">
-                        <iconify-icon icon="solar:check-circle-linear" width="20"></iconify-icon>
+                    <div class="w-8 h-8 rounded-full bg-[#10B981]/10 flex items-center justify-center text-[#10B981]">
+                        <iconify-icon icon="solar:check-circle-linear" width="16"></iconify-icon>
                     </div>
                 </div>
-                <div class="w-full bg-[#F1F5F9] h-1.5 rounded-full mt-2">
-                    <div class="bg-[#10B981] h-1.5 rounded-full w-[66%]"></div>
+                <div class="w-full bg-[#F1F5F9] h-1 rounded-full mt-1">
+                    <div class="bg-[#10B981] h-1 rounded-full w-[66%]"></div>
                 </div>
             </div>
 
             <!-- Card 3: Overdue -->
-            <div class="bg-white border border-[#E5E7EB] rounded-xl p-5 flex flex-col justify-between h-36 shadow-sm">
+            <div class="bg-white border border-[#E5E7EB] rounded-lg p-3 flex flex-col justify-between h-[104px] shadow-sm">
                 <div class="flex justify-between items-start">
-                    <div class="flex flex-col gap-1">
-                        <span class="text-xs font-medium text-[#64748B]">Overdue</span>
-                        <span class="text-3xl font-bold tracking-tight text-[#EF4444]">5</span>
+                    <div class="flex flex-col gap-0.5">
+                        <span class="text-[10px] font-medium text-[#64748B]">Overdue</span>
+                        <span class="text-2xl font-bold tracking-tight text-[#EF4444]">5</span>
                     </div>
-                    <div class="w-10 h-10 rounded-full bg-[#EF4444]/10 flex items-center justify-center text-[#EF4444]">
-                        <iconify-icon icon="solar:bell-linear" width="20"></iconify-icon>
+                    <div class="w-8 h-8 rounded-full bg-[#EF4444]/10 flex items-center justify-center text-[#EF4444]">
+                        <iconify-icon icon="solar:bell-linear" width="16"></iconify-icon>
                     </div>
                 </div>
-                <div class="text-xs text-[#64748B] mt-1">Requires attention</div>
+                <div class="text-[10px] text-[#64748B] mt-1">Requires attention</div>
             </div>
 
             <!-- Card 4: Completion % -->
-            <div class="bg-white border border-[#E5E7EB] rounded-xl p-5 flex flex-col items-center justify-center h-36 shadow-sm">
-                <div class="relative w-20 h-20 rounded-full circular-progress flex items-center justify-center">
-                    <div class="w-16 h-16 bg-white rounded-full flex flex-col items-center justify-center">
-                        <span class="text-lg font-bold text-[#1E293B] leading-none">66%</span>
+            <div class="bg-white border border-[#E5E7EB] rounded-lg p-3 flex flex-col items-center justify-center h-[104px] shadow-sm">
+                <div class="relative w-16 h-16 rounded-full circular-progress flex items-center justify-center">
+                    <div class="w-12 h-12 bg-white rounded-full flex flex-col items-center justify-center">
+                        <span class="text-sm font-bold text-[#1E293B] leading-none">66%</span>
                     </div>
                 </div>
-                <span class="text-xs font-medium text-[#64748B] mt-2">Completion Rate</span>
+                <span class="text-[10px] font-medium text-[#64748B] mt-1.5">Completion Rate</span>
             </div>
         </section>
 
         <!-- Charts Stack -->
-        <section class="flex flex-col gap-4">
-            
+        <section class="flex flex-col gap-2.5">
+
             <!-- Chart 1: Tasks by Status -->
-            <div class="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-base font-semibold text-[#1E293B]">Tasks by Status</h4>
+            <div class="bg-white border border-[#E5E7EB] rounded-lg p-3 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <h4 class="text-sm font-semibold text-[#1E293B]">Tasks by Status</h4>
                     <button class="text-[#94A3B8] hover:text-[#64748B]">
                         <iconify-icon icon="solar:menu-dots-bold" width="20"></iconify-icon>
                     </button>
@@ -192,10 +194,10 @@ background: conic-gradient(#4A90D9 66%, #F1F5F9 0);
             </div>
 
             <!-- Chart 2: Tasks by Priority -->
-            <div class="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-sm flex flex-col md:flex-row gap-6 items-center">
+            <div class="bg-white border border-[#E5E7EB] rounded-lg p-3 shadow-sm flex flex-row gap-3 items-center">
                 <div class="flex-grow w-full">
-                    <h4 class="text-base font-semibold text-[#1E293B] mb-4">Tasks by Priority</h4>
-                    <div class="grid grid-cols-2 gap-4">
+                    <h4 class="text-sm font-semibold text-[#1E293B] mb-3">Tasks by Priority</h4>
+                    <div class="grid grid-cols-2 gap-2.5">
                         <div class="flex items-center gap-2">
                             <div class="w-2.5 h-2.5 rounded-full bg-[#94A3B8]"></div>
                             <span class="text-xs text-[#64748B]">Low (15)</span>
@@ -214,11 +216,11 @@ background: conic-gradient(#4A90D9 66%, #F1F5F9 0);
                         </div>
                     </div>
                 </div>
-                <div class="relative w-32 h-32 flex-shrink-0">
+                <div class="relative w-24 h-24 flex-shrink-0">
                     <div class="w-full h-full rounded-full donut-chart"></div>
-                    <div class="absolute inset-0 m-auto w-20 h-20 bg-white rounded-full flex items-center justify-center">
+                    <div class="absolute inset-0 m-auto w-16 h-16 bg-white rounded-full flex items-center justify-center">
                         <div class="flex flex-col items-center">
-                            <span class="text-lg font-bold text-[#1E293B]">47</span>
+                            <span class="text-sm font-bold text-[#1E293B]">47</span>
                             <span class="text-[10px] text-[#64748B] uppercase font-medium">Tasks</span>
                         </div>
                     </div>
@@ -226,8 +228,8 @@ background: conic-gradient(#4A90D9 66%, #F1F5F9 0);
             </div>
 
             <!-- Chart 3: Member Workload -->
-            <div class="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-sm">
-                <h4 class="text-base font-semibold text-[#1E293B] mb-4">Member Workload</h4>
+            <div class="bg-white border border-[#E5E7EB] rounded-lg p-3 shadow-sm">
+                <h4 class="text-sm font-semibold text-[#1E293B] mb-3">Member Workload</h4>
                 
                 <div class="flex flex-col gap-4">
                     <!-- Member 1 -->
@@ -286,9 +288,9 @@ background: conic-gradient(#4A90D9 66%, #F1F5F9 0);
             </div>
 
             <!-- Chart 4: Trend Line -->
-            <div class="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <h4 class="text-base font-semibold text-[#1E293B]">Completion Trend</h4>
+            <div class="bg-white border border-[#E5E7EB] rounded-lg p-3 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <h4 class="text-sm font-semibold text-[#1E293B]">Completion Trend</h4>
                     <span class="text-xs text-[#10B981] bg-[#ECFDF5] px-2 py-1 rounded-md font-medium">+8% this week</span>
                 </div>
                 
@@ -323,11 +325,13 @@ background: conic-gradient(#4A90D9 66%, #F1F5F9 0);
         </section>
 
         <!-- Export Action -->
-        <button class="w-full h-12 flex items-center justify-center gap-2 rounded-md border border-[#E5E7EB] bg-white text-[#1E293B] font-medium hover:bg-[#F9FAFB] hover:border-[#4A90D9]/50 transition-colors mt-2 mb-6 text-sm shadow-sm">
-            <iconify-icon icon="solar:export-linear" width="18"></iconify-icon>
+        <button class="w-full h-12 shrink-0 rounded-lg border border-[#E5E7EB] text-sm font-medium text-[#64748B] hover:bg-[#F9FAFB] hover:text-[#1E293B] transition-colors flex items-center justify-center gap-1.5">
+            <iconify-icon icon="solar:export-linear" width="16"></iconify-icon>
             Export CSV
         </button>
 
     </main>
+
+    </div>
 
 </body></html>
