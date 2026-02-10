@@ -66,6 +66,17 @@ transform: rotate(45deg);
 #user-drawer-overlay.open #user-drawer-panel {
   transform: translateX(0);
 }
+/* Sidebar collapse */
+aside{transition:width 300ms ease;overflow:hidden;}
+aside.collapsed{width:64px !important;}
+main{transition:margin-left 300ms ease;}
+aside.collapsed span{display:none;}
+aside.collapsed nav a{justify-content:center;padding-left:0 !important;gap:0;}
+aside.collapsed>div:first-child{justify-content:center;padding-left:0 !important;padding-right:0 !important;}
+aside.collapsed>div:first-child>div{gap:0;}
+aside.collapsed>div:last-child button{justify-content:center;gap:0;}
+aside>div:last-child iconify-icon{transition:transform 300ms ease;}
+aside.collapsed>div:last-child iconify-icon{transform:rotate(180deg);}
 </style></head>
 <body class="bg-[#F9FAFB] text-[#1E293B] flex min-h-screen overflow-hidden">
 
@@ -854,4 +865,5 @@ drawerOverlay.addEventListener('click', function(e) {
     if (e.target === drawerOverlay) closeDrawer();
 });
 </script>
+<script>(function(){var a=document.querySelector('aside'),m=document.querySelector('main'),b=a.querySelector('.border-t button');if(!b)return;b.addEventListener('click',function(){a.classList.toggle('collapsed');m.style.marginLeft=a.classList.contains('collapsed')?'64px':'';});})();</script>
 </body></html>
