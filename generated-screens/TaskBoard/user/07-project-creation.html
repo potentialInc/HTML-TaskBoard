@@ -83,52 +83,38 @@ color: #94A3B8;
 
                 <!-- SECTION 2 - BOARD TEMPLATE -->
                 <section class="mb-8">
-                    <h4 class="text-lg font-semibold text-[#1E293B] mb-4">Board Template</h4>
-                    
-                    <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-2 -mx-4 px-4 md:mx-0 md:px-0">
-                        
-                        <!-- Template 1: Default -->
-                        <button class="relative w-[200px] h-[120px] shrink-0 bg-[#F0F7FF] border-[2px] border-[#4A90D9] rounded-[8px] flex flex-col items-center justify-center gap-3 p-3 text-left group transition-all">
-                            <div class="absolute top-2 right-2 text-[#4A90D9]">
-                                <iconify-icon icon="solar:check-circle-bold" width="20"></iconify-icon>
-                            </div>
-                            <!-- Visual Representation -->
-                            <div class="flex items-center gap-1 w-full opacity-80">
-                                <div class="h-16 w-1/4 bg-white border border-[#BFDBFE] rounded-[4px] flex flex-col gap-1 p-[2px]">
-                                    <div class="h-1 w-full bg-[#BFDBFE] rounded-full"></div>
-                                    <div class="h-2 w-full bg-[#E0F2FE] rounded-[2px]"></div>
-                                </div>
-                                <iconify-icon icon="solar:arrow-right-linear" class="text-[#4A90D9]" width="12"></iconify-icon>
-                                <div class="h-16 w-1/4 bg-white border border-[#BFDBFE] rounded-[4px] flex flex-col gap-1 p-[2px]">
-                                    <div class="h-1 w-full bg-[#BFDBFE] rounded-full"></div>
-                                </div>
-                                <iconify-icon icon="solar:arrow-right-linear" class="text-[#4A90D9]" width="12"></iconify-icon>
-                                <div class="h-16 w-1/4 bg-white border border-[#BFDBFE] rounded-[4px] p-[2px]">
-                                    <div class="h-1 w-full bg-[#BFDBFE] rounded-full"></div>
-                                </div>
-                            </div>
-                            <span class="text-sm font-semibold text-[#4A90D9]">Default</span>
-                        </button>
-
-                        <!-- Template 2: Minimal -->
-                        <button class="relative w-[200px] h-[120px] shrink-0 bg-white border border-[#E5E7EB] rounded-[8px] flex flex-col items-center justify-center gap-3 p-3 text-left hover:border-[#94A3B8] transition-all">
-                            <!-- Visual Representation -->
-                            <div class="flex items-center gap-2 w-full opacity-60 justify-center">
-                                <div class="h-16 w-8 bg-[#F1F5F9] border border-[#E2E8F0] rounded-[4px]"></div>
-                                <iconify-icon icon="solar:arrow-right-linear" class="text-[#94A3B8]" width="12"></iconify-icon>
-                                <div class="h-16 w-8 bg-[#F1F5F9] border border-[#E2E8F0] rounded-[4px]"></div>
-                            </div>
-                            <span class="text-sm font-medium text-[#64748B]">Minimal</span>
-                        </button>
-
-                        <!-- Template 3: Custom -->
-                        <button class="relative w-[200px] h-[120px] shrink-0 bg-[#F9FAFB] border border-dashed border-[#94A3B8] rounded-[8px] flex flex-col items-center justify-center gap-2 p-3 text-left hover:bg-[#F1F5F9] transition-all">
-                            <div class="w-8 h-8 rounded-full bg-[#E2E8F0] text-[#64748B] flex items-center justify-center">
-                                <iconify-icon icon="solar:add-linear" width="20"></iconify-icon>
-                            </div>
-                            <span class="text-sm font-medium text-[#64748B]">Custom</span>
-                        </button>
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="text-lg font-semibold text-[#1E293B]">Board Template</h4>
                     </div>
+
+                    <!-- Selected Template Card (tap to change) -->
+                    <button onclick="window.location.href='07a-board-template.html'" class="w-full bg-[#F0F7FF] border-[2px] border-[#4A90D9] rounded-[10px] p-4 text-left hover:shadow-md transition-all group">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-[#4A90D9] text-white flex items-center justify-center">
+                                    <iconify-icon icon="solar:widget-4-linear" width="18"></iconify-icon>
+                                </div>
+                                <div>
+                                    <span class="text-sm font-semibold text-[#1E293B]">Default</span>
+                                    <p class="text-[11px] text-[#64748B]">To Do, In Progress, Review, Done</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-[#4A90D9]">
+                                <span class="text-xs font-medium group-hover:underline">Change</span>
+                                <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+                            </div>
+                        </div>
+                        <!-- Mini column preview -->
+                        <div class="flex items-center gap-1 w-full">
+                            <div class="flex-1 h-2 bg-[#94A3B8] rounded-full opacity-30"></div>
+                            <iconify-icon icon="solar:arrow-right-linear" class="text-[#BFDBFE]" width="10"></iconify-icon>
+                            <div class="flex-1 h-2 bg-[#F59E0B] rounded-full opacity-30"></div>
+                            <iconify-icon icon="solar:arrow-right-linear" class="text-[#BFDBFE]" width="10"></iconify-icon>
+                            <div class="flex-1 h-2 bg-[#8B5CF6] rounded-full opacity-30"></div>
+                            <iconify-icon icon="solar:arrow-right-linear" class="text-[#BFDBFE]" width="10"></iconify-icon>
+                            <div class="flex-1 h-2 bg-[#10B981] rounded-full opacity-30"></div>
+                        </div>
+                    </button>
                 </section>
 
                 <!-- SECTION 3 - INVITE MEMBERS -->
